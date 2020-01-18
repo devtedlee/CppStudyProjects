@@ -11,7 +11,7 @@ namespace lab2
 	{
 		constexpr int OUT_LENGTH = 12;
 
-		out << "		 oct		dec	  hex" << endl;
+		out << "         oct        dec      hex" << endl;
 		out << "------------ ---------- --------" << endl;
 
 		while (true) 
