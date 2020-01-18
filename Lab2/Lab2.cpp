@@ -7,100 +7,102 @@ using namespace std;
 
 namespace lab2
 {
-    void PrintIntegers(std::istream& in, std::ostream& out)
-    {
-        constexpr int OUT_LENGTH = 12;
+	void PrintIntegers(std::istream& in, std::ostream& out)
+	{
+		constexpr int OUT_LENGTH = 12;
 
-        out << "         oct        dec      hex" << endl;
-        out << "------------ ---------- --------" << endl;
+		out << "		 oct		dec	  hex" << endl;
+		out << "------------ ---------- --------" << endl;
 
-        while (true) 
-        {
-            int number;
-            string trash;
+		while (true) 
+		{
+			int number;
+			string trash;
 
-            in >> number;
+			in >> number;
 
-            if (!in.fail())
-            {
-                if (number < 0)
-                {
-                    continue;
-                }
+			if (!in.fail())
+			{
+				if (number < 0)
+				{
+					continue;
+				}
 
-                out << setfill(' ') << setw(OUT_LENGTH) << right << noshowbase << oct << number;
-                out << setw(OUT_LENGTH - 1) << showbase << dec << number;
-                out << setw(OUT_LENGTH - 3) << uppercase << noshowbase << hex << number << endl;
+				out << setfill(' ') << setw(OUT_LENGTH) << right << noshowbase << oct << number;
+				out << setw(OUT_LENGTH - 1) << showbase << dec << number;
+				out << setw(OUT_LENGTH - 3) << uppercase << noshowbase << hex << number << endl;
 
-                continue;
-            }
+				continue;
+			}
 
-            if (in.eof())
-            {
-                break;
-            }
+			if (in.eof())
+			{
+				break;
+			}
 
-            in.clear();
-            in >> trash;
-        }
-    }
+			in.clear();
+			in >> trash;
+		}
+	}
 
-    void PrintMaxFloat(std::istream& in, std::ostream& out)
-    {
-        constexpr int OUT_LENGTH = 14;
-        constexpr int FLOAT_PRECISION = 3;
-        float max_float = NULL;
-        char pos;
+	void PrintMaxFloat(std::istream& in, std::ostream& out)
+	{
+		constexpr int OUT_LENGTH = 14;
+		constexpr int FLOAT_PRECISION = 3;
+		float max_float = NULL;
+		char pos;
 
-        while (true)
-        {
-            float number;
-            string trash;
+		while (true)
+		{
+			float number;
+			string trash;
 
-            in >> number;
+			in >> number;
 
-            if (!in.fail())
-            {
-                if (number >= 0)
-                {
-                    pos = '+';
-                }
-                else
-                {
-                    pos = '-';
-                    number = -number;
-                }
+			if (!in.fail())
+			{
+				int out_number = number;
 
-                out << setfill(' ') << setw(6) << right << pos;
-                out << setw(OUT_LENGTH) << fixed << showbase << setprecision(FLOAT_PRECISION) << number << endl;
-                
-                if (max_float == NULL || number > max_float)
-                {
-                    max_float = number;
-                }
+				if (number >= 0)
+				{
+					pos = '+';
+				}
+				else
+				{
+					pos = '-';
+					out_number = -number;
+				}
 
-                continue;
-            }
+				out << setfill(' ') << setw(6) << right << pos;
+				out << setw(OUT_LENGTH) << fixed << showbase << setprecision(FLOAT_PRECISION) << out_number << endl;
+				
+				if (max_float == NULL || number > max_float)
+				{
+					max_float = number;
+				}
 
-            if (in.eof())
-            {
-                break;
-            }
+				continue;
+			}
 
-            in.clear();
-            in >> trash;
-        }
+			if (in.eof())
+			{
+				break;
+			}
 
-        if (max_float >= 0)
-        {
-            pos = '+';
-        }
-        else
-        {
-            pos = '-';
-            max_float = -max_float;
-        }
+			in.clear();
+			in >> trash;
+		}
 
-        out << "max: " << pos << setfill(' ') << setw(OUT_LENGTH) << right << fixed << showbase << setprecision(FLOAT_PRECISION) << max_float << endl;
-    }
+		if (max_float >= 0)
+		{
+			pos = '+';
+		}
+		else
+		{
+			pos = '-';
+			max_float = -max_float;
+		}
+
+		out << "max: " << pos << setfill(' ') << setw(OUT_LENGTH) << right << fixed << showbase << setprecision(FLOAT_PRECISION) << max_float << endl;
+	}
 }
