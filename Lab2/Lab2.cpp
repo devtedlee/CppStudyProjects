@@ -49,7 +49,7 @@ namespace lab2
 	{
 		constexpr int OUT_LENGTH = 14;
 		constexpr int FLOAT_PRECISION = 3;
-		float max_float = NULL;
+		float maxFloat = NULL;
 		char pos;
 
 		while (true)
@@ -61,7 +61,7 @@ namespace lab2
 
 			if (!in.fail())
 			{
-				int out_number = number;
+				float outNumber = number;
 
 				if (number >= 0)
 				{
@@ -70,15 +70,15 @@ namespace lab2
 				else
 				{
 					pos = '-';
-					out_number = -number;
+					outNumber = -number;
 				}
 
 				out << setfill(' ') << setw(6) << right << pos;
-				out << setw(OUT_LENGTH) << fixed << showbase << setprecision(FLOAT_PRECISION) << out_number << endl;
+				out << setw(OUT_LENGTH) << fixed << showbase << setprecision(FLOAT_PRECISION) << outNumber << endl;
 				
-				if (max_float == NULL || number > max_float)
+				if (maxFloat == NULL || number > maxFloat)
 				{
-					max_float = number;
+					maxFloat = number;
 				}
 
 				continue;
@@ -93,16 +93,16 @@ namespace lab2
 			in >> trash;
 		}
 
-		if (max_float >= 0)
+		if (maxFloat >= 0)
 		{
 			pos = '+';
 		}
 		else
 		{
 			pos = '-';
-			max_float = -max_float;
+			maxFloat = -maxFloat;
 		}
 
-		out << "max: " << pos << setfill(' ') << setw(OUT_LENGTH) << right << fixed << showbase << setprecision(FLOAT_PRECISION) << max_float << endl;
+		out << "max: " << pos << setfill(' ') << setw(OUT_LENGTH) << right << fixed << showbase << setprecision(FLOAT_PRECISION) << maxFloat << endl;
 	}
 }
