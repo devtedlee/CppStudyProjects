@@ -21,36 +21,33 @@ namespace lab2
 
 			in >> number;
 
-			if (!in.fail())
+			if (in.fail())
 			{
-				if (number < 0)
+				if (in.eof())
 				{
-					continue;
+					break;
 				}
 
-				out << setfill(' ') << setw(OUT_LENGTH) << right << noshowbase << oct << number;
-				out << setw(OUT_LENGTH - 1) << showbase << dec << number;
-				out << setw(OUT_LENGTH - 3) << uppercase << noshowbase << hex << number << endl;
+				in.clear();
+				in >> trash;
+			}
 
+			if (number < 0)
+			{
 				continue;
 			}
 
-			if (in.eof())
-			{
-				break;
-			}
-
-			in.clear();
-			in >> trash;
+			out << setfill(' ') << setw(OUT_LENGTH) << right << noshowbase << oct << number
+				<< setw(OUT_LENGTH - 1) << showbase << dec << number
+				<< setw(OUT_LENGTH - 3) << uppercase << noshowbase << hex << number << endl;
 		}
 	}
 
 	void PrintMaxFloat(std::istream& in, std::ostream& out)
 	{
-		constexpr int OUT_LENGTH = 14;
+		constexpr int OUT_LENGTH = 15;
 		constexpr int FLOAT_PRECISION = 3;
-		float maxFloat = NULL;
-		char pos;
+		float maxFloat = -FLT_MAX;
 
 		while (true)
 		{
@@ -59,50 +56,27 @@ namespace lab2
 
 			in >> number;
 
-			if (!in.fail())
+			if (in.fail())
 			{
-				float outNumber = number;
-
-				if (number >= 0)
+				if (in.eof())
 				{
-					pos = '+';
-				}
-				else
-				{
-					pos = '-';
-					outNumber = -number;
+					break;
 				}
 
-				out << setfill(' ') << setw(6) << right << pos;
-				out << setw(OUT_LENGTH) << fixed << showbase << setprecision(FLOAT_PRECISION) << outNumber << endl;
-				
-				if (maxFloat == NULL || number > maxFloat)
-				{
-					maxFloat = number;
-				}
+				in.clear();
+				in >> trash;
 
 				continue;
 			}
 
-			if (in.eof())
+			if (number > maxFloat)
 			{
-				break;
+				maxFloat = number;
 			}
 
-			in.clear();
-			in >> trash;
+			out << setfill(' ') << setw(5) << ' ' << setw(OUT_LENGTH) << showpos << internal << fixed << showbase << setprecision(FLOAT_PRECISION) << number << endl;
 		}
 
-		if (maxFloat >= 0)
-		{
-			pos = '+';
-		}
-		else
-		{
-			pos = '-';
-			maxFloat = -maxFloat;
-		}
-
-		out << "max: " << pos << setfill(' ') << setw(OUT_LENGTH) << right << fixed << showbase << setprecision(FLOAT_PRECISION) << maxFloat << endl;
+		out << "max: " << setw(OUT_LENGTH) << maxFloat << endl;
 	}
 }
