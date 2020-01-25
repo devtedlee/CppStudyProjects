@@ -9,6 +9,7 @@ namespace lab3
 		, mCurrentEntryCount(0)
 	{
 		mWorkHours = new int[maxEntries];
+		memset(mWorkHours, 0, sizeof(int) * mMaxEntryCount);
 	}
 
 	TimeSheet::TimeSheet(const TimeSheet& origin)
@@ -17,19 +18,20 @@ namespace lab3
 		, mCurrentEntryCount(origin.mCurrentEntryCount)
 	{
 		mWorkHours = new int[mMaxEntryCount];
-		memcpy(mWorkHours, origin.mWorkHours, mCurrentEntryCount * sizeof(int));
+		memcpy(mWorkHours, origin.mWorkHours, mMaxEntryCount * sizeof(int));
 	}
 
-	TimeSheet& TimeSheet::operator=(const TimeSheet& ref)
+	TimeSheet& TimeSheet::operator=(const TimeSheet& rhs)
 	{
-		delete[] mWorkHours;
+		int* originWorkHours = mWorkHours;
 
-		mName = ref.mName;
-		mMaxEntryCount = ref.mMaxEntryCount;
-		mCurrentEntryCount = ref.mCurrentEntryCount;
+		mName = rhs.mName;
+		mMaxEntryCount = rhs.mMaxEntryCount;
+		mCurrentEntryCount = rhs.mCurrentEntryCount;
 		mWorkHours = new int[mMaxEntryCount];
-		memcpy(mWorkHours, ref.mWorkHours, mCurrentEntryCount * sizeof(int));
+		memcpy(mWorkHours, rhs.mWorkHours, mMaxEntryCount * sizeof(int));
 
+		delete[] originWorkHours;
 		return *this;
 	}
 
