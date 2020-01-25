@@ -4,6 +4,9 @@
 
 int main()
 {
+	lab3::TimeSheet employee("", 2);
+	std::cout << employee.GetName() << std::endl;               // ""
+
 	lab3::TimeSheet employee1("John", 5);
 	employee1.AddTime(1);    // ok
 	employee1.AddTime(5);    // ok  
@@ -26,6 +29,8 @@ int main()
 	std::cout << employee1.GetStandardDeviation() << std::endl; // 3.1241
 	std::cout << employee1.GetName() << std::endl;              // John
 
+	employee = employee1;
+	
 	lab3::TimeSheet employee2("Pope", 10);
 	employee2.AddTime(4);    // ok
 	employee2.AddTime(7);    // ok

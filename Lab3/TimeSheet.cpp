@@ -26,6 +26,24 @@ namespace lab3
 		}
 	}
 
+	TimeSheet& TimeSheet::operator=(const TimeSheet& ref)
+	{
+		delete[] mWorkHours;
+
+		mName = ref.mName;
+		mMaxEntryCount = ref.mMaxEntryCount;
+		mCurrentEntryCount = ref.mCurrentEntryCount;
+		mWorkHours = new int[mMaxEntryCount];
+		int* workHours = mWorkHours;
+		for (size_t i = 0; i < mCurrentEntryCount; ++i)
+		{
+			*workHours = ref.mWorkHours[i];
+			++workHours;
+		}
+
+		return *this;
+	}
+
 	TimeSheet::~TimeSheet(void)
 	{
 		delete[] mWorkHours;
@@ -89,6 +107,11 @@ namespace lab3
 		float average = GetAverageTime();
 		float result = 0.0f;
 
+		if (average == 0.0f)
+		{
+			return result;
+		}
+
 		for (size_t i = 0; i < mCurrentEntryCount; ++i)
 		{
 			float temp_deviation = mWorkHours[i] - average;
@@ -96,11 +119,6 @@ namespace lab3
 			temp_deviation = abs(temp_deviation);
 
 			result += pow(temp_deviation, 2);
-		}
-
-		if (result == 0.0f)
-		{
-			return result;
 		}
 
 		result = result / mCurrentEntryCount;
