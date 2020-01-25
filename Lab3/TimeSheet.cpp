@@ -17,13 +17,7 @@ namespace lab3
 		, mCurrentEntryCount(origin.mCurrentEntryCount)
 	{
 		mWorkHours = new int[mMaxEntryCount];
-		
-		int* workHours = mWorkHours;
-		for (size_t i = 0; i < mCurrentEntryCount; ++i)
-		{
-			*workHours = origin.mWorkHours[i];
-			++workHours;
-		}
+		memcpy(mWorkHours, origin.mWorkHours, mCurrentEntryCount * sizeof(int));
 	}
 
 	TimeSheet& TimeSheet::operator=(const TimeSheet& ref)
@@ -34,12 +28,7 @@ namespace lab3
 		mMaxEntryCount = ref.mMaxEntryCount;
 		mCurrentEntryCount = ref.mCurrentEntryCount;
 		mWorkHours = new int[mMaxEntryCount];
-		int* workHours = mWorkHours;
-		for (size_t i = 0; i < mCurrentEntryCount; ++i)
-		{
-			*workHours = ref.mWorkHours[i];
-			++workHours;
-		}
+		memcpy(mWorkHours, ref.mWorkHours, mCurrentEntryCount * sizeof(int));
 
 		return *this;
 	}
@@ -93,13 +82,15 @@ namespace lab3
 	float TimeSheet::GetAverageTime() const
 	{
 		int totalTime = GetTotalTime();
+		float result = 0.0f;
 
 		if (totalTime == 0)
 		{
-			return 0.0f;
+			return result;
 		}
 
-		return (float)totalTime / mCurrentEntryCount;
+		result = static_cast<float>(totalTime);
+		return result / mCurrentEntryCount;
 	}
 
 	float TimeSheet::GetStandardDeviation() const
@@ -114,11 +105,11 @@ namespace lab3
 
 		for (size_t i = 0; i < mCurrentEntryCount; ++i)
 		{
-			float temp_deviation = mWorkHours[i] - average;
+			float tempDeviation = mWorkHours[i] - average;
 
-			temp_deviation = abs(temp_deviation);
+			tempDeviation = abs(tempDeviation);
 
-			result += pow(temp_deviation, 2);
+			result += pow(tempDeviation, 2);
 		}
 
 		result = result / mCurrentEntryCount;

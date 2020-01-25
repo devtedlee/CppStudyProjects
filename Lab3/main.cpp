@@ -28,6 +28,8 @@ int main()
 	std::cout << employee1.GetAverageTime() << std::endl;       // 5.2
 	std::cout << employee1.GetStandardDeviation() << std::endl; // 3.1241
 	std::cout << employee1.GetName() << std::endl;              // John
+	
+	employee = employee;
 
 	employee = employee1;
 	
