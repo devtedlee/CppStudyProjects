@@ -21,5 +21,7 @@ namespace lab3
 		std::string mName;
 		int* mWorkHours;
 		size_t mMaxEntryCount;
+		size_t mCurrentEntryCount;
+		const int FAILED = -1;
 	};
 }
