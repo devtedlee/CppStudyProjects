@@ -29,6 +29,8 @@ int main()
 	std::cout << employee1.GetStandardDeviation() << std::endl; // 3.1241
 	std::cout << employee1.GetName() << std::endl;              // John
 	
+	employee = employee;
+
 	employee = employee1;
 	
 	lab3::TimeSheet employee2("Pope", 10);
@@ -38,6 +40,8 @@ int main()
 
 	std::cout << employee2.GetTotalTime() << std::endl;          // 17
 	std::cout << employee2.GetAverageTime() << std::endl;        // 5.66667
+
+	employee1 = employee1;
 
 	lab3::TimeSheet pope(employee2);
 

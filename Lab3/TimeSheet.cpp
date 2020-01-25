@@ -23,15 +23,19 @@ namespace lab3
 
 	TimeSheet& TimeSheet::operator=(const TimeSheet& rhs)
 	{
-		int* originWorkHours = mWorkHours;
+		if (mWorkHours == rhs.mWorkHours)
+		{
+			return *this;
+		}
 
-		mName = rhs.mName;
+		delete[] mWorkHours;
+
+		mName = rhs.mName.c_str();
 		mMaxEntryCount = rhs.mMaxEntryCount;
 		mCurrentEntryCount = rhs.mCurrentEntryCount;
 		mWorkHours = new int[mMaxEntryCount];
 		memcpy(mWorkHours, rhs.mWorkHours, mMaxEntryCount * sizeof(int));
 
-		delete[] originWorkHours;
 		return *this;
 	}
 
