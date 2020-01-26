@@ -52,6 +52,9 @@ namespace assignment1
 		char* str = appendCStrings(mString, other.mString, mStringLength + other.mStringLength);
 
 		MyString newObj(str);
+
+		delete[] str;
+
 		return newObj;
 	}
 
