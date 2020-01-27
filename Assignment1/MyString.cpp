@@ -49,11 +49,8 @@ namespace assignment1
 
 	MyString MyString::operator+(const MyString& other) const
 	{
-		char* str = appendCStrings(mString, other.mString, mStringLength + other.mStringLength);
-
-		MyString newObj(str);
-
-		delete[] str;
+		MyString newObj(mString);
+		newObj.Append(other.mString);
 
 		return newObj;
 	}
@@ -378,16 +375,13 @@ namespace assignment1
 	void MyString::ToLower()
 	{
 		const int ASCII_DEVIATION = 32;
-		const int UPPER_CASE_START = 64;
-		const int UPPER_CASE_END = 91;
 
 		char* strP = mString;
 		while (*strP != '\0')
 		{
-			int asciiNum = static_cast<int>(*strP);
-			if (UPPER_CASE_START < asciiNum && UPPER_CASE_END > asciiNum)
+			if ('A' <= *strP && 'Z' >= *strP)
 			{
-				*strP = static_cast<char>(asciiNum + ASCII_DEVIATION);
+				*strP = *strP + ASCII_DEVIATION;
 			}
 			++strP;
 		}
@@ -402,12 +396,10 @@ namespace assignment1
 		char* strP = mString;
 		while (*strP != '\0')
 		{
-			int asciiNum = static_cast<int>(*strP);
-			if (LOWER_CASE_START < asciiNum && LOWER_CASE_END > asciiNum)
+			if ('a' <= *strP && 'z' >= *strP)
 			{
-				*strP = static_cast<char>(asciiNum - ASCII_DEVIATION);
+				*strP = *strP - ASCII_DEVIATION;
 			}
-
 			++strP;
 		}
 	}
