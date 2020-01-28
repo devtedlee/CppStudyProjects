@@ -2,18 +2,23 @@
 
 namespace assignment1
 {
+	enum {
+		FAILED = -1,
+		ASCII_DIFF = 32
+	};
+
 	MyString::MyString(const char* s)
-		: mStringLength(getCStringLength(s))
+		: mLength(getCStringLength(s))
 	{
-		mString = new char[mStringLength + 1];
-		copyCString(mString, s, mStringLength);
+		mString = new char[mLength + 1];
+		copyCString(mString, s, mLength);
 	}
 
 	MyString::MyString(const MyString& other)
-		: mStringLength(other.mStringLength)
+		: mLength(other.mLength)
 	{
-		mString = new char[mStringLength + 1];
-		copyCString(mString, other.mString, mStringLength);
+		mString = new char[mLength + 1];
+		copyCString(mString, other.mString, mLength);
 	}
 
 	MyString::~MyString()
@@ -23,7 +28,7 @@ namespace assignment1
 
 	unsigned int MyString::GetLength() const
 	{
-		return mStringLength;
+		return mLength;
 	}
 
 	const char* MyString::GetCString() const
@@ -33,18 +38,17 @@ namespace assignment1
 
 	void MyString::Append(const char* s)
 	{
-		size_t sLength = getCStringLength(s);
-		if (sLength == 0)
+		if (s[0] == '\0')
 		{
 			return;
 		}
 
-		size_t strLength = mStringLength + sLength;
-		char* str = appendCStrings(mString, s, strLength);
+		size_t strLength = mLength + getCStringLength(s);
+		char* str = appendCStringsMalloc(mString, s, strLength);
 
 		delete[] mString;
 		mString = str;
-		mStringLength = strLength;
+		mLength = strLength;
 	}
 
 	MyString MyString::operator+(const MyString& other) const
@@ -59,7 +63,7 @@ namespace assignment1
 	{
 		if (s == nullptr)
 		{
-			return -1;
+			return FAILED;
 		}
 
 		size_t sLength = getCStringLength(s);
@@ -70,27 +74,25 @@ namespace assignment1
 				return 0;
 			}
 
-			return -1;
+			return FAILED;
 		}
 
-		int deviation = mStringLength - sLength;
-		if (deviation < 0)
+		int lengthDiff = mLength - sLength;
+		if (lengthDiff < 0)
 		{
-			return -1;
+			return FAILED;
 		}
-		else if (deviation == 0)
+		else if (lengthDiff == 0)
 		{
-			if (mString == s)
+			if (strCmp(mString, s) == 0)
 			{
 				return 0;
 			}
-			else
-			{
-				return -1;
-			}
+
+			return FAILED;
 		}
 		
-		for (int i = 0; i < deviation + 1; ++i)
+		for (int i = 0; i < lengthDiff + 1; ++i)
 		{
 			const char* sP = s;
 			char* strP = &mString[i];
@@ -111,14 +113,14 @@ namespace assignment1
 			}
 		}
 
-		return -1;
+		return FAILED;
 	}
 
 	int MyString::LastIndexOf(const char* s)
 	{
 		if (s == nullptr)
 		{
-			return -1;
+			return FAILED;
 		}
 
 		size_t sLength = getCStringLength(s);
@@ -126,18 +128,18 @@ namespace assignment1
 		{
 			if (*s == '\0')
 			{
-				return mStringLength;
+				return mLength;
 			}
 
-			return -1;
+			return FAILED;
 		}
 
-		int deviation = mStringLength - sLength;
-		if (deviation < 0)
+		int lengthDiff = mLength - sLength;
+		if (lengthDiff < 0)
 		{
-			return -1;
+			return FAILED;
 		}
-		else if (deviation == 0)
+		else if (lengthDiff == 0)
 		{
 			if (mString == s)
 			{
@@ -145,15 +147,15 @@ namespace assignment1
 			}
 			else
 			{
-				return -1;
+				return FAILED;
 			}
 		}
 
-		for (int i = mStringLength - 1; i > static_cast<int>(sLength - 2); --i)
+		for (int i = mLength - 1; i > static_cast<int>(sLength - 2); --i)
 		{
 			const char* sP = &s[sLength - 1];
 			char* strP = &mString[i];
-			for (int si = sLength - 1; si > -1; --si)
+			for (int si = sLength - 1; si > FAILED; --si)
 			{
 				if (*sP != *strP)
 				{
@@ -170,7 +172,7 @@ namespace assignment1
 			}
 		}
 
-		return -1;
+		return FAILED;
 	}
 
 	void MyString::Interleave(const char* s)
@@ -181,7 +183,7 @@ namespace assignment1
 			return;
 		}
 
-		size_t strLength = mStringLength + sLength;
+		size_t strLength = mLength + sLength;
 		char* str = new char[strLength + 1];
 		str[strLength] = '\0';
 		
@@ -212,19 +214,19 @@ namespace assignment1
 
 		delete[] mString;
 		mString = str;
-		mStringLength = strLength;
+		mLength = strLength;
 	}
 
 	bool MyString::RemoveAt(unsigned int index)
 	{
-		if (index >= mStringLength)
+		if (index >= mLength)
 		{
 			return false;
 		}
 
-		char* str = new char[mStringLength];
+		char* str = new char[mLength];
 		char* strP = str;
-		for (size_t i = 0; i < mStringLength; ++i)
+		for (size_t i = 0; i < mLength; ++i)
 		{
 			if (i == index) 
 			{
@@ -237,7 +239,7 @@ namespace assignment1
 
 		delete[] mString;
 		mString = str;
-		--mStringLength;
+		--mLength;
 
 		return true;
 	}
@@ -249,8 +251,8 @@ namespace assignment1
 
 	void MyString::PadLeft(unsigned int totalLength, const char c)
 	{
-		int deviation = totalLength - mStringLength;
-		if (deviation <= 0)
+		int lengthDiff = totalLength - mLength;
+		if (lengthDiff <= 0)
 		{
 			return;
 		}
@@ -262,10 +264,10 @@ namespace assignment1
 		char* originP = mString;
 		while (*strP != '\0')
 		{
-			if (deviation != 0)
+			if (lengthDiff != 0)
 			{
 				*strP = c;
-				--deviation;
+				--lengthDiff;
 			}
 			else
 			{
@@ -277,7 +279,7 @@ namespace assignment1
 
 		delete[] mString;
 		mString = str;
-		mStringLength = totalLength;
+		mLength = totalLength;
 	}
 
 	void MyString::PadRight(unsigned int totalLength)
@@ -287,8 +289,8 @@ namespace assignment1
 
 	void MyString::PadRight(unsigned int totalLength, const char c)
 	{
-		int deviation = totalLength - mStringLength;
-		if (deviation <= 0)
+		int lengthDiff = totalLength - mLength;
+		if (lengthDiff <= 0)
 		{
 			return;
 		}
@@ -298,7 +300,7 @@ namespace assignment1
 		char* originP = mString;
 		for (unsigned int i = 0; i < totalLength; ++i)
 		{
-			if (i < totalLength - deviation)
+			if (i < totalLength - lengthDiff)
 			{
 				*strP = *originP;
 				++originP;
@@ -313,13 +315,13 @@ namespace assignment1
 
 		delete[] mString;
 		mString = str;
-		mStringLength = totalLength;
+		mLength = totalLength;
 	}
 
 	void MyString::Reverse()
 	{
-		size_t ri = mStringLength - 1;
-		for (size_t i = 0; i < mStringLength / 2; ++i)
+		size_t ri = mLength - 1;
+		for (size_t i = 0; i < mLength / 2; ++i)
 		{
 			char temp = mString[i];
 			mString[i] = mString[ri];
@@ -335,22 +337,14 @@ namespace assignment1
 
 	bool MyString::operator==(const MyString& rhs) const
 	{
-		if (mStringLength != rhs.mStringLength)
+		if (mLength != rhs.mLength)
 		{
 			return false;
 		}
 
-		char* strP = mString;
-		char* rhsStrP = rhs.mString;
-		while (*strP != '\0')
+		if (strCmp(mString, rhs.mString) != 0)
 		{
-			if (*strP != *rhsStrP)
-			{
-				return false;
-			}
-
-			++strP;
-			++rhsStrP;
+			return false;
 		}
 
 		return true;
@@ -365,23 +359,21 @@ namespace assignment1
 
 		delete[] mString;
 
-		mStringLength = rhs.mStringLength;
-		mString = new char[mStringLength + 1];
-		copyCString(mString, rhs.mString, mStringLength);
+		mLength = rhs.mLength;
+		mString = new char[mLength + 1];
+		copyCString(mString, rhs.mString, mLength);
 
 		return *this;
 	}
 
 	void MyString::ToLower()
 	{
-		const int ASCII_DEVIATION = 32;
-
 		char* strP = mString;
 		while (*strP != '\0')
 		{
 			if ('A' <= *strP && 'Z' >= *strP)
 			{
-				*strP = *strP + ASCII_DEVIATION;
+				*strP = *strP + ASCII_DIFF;
 			}
 			++strP;
 		}
@@ -389,16 +381,12 @@ namespace assignment1
 
 	void MyString::ToUpper()
 	{
-		const int ASCII_DEVIATION = 32;
-		const int LOWER_CASE_START = 96;
-		const int LOWER_CASE_END = 123;
-
 		char* strP = mString;
 		while (*strP != '\0')
 		{
 			if ('a' <= *strP && 'z' >= *strP)
 			{
-				*strP = *strP - ASCII_DEVIATION;
+				*strP = *strP - ASCII_DIFF;
 			}
 			++strP;
 		}
@@ -439,7 +427,7 @@ namespace assignment1
 		*destP = '\0';
 	}
 
-	char* MyString::appendCStrings(const char* src1, const char* src2, const size_t length) const
+	char* MyString::appendCStringsMalloc(const char* src1, const char* src2, const size_t length) const
 	{
 		char* str = new char[length + 1];
 		char* strP = str;
@@ -463,5 +451,35 @@ namespace assignment1
 		*strP = '\0';
 
 		return str;
+	}
+
+	int MyString::strCmp(const char* str1, const char* str2) const
+	{		
+		const int EQUAL = 0;
+		int result = 0;
+
+		const char* str1P = str1;
+		const char* str2P = str2;
+		while (true)
+		{
+			result = *str1P - *str2P;
+			if (result != 0)
+			{
+				return result;
+			}
+			
+			if (*str1P == '\0' || *str2P == '\0')
+			{
+				if (*str1P == *str2P)
+				{
+					return EQUAL;
+				}
+
+				return result;
+			}
+
+			++str1P;
+			++str2P;
+		}
 	}
 }

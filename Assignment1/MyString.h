@@ -28,9 +28,10 @@ namespace assignment1
 	private:
 		size_t getCStringLength(const char* src) const;
 		void copyCString(char* dest, const char* src, const size_t length);
-		char* appendCStrings(const char* src1, const char* src2, const size_t length) const;
+		char* appendCStringsMalloc(const char* src1, const char* src2, const size_t length) const;
+		int strCmp(const char* str1, const char* str2) const;
 
 		char* mString;
-		size_t mStringLength = 0;
+		size_t mLength = 0;
 	};
 }

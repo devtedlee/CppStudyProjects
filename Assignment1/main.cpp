@@ -442,12 +442,19 @@ void test2()
 	assert(strcmp(reverseTest.GetCString(), "olleH") == 0);
 
 
-
 	MyString equelsOperatorTest1("Hello");
 	MyString equelsOperatorTest2("Hello");
 	MyString equelsOperatorTest3("World");
 	assert((equelsOperatorTest1 == equelsOperatorTest2) == true);
 	assert((equelsOperatorTest1 == equelsOperatorTest3) == false);
+
+	equelsOperatorTest3.Append(" Round");
+	assert((equelsOperatorTest1 == equelsOperatorTest3) == false);
+
+	MyString equelsOperatorTest4("");
+	MyString equelsOperatorTest5("");
+	assert((equelsOperatorTest4 == equelsOperatorTest5) == true);
+	assert((equelsOperatorTest4 == equelsOperatorTest3) == false);
 
 
 
