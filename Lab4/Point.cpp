@@ -2,12 +2,6 @@
 
 namespace lab4
 {
-	Point::Point()
-		: mX(0)
-		, mY(0)
-	{
-	}
-
 	Point::Point(float x, float y)
 		: mX(x)
 		, mY(y)
@@ -52,6 +46,11 @@ namespace lab4
 		return Point(mX * operand, mY * operand);
 	}
 
+	Point operator*(float lhs, const Point& rhs)
+	{
+		return Point(lhs * rhs.GetX(), lhs * rhs.GetY());
+	}
+
 	float Point::GetX() const
 	{
 		return mX;
@@ -60,5 +59,15 @@ namespace lab4
 	float Point::GetY() const
 	{
 		return mY;
+	}
+
+	void Point::SetX(const float x)
+	{
+		mX = x;
+	}
+
+	void Point::SetY(const float y)
+	{
+		mY = y;
 	}
 }

@@ -6,41 +6,55 @@ namespace lab4
 {
 	PolyLine::PolyLine()
 		: mPointCount(0)
-		, mPoints(nullptr)
 	{
+		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
 	}
 
 	PolyLine::PolyLine(const PolyLine& other)
 		: mPointCount(other.mPointCount)
-		, mPoints(new Point[mPointCount])
 	{
-		memcpy(mPoints, other.mPoints, sizeof(Point) * mPointCount);
+		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
+		memcpy(mPoints, other.mPoints, sizeof(Point*) * mPointCount);
 	}
 
 	PolyLine::~PolyLine()
 	{
-		delete[] mPoints;
+		Point** list = mPoints;
+		for (size_t i = 0; i < mPointCount; ++i)
+		{
+			Point* deletePoint = *list;
+			
+			++list;
+			
+			delete deletePoint;
+		}
+	}
+
+	PolyLine& PolyLine::operator=(const PolyLine& other)
+	{
+		mPointCount = other.mPointCount;
+		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
+		memcpy(mPoints, other.mPoints, sizeof(Point*) * mPointCount);
 	}
 
 	bool PolyLine::AddPoint(float x, float y)
 	{
-		if (mPointCount <= 10)
+		if (mPointCount >= MAX_POINT_COUNT)
 		{
 			return false;
 		}
 
+		Point* newPoint = new Point(x, y);
+
+		mPoints[mPointCount] = newPoint;
 		++mPointCount;
 
-		Point* newPoints = new Point[mPointCount];
-		memcpy(newPoints, mPoints, sizeof(Point) * (mPointCount - 1));
-		//newPoints[mPointCount - 1] = 
-
-		return false;
+		return true;
 	}
 
 	bool PolyLine::AddPoint(const Point* point)
 	{
-		return false;
+		return AddPoint(point->GetX(), point->GetY());
 	}
 
 	bool PolyLine::RemovePoint(unsigned int i)
@@ -55,6 +69,11 @@ namespace lab4
 
 	const Point* PolyLine::operator[](unsigned int i) const
 	{
-		return new Point(0.0f, 0.0f);
+		if (i >= mPointCount)
+		{
+			return nullptr;
+		}
+
+		return mPoints[i];
 	}
 }

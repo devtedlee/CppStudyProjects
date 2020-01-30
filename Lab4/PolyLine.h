@@ -11,6 +11,7 @@ namespace lab4
 		PolyLine(const PolyLine& other);
 		~PolyLine();
 
+		PolyLine& operator=(const PolyLine& other);
 		bool AddPoint(float x, float y);
 		bool AddPoint(const Point* point);
 		bool RemovePoint(unsigned int i);
@@ -18,7 +19,10 @@ namespace lab4
 
 		const Point* operator[](unsigned int i) const;
 	private:
-		Point* mPoints;
+		enum {
+			MAX_POINT_COUNT = 10
+		};
+		Point* mPoints[MAX_POINT_COUNT];
 		size_t mPointCount;
 	};
 }
