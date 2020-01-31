@@ -70,15 +70,14 @@ namespace lab4
 		return true;
 	}
 
-	bool PolyLine::AddPoint(const Point* point)
+	bool PolyLine::AddPoint(Point* point)
 	{
 		if (point == nullptr || mPointCount >= MAX_POINT_COUNT)
 		{
 			return false;
 		}
 
-		//TODO
-		mPoints[mPointCount] = (Point*)point;
+		mPoints[mPointCount] = point;
 		++mPointCount;
 
 		return true;
@@ -91,7 +90,7 @@ namespace lab4
 			return false;
 		}
 
-		Point* deletePoint = mPoints[i];
+		delete mPoints[i];
 
 		for (unsigned int j = i; j < mPointCount - 1; ++j)
 		{
@@ -99,7 +98,6 @@ namespace lab4
 		}
 		mPoints[mPointCount - 1] = nullptr;
 
-		delete deletePoint;
 		--mPointCount;
 
 		return true;
