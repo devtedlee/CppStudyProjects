@@ -34,11 +34,6 @@ namespace lab4
 
 	PolyLine& PolyLine::operator=(const PolyLine& other)
 	{
-		if (mPoints == other.mPoints)
-		{
-			return *this;
-		}
-
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
 			Point* deletePoint = mPoints[i];
@@ -72,17 +67,24 @@ namespace lab4
 
 	bool PolyLine::AddPoint(const Point* point)
 	{
-		return AddPoint(point->GetX(), point->GetY());
+		if (point == nullptr)
+		{
+			return false;
+		}
+
+		float x = point->GetX();
+		float y = point->GetY();
+		return AddPoint(x, y);
 	}
 
 	bool PolyLine::RemovePoint(unsigned int i)
 	{
-		Point* deletePoint = mPoints[i];
-
-		if (mPointCount >= MAX_POINT_COUNT || i > mPointCount || deletePoint == nullptr)
+		if (mPointCount == 0 || mPointCount >= MAX_POINT_COUNT || i >= mPointCount)
 		{
 			return false;
 		}
+
+		Point* deletePoint = mPoints[i];
 
 		for (unsigned int j = i; j < mPointCount - 1; ++j)
 		{
@@ -139,7 +141,7 @@ namespace lab4
 		}
 
 		//validate variables can make proper rectangle
-		if (minX == maxX || minY == maxY)
+		if (minX == maxX || minY == maxY || minX == maxY || minY == maxX)
 		{
 			return false;
 		}

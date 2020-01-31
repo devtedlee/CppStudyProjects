@@ -270,6 +270,9 @@ int main()
 
 	bool bRemoved = pl1.RemovePoint(4);
 
+	PolyLine pl2;
+	pl2 = pl1;
+
 	assert(bRemoved);
 
 	Point minP(0.f, 0.f);
