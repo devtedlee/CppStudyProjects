@@ -72,17 +72,13 @@ namespace lab4
 
 	bool PolyLine::AddPoint(const Point* point)
 	{
-		if (point == nullptr)
+		if (point == nullptr || mPointCount >= MAX_POINT_COUNT)
 		{
 			return false;
 		}
 
-		if (mPointCount >= MAX_POINT_COUNT)
-		{
-			return false;
-		}
-
-		mPoints[mPointCount] = const_cast<Point*>(point);
+		//TODO
+		mPoints[mPointCount] = (Point*)point;
 		++mPointCount;
 
 		return true;
