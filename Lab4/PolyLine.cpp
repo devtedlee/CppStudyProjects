@@ -1,5 +1,6 @@
 #include <cstring>
 #include <cmath>
+#include <cfloat>
 #include "PolyLine.h"
 
 namespace lab4
@@ -14,27 +15,46 @@ namespace lab4
 		: mPointCount(other.mPointCount)
 	{
 		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
-		memcpy(mPoints, other.mPoints, sizeof(Point*) * mPointCount);
+		
+		for (size_t i = 0; i < mPointCount; ++i)
+		{
+			mPoints[i] = new Point(*(other.mPoints[i]));
+		}
 	}
 
 	PolyLine::~PolyLine()
 	{
-		Point** list = mPoints;
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
-			Point* deletePoint = *list;
-			
-			++list;
-			
+			Point* deletePoint = mPoints[i];
+
 			delete deletePoint;
 		}
 	}
 
 	PolyLine& PolyLine::operator=(const PolyLine& other)
 	{
+		if (mPoints == other.mPoints)
+		{
+			return *this;
+		}
+
+		for (size_t i = 0; i < mPointCount; ++i)
+		{
+			Point* deletePoint = mPoints[i];
+
+			delete deletePoint;
+		}
+
 		mPointCount = other.mPointCount;
 		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
-		memcpy(mPoints, other.mPoints, sizeof(Point*) * mPointCount);
+
+		for (size_t i = 0; i < mPointCount; ++i)
+		{
+			mPoints[i] = new Point(*(other.mPoints[i]));
+		}
+
+		return *this;
 	}
 
 	bool PolyLine::AddPoint(float x, float y)
@@ -44,9 +64,7 @@ namespace lab4
 			return false;
 		}
 
-		Point* newPoint = new Point(x, y);
-
-		mPoints[mPointCount] = newPoint;
+		mPoints[mPointCount] = new Point(x, y);
 		++mPointCount;
 
 		return true;
@@ -59,12 +77,79 @@ namespace lab4
 
 	bool PolyLine::RemovePoint(unsigned int i)
 	{
-		return false;
+		Point* deletePoint = mPoints[i];
+
+		if (mPointCount >= MAX_POINT_COUNT || i > mPointCount || deletePoint == nullptr)
+		{
+			return false;
+		}
+
+		for (unsigned int j = i; j < mPointCount - 1; ++j)
+		{
+			mPoints[j] = mPoints[j + 1];
+		}
+		mPoints[mPointCount - 1] = nullptr;
+
+		delete deletePoint;
+		--mPointCount;
+
+		return true;
 	}
 
 	bool PolyLine::TryGetMinBoundingRectangle(Point* outMin, Point* outMax) const
 	{
-		return false;
+		//validate mPoints that has no point and one point
+		if (mPointCount < 1)
+		{
+			return false;
+		}
+
+		float minX = FLT_MAX;
+		float minY = FLT_MAX;
+		float maxX = FLT_MIN;
+		float maxY = FLT_MIN;
+		for (size_t i = 0; i < mPointCount; ++i)
+		{
+			Point* pointsP = mPoints[i];
+			float x = pointsP->GetX();
+			float y = pointsP->GetY();
+			float temp;
+
+			temp = fminf(minX, x);
+			if (temp == x)
+			{
+				minX = x;
+			}
+			temp = fminf(minY, y);
+			if (temp == y)
+			{
+				minY = y;
+			}
+
+			temp = fmaxf(maxX, x);
+			if (temp == x)
+			{
+				maxX = x;
+			}
+			temp = fmaxf(maxY, y);
+			if (temp == y)
+			{
+				maxY = y;
+			}
+		}
+
+		//validate variables can make proper rectangle
+		if (minX == maxX || minY == maxY)
+		{
+			return false;
+		}
+
+		outMin->SetX(minX);
+		outMin->SetY(minY);
+		outMax->SetX(maxX);
+		outMax->SetY(maxY);
+
+		return true;
 	}
 
 	const Point* PolyLine::operator[](unsigned int i) const

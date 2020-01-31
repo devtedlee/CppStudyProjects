@@ -19,7 +19,8 @@ namespace lab4
 
 		const Point* operator[](unsigned int i) const;
 	private:
-		enum {
+		enum 
+		{
 			MAX_POINT_COUNT = 10
 		};
 		Point* mPoints[MAX_POINT_COUNT];
