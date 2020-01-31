@@ -70,14 +70,14 @@ namespace lab4
 		return true;
 	}
 
-	bool PolyLine::AddPoint(Point* point)
+	bool PolyLine::AddPoint(const Point* point)
 	{
 		if (point == nullptr || mPointCount >= MAX_POINT_COUNT)
 		{
 			return false;
 		}
 
-		mPoints[mPointCount] = point;
+		mPoints[mPointCount] = new Point(point->GetX(), point->GetY());
 		++mPointCount;
 
 		return true;
