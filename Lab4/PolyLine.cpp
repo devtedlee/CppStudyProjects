@@ -34,6 +34,11 @@ namespace lab4
 
 	PolyLine& PolyLine::operator=(const PolyLine& other)
 	{
+		if (mPoints - other.mPoints == 0)
+		{
+			return *this;
+		}
+
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
 			Point* deletePoint = mPoints[i];
@@ -72,9 +77,15 @@ namespace lab4
 			return false;
 		}
 
-		float x = point->GetX();
-		float y = point->GetY();
-		return AddPoint(x, y);
+		if (mPointCount >= MAX_POINT_COUNT)
+		{
+			return false;
+		}
+
+		mPoints[mPointCount] = const_cast<Point*>(point);
+		++mPointCount;
+
+		return true;
 	}
 
 	bool PolyLine::RemovePoint(unsigned int i)
