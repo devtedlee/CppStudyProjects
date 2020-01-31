@@ -23,7 +23,7 @@ namespace lab4
 		{
 			MAX_POINT_COUNT = 10
 		};
-		Point* mPoints[MAX_POINT_COUNT];
+		const Point* mPoints[MAX_POINT_COUNT];
 		size_t mPointCount;
 	};
 }

@@ -26,7 +26,7 @@ namespace lab4
 	{
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
-			Point* deletePoint = mPoints[i];
+			const Point* deletePoint = mPoints[i];
 
 			delete deletePoint;
 		}
@@ -41,7 +41,7 @@ namespace lab4
 
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
-			Point* deletePoint = mPoints[i];
+			const Point* deletePoint = mPoints[i];
 
 			delete deletePoint;
 		}
@@ -77,7 +77,7 @@ namespace lab4
 			return false;
 		}
 
-		mPoints[mPointCount] = new Point(point->GetX(), point->GetY());
+		mPoints[mPointCount] = point;
 		++mPointCount;
 
 		return true;
@@ -117,7 +117,7 @@ namespace lab4
 		float maxY = FLT_MIN;
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
-			Point* pointsP = mPoints[i];
+			const Point* pointsP = mPoints[i];
 			float x = pointsP->GetX();
 			float y = pointsP->GetY();
 			float temp;
