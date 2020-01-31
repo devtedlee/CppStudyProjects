@@ -287,6 +287,30 @@ int main()
 
 	TestCaseMain();
 
+	PolyLine pl3;
+	pl3.AddPoint(3.3f, 2.7f);
+	pl3.AddPoint(3.3f, 5.7f);
+	pl3.AddPoint(3.3f, 3.7f);
+	pl3.AddPoint(3.3f, 1.7f);
+
+	Point minP1(0.f, 0.f);
+	Point maxP2(0.f, 0.f);
+
+	bool result = pl3.TryGetMinBoundingRectangle(&minP1, &maxP2);
+
+	assert(!result);
+
+	PolyLine pl4 = pl1;
+	pl4.AddPoint(1.4f, 2.7f);
+	pl4.AddPoint(3.5f, 2.1f);
+	pl4.AddPoint(5.5f, 5.9f);
+	pl4.AddPoint(-2.2f, 4.0f);
+	pl4.AddPoint(4.6f, -1.3f);
+	pl4.AddPoint(6.0f, 4.5f);
+
+	bRemoved = pl4.RemovePoint(9);
+
+
 	return 0;
 }
 

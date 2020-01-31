@@ -85,7 +85,7 @@ namespace lab4
 
 	bool PolyLine::RemovePoint(unsigned int i)
 	{
-		if (mPointCount == 0 || mPointCount + 1 > MAX_POINT_COUNT || i >= mPointCount)
+		if (mPointCount == 0 || i >= mPointCount)
 		{
 			return false;
 		}
@@ -145,16 +145,16 @@ namespace lab4
 			}
 		}
 
-		//validate variables can make proper rectangle
-		if (minX == maxX || minY == maxY || minX == maxY || minY == maxX)
-		{
-			return false;
-		}
-
 		outMin->SetX(minX);
 		outMin->SetY(minY);
 		outMax->SetX(maxX);
 		outMax->SetY(maxY);
+
+		//validate variables can make proper rectangle
+		if (minX == maxX || minY == maxY)
+		{
+			return false;
+		}
 
 		return true;
 	}
