@@ -85,7 +85,7 @@ namespace lab4
 
 	bool PolyLine::RemovePoint(unsigned int i)
 	{
-		if (mPointCount == 0 || i >= mPointCount)
+		if (mPointCount == 0  || i >= mPointCount)
 		{
 			return false;
 		}
@@ -105,8 +105,7 @@ namespace lab4
 
 	bool PolyLine::TryGetMinBoundingRectangle(Point* outMin, Point* outMax) const
 	{
-		//validate mPoints that has no point and one point
-		if (mPointCount < 1)
+		if (mPointCount == 0)
 		{
 			return false;
 		}
@@ -149,12 +148,6 @@ namespace lab4
 		outMin->SetY(minY);
 		outMax->SetX(maxX);
 		outMax->SetY(maxY);
-
-		//validate variables can make proper rectangle
-		if (minX == maxX || minY == maxY)
-		{
-			return false;
-		}
 
 		return true;
 	}
