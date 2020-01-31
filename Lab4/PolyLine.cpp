@@ -85,7 +85,7 @@ namespace lab4
 
 	bool PolyLine::RemovePoint(unsigned int i)
 	{
-		if (mPointCount == 0 || mPointCount >= MAX_POINT_COUNT || i >= mPointCount)
+		if (mPointCount == 0 || mPointCount + 1 > MAX_POINT_COUNT || i >= mPointCount)
 		{
 			return false;
 		}
