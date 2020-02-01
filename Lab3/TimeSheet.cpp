@@ -9,7 +9,6 @@ namespace lab3
 		, mCurrentEntryCount(0)
 	{
 		mWorkHours = new int[maxEntries];
-		memset(mWorkHours, 0, sizeof(int) * mMaxEntryCount);
 	}
 
 	TimeSheet::TimeSheet(const TimeSheet& origin)
@@ -23,14 +22,14 @@ namespace lab3
 
 	TimeSheet& TimeSheet::operator=(const TimeSheet& rhs)
 	{
-		if (mWorkHours == rhs.mWorkHours)
+		if (this == &rhs)
 		{
 			return *this;
 		}
 
 		delete[] mWorkHours;
 
-		mName = rhs.mName.c_str();
+		mName = rhs.mName;
 		mMaxEntryCount = rhs.mMaxEntryCount;
 		mCurrentEntryCount = rhs.mCurrentEntryCount;
 		mWorkHours = new int[mMaxEntryCount];
@@ -65,7 +64,7 @@ namespace lab3
 
 	int TimeSheet::GetTimeEntry(unsigned int index) const
 	{
-		if (index < 0 || index > mCurrentEntryCount - 1)
+		if (index > mCurrentEntryCount - 1)
 		{
 			return FAILED;
 		}
@@ -88,14 +87,13 @@ namespace lab3
 	float TimeSheet::GetAverageTime() const
 	{
 		int totalTime = GetTotalTime();
-		float result = 0.0f;
+		float result = static_cast<float>(totalTime);
 
 		if (totalTime == 0)
 		{
 			return result;
 		}
 
-		result = static_cast<float>(totalTime);
 		return result / mCurrentEntryCount;
 	}
 

@@ -298,7 +298,7 @@ int main()
 
 	bool result = pl3.TryGetMinBoundingRectangle(&minP1, &maxP2);
 
-	assert(!result);
+	assert(result);
 
 	PolyLine pl4 = pl1;
 	pl4.AddPoint(1.4f, 2.7f);

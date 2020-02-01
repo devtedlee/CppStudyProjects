@@ -7,15 +7,14 @@ namespace lab4
 {
 	PolyLine::PolyLine()
 		: mPointCount(0)
+		, mPoints()
 	{
-		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
 	}
 
 	PolyLine::PolyLine(const PolyLine& other)
 		: mPointCount(other.mPointCount)
-	{
-		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
-		
+		, mPoints()
+	{		
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
 			mPoints[i] = new Point(*(other.mPoints[i]));
@@ -34,7 +33,7 @@ namespace lab4
 
 	PolyLine& PolyLine::operator=(const PolyLine& other)
 	{
-		if (mPoints - other.mPoints == 0)
+		if (this == &other)
 		{
 			return *this;
 		}
@@ -47,7 +46,6 @@ namespace lab4
 		}
 
 		mPointCount = other.mPointCount;
-		memset(mPoints, 0, sizeof(Point*) * MAX_POINT_COUNT);
 
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
