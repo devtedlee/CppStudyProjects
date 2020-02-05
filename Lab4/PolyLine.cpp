@@ -7,17 +7,15 @@ namespace lab4
 {
 	PolyLine::PolyLine()
 		: mPointCount(0)
-		, mPoints()
 	{
 	}
 
 	PolyLine::PolyLine(const PolyLine& other)
 		: mPointCount(other.mPointCount)
-		, mPoints()
 	{		
 		for (size_t i = 0; i < mPointCount; ++i)
 		{
-			mPoints[i] = new Point(*(other.mPoints[i]));
+			mPoints[i] = new Point(*other.mPoints[i]);
 		}
 	}
 

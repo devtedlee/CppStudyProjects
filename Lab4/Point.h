@@ -9,7 +9,6 @@ namespace lab4
 		Point(const Point& other);
 		~Point();
 
-		Point& operator=(const Point& other);
 		Point operator+(const Point& other) const;
 		Point operator-(const Point& other) const;
 		float Dot(const Point& other) const;
