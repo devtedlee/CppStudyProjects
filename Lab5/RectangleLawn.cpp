@@ -3,7 +3,7 @@
 namespace lab5
 {
 	RectangleLawn::RectangleLawn(unsigned int width, unsigned int height)
-		:mWidth(width)
+		: SquareLawn(width)
 		, mHeight(height)
 	{
 	}
@@ -12,20 +12,8 @@ namespace lab5
 	{
 	}
 
-	//TODO: handle const return.
-	unsigned int GetArea()
+	unsigned int RectangleLawn::GetArea() const
 	{
-		return 0;
+		return mHeight * SquareLawn::GetWidth();
 	}
-
-	unsigned int GetMinimumFencesCount()
-	{
-		return 0;
-	}
-
-	unsigned int GetFencePrice(eFenceType fenceType)
-	{
-		return 0;
-	}
-
 }

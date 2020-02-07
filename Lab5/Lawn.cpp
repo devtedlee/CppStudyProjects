@@ -12,11 +12,33 @@ namespace lab5
 
 	unsigned int Lawn::GetGrassPrice(eGrassType grassType) const
 	{
-		return 0;
+		unsigned int area = GetArea();
+
+		unsigned int grassPriceCent = area * static_cast<unsigned int>(grassType);
+
+		double grassPriceDollor = static_cast<double>(grassPriceCent) / 100;
+
+		unsigned int price = static_cast<unsigned int>(grassPriceDollor);
+		if (grassPriceDollor == static_cast<double>(price))
+		{
+			return price;
+		}
+
+		return price + 1;
 	}
 
 	unsigned int Lawn::GetMinimumSodRollsCount() const
 	{
-		return 0;
+		unsigned int area = GetArea();
+
+		double rollCountDouble = static_cast<double>(area) / 0.3;
+
+		unsigned int rollCount = static_cast<unsigned int>(rollCountDouble);
+		if (rollCountDouble == static_cast<double>(rollCount))
+		{
+			return rollCount;
+		}
+
+		return rollCount + 1;
 	}
 }
