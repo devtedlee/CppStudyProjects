@@ -29,7 +29,7 @@ namespace lab5
 	{
 		unsigned int fencesCount = GetMinimumFencesCount();
 
-		double fencePriceDollor = static_cast<double>(fencesCount)* static_cast<double>(fenceType) / 4;
+		double fencePriceDollor = static_cast<double>(fencesCount) * static_cast<double>(fenceType) / 4;
 
 		unsigned int price = static_cast<unsigned int>(fencePriceDollor);
 		if (fencePriceDollor == static_cast<double>(price))
