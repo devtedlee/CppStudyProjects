@@ -15,25 +15,28 @@ namespace lab5
 
 	unsigned int EquilateralTriangleLawn::GetArea() const
 	{
-		double sideSquare = pow(mSideLength, 2);
-		double areaDouble = sideSquare * sqrt(3) / 4.0;
+		double areaDouble = pow(mSideLength, 2) / 4.0 * sqrt(3);
 
-		unsigned int area = static_cast<unsigned int>(areaDouble);
-		if (areaDouble == static_cast<double>(area))
-		{
-			return area;
-		}
-
-		return area + 1;
+		return static_cast<unsigned int>(areaDouble + 0.5);
 	}
 
 	unsigned int EquilateralTriangleLawn::GetMinimumFencesCount() const
 	{
-		return 0;
+		return mSideLength * 12;
 	}
 
 	unsigned int EquilateralTriangleLawn::GetFencePrice(eFenceType fenceType) const
 	{
-		return 0;
+		unsigned int fencesCount = GetMinimumFencesCount();
+
+		double fencePriceDollor = static_cast<double>(fencesCount) * static_cast<double>(fenceType) / 4;
+
+		unsigned int price = static_cast<unsigned int>(fencePriceDollor);
+		if (fencePriceDollor == static_cast<double>(price))
+		{
+			return price;
+		}
+
+		return price + 1;
 	}
 }

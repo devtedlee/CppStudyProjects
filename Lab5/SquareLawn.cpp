@@ -3,8 +3,7 @@
 namespace lab5
 {
 	SquareLawn::SquareLawn(unsigned int width)
-		: Lawn()
-		, mWidth(width)
+		: RectangleLawn(width, width)
 	{
 	}
 
@@ -14,15 +13,13 @@ namespace lab5
 
 	unsigned int SquareLawn::GetArea() const
 	{
-		return mWidth * mWidth;
+		unsigned int width = RectangleLawn::GetWidth();
+		return width * width;
 	}
 
 	unsigned int SquareLawn::GetMinimumFencesCount() const
 	{
-		return 0;
-	}
-	unsigned int SquareLawn::GetFencePrice(eFenceType fenceType) const
-	{
-		return 0;
+		unsigned int width = RectangleLawn::GetWidth();
+		return width * 16;
 	}
 }

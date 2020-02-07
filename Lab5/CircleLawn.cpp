@@ -19,12 +19,6 @@ namespace lab5
 		unsigned int radiusSquare = mRadius * mRadius;
 		double areaDouble = static_cast<double>(radiusSquare) * PI;
 
-		unsigned int area = static_cast<unsigned int>(areaDouble);
-		if (areaDouble == static_cast<double>(area))
-		{
-			return area;
-		}
-
-		return area + 1;
+		return static_cast<unsigned int>(areaDouble + 0.5);
 	}
 }
