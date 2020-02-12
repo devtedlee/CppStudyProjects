@@ -8,9 +8,13 @@ namespace assignment2
 	{
 	public:
 		Person(const char* name, unsigned int weight);
-		~Person();
+		virtual ~Person();
 
 		const std::string& GetName() const;
 		unsigned int GetWeight() const;
+
+	private:
+		std::string* mName;
+		unsigned int mWeight;
 	};
 }

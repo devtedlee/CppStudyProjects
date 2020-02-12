@@ -8,7 +8,7 @@ namespace assignment2
 	{
 	public:
 		Vehicle(unsigned int maxPassengersCount);
-		~Vehicle();
+		virtual ~Vehicle();
 
 		virtual unsigned int GetMaxSpeed() const = 0;
 
@@ -17,5 +17,10 @@ namespace assignment2
 		const Person* GetPassenger(unsigned int i) const;
 		unsigned int GetPassengersCount() const;
 		unsigned int GetMaxPassengersCount() const;
+		int GetPassangersWeight() const;
+	private:
+		const Person** mPassangers;
+		unsigned int mPassengersCount;
+		unsigned int mMaxPassengersCount;
 	};
 }

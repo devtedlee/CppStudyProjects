@@ -3,20 +3,23 @@
 namespace assignment2
 {
 	Person::Person(const char* name, unsigned int weight)
+		: mWeight(weight)
+		, mName(new std::string(name))
 	{
 	}
 
 	Person::~Person()
 	{
+		delete mName;
 	}
 
 	const std::string& Person::GetName() const
 	{
-		return 0;
+		return *mName;
 	}
 
 	unsigned int Person::GetWeight() const
 	{
-		return 0;
+		return mWeight;
 	}
 }
