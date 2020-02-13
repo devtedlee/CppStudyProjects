@@ -50,14 +50,14 @@ namespace assignment2
 	unsigned int Airplane::GetFlySpeed() const
 	{
 		int passangersWeight = Vehicle::GetPassangersWeight();
-		double result = 200.0 * pow(M_E, ((-passangersWeight + 800) / 500.0));
+		double result = 200.0 * pow(M_E, ((-passangersWeight + 800.0) / 500.0));
 		return static_cast<unsigned int>(result + 0.5);
 	}
 
 	unsigned int Airplane::GetDriveSpeed() const
 	{
 		int passangersWeight = Vehicle::GetPassangersWeight();
-		double result = 4.0 * pow(M_E, ((-passangersWeight + 400) / 70.0));
+		double result = 4.0 * pow(M_E, ((-passangersWeight + 400.0) / 70.0));
 		return static_cast<unsigned int>(result + 0.5);
 	}
 }
