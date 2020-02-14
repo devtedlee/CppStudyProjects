@@ -18,18 +18,25 @@ namespace assignment2
 	}
 
 	Vehicle::Vehicle(const Vehicle& other)
-		: mPassengersCount(other.mPassengersCount)
-		, mMaxPassengersCount(other.mMaxPassengersCount)
+		: mMaxPassengersCount(other.mMaxPassengersCount)
 		, mRunnableHours(other.mRunnableHours)
 		, mBreakHours(other.mBreakHours)
 		, mTotalTravelHours(other.mTotalTravelHours)
 	{
+		size_t i = 0;
+		for (; i < mPassengersCount; ++i)
+		{
+			delete mPassangers[i];
+		}
+
+		mPassengersCount = other.mPassengersCount;
+
 		delete[] mPassangers;
 
 		mPassangers = new const Person*[mPassengersCount];
-		for (size_t i = 0; i < other.mPassengersCount; ++i)
+		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = other.mPassangers[i];
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}
 	}
 
@@ -40,18 +47,25 @@ namespace assignment2
 			return *this;
 		}
 
-		mPassengersCount = other.mPassengersCount;
 		mMaxPassengersCount = other.mMaxPassengersCount;
 		mRunnableHours = other.mRunnableHours;
 		mBreakHours = other.mBreakHours;
 		mTotalTravelHours = other.mTotalTravelHours;
+		
+		size_t i = 0;
+		for (; i < mPassengersCount; ++i)
+		{
+			delete mPassangers[i];
+		}
+
+		mPassengersCount = other.mPassengersCount;
 
 		delete[] mPassangers;
 
-		mPassangers = new const Person*[mPassengersCount];
-		for (size_t i = 0; i < other.mPassengersCount; ++i)
+		mPassangers = new const Person * [mPassengersCount];
+		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = other.mPassangers[i];
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}
 
 		return *this;
