@@ -7,6 +7,7 @@ namespace assignment2
 		: Vehicle(4)
 		, mTrailer(nullptr)
 	{
+		Vehicle::SetDrivePattern(5, 1);
 	}
 
 	Sedan::~Sedan()
@@ -25,6 +26,7 @@ namespace assignment2
 		}
 
 		mTrailer = trailer;
+		Vehicle::SetDrivePattern(5, 2);
 
 		return true;
 	}
@@ -38,6 +40,7 @@ namespace assignment2
 
 		delete mTrailer;
 		mTrailer = nullptr;
+		Vehicle::SetDrivePattern(5, 1);
 
 		return true;
 	}

@@ -7,6 +7,7 @@ namespace assignment2
 	Boatplane::Boatplane(unsigned int maxPassengersCount)
 		: Vehicle(maxPassengersCount)
 	{
+		Vehicle::SetDrivePattern(1, 3);
 	}
 
 	Boatplane::~Boatplane()
@@ -24,7 +25,7 @@ namespace assignment2
 	unsigned int Boatplane::GetFlySpeed() const
 	{
 		int passangersWeight = Vehicle::GetPassangersWeight();
-		double result = 150.0 * pow(M_E, ((-passangersWeight + 500) / 300.0));
+		double result = 150.0 * pow(M_E, ((-passangersWeight + 500.0) / 300.0));
 		return static_cast<unsigned int>(result + 0.5);
 	}
 

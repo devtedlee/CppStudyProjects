@@ -8,6 +8,7 @@ namespace assignment2
 	Airplane::Airplane(unsigned int maxPassengersCount)
 		: Vehicle(maxPassengersCount)
 	{
+		Vehicle::SetDrivePattern(1, 3);
 	}
 
 	Airplane::~Airplane()
@@ -17,23 +18,20 @@ namespace assignment2
 	Boatplane Airplane::operator+(Boat& boat)
 	{
 		Boatplane* bp = new Boatplane(GetMaxPassengersCount() + boat.GetMaxPassengersCount());
-		
-		const Person* passanger = GetPassenger(0);
-		while (passanger != NULL)
-		{
-			bp->AddPassenger(passanger);
-			RemovePassenger(0);
 
-			passanger = GetPassenger(0);
+		size_t i = 0;
+		size_t passCount = GetPassengersCount();
+		for (; i < passCount; ++i)
+		{
+			bp->AddPassenger(GetPassenger(0));
+			MovePassenger(0);
 		}
 
-		passanger = boat.GetPassenger(0);
-		while (passanger != NULL)
+		passCount = boat.GetPassengersCount();
+		for (i = 0; i < passCount; ++i)
 		{
-			bp->AddPassenger(passanger);
-			boat.RemovePassenger(0);
-
-			passanger = boat.GetPassenger(0);
+			bp->AddPassenger(boat.GetPassenger(0));
+			boat.MovePassenger(0);
 		}
 
 		return *bp;

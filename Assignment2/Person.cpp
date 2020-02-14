@@ -13,6 +13,28 @@ namespace assignment2
 		delete mName;
 	}
 
+	Person::Person(const Person& other)
+		: mWeight(other.mWeight)
+	{
+		delete mName;
+		mName = new std::string(other.mName->c_str());
+	}
+
+	Person& Person::operator=(const Person& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		delete mName;
+
+		mWeight = other.mWeight;
+		mName = new std::string(other.mName->c_str());
+
+		return *this;
+	}
+
 	const std::string& Person::GetName() const
 	{
 		return *mName;

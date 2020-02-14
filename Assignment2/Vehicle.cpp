@@ -5,6 +5,9 @@ namespace assignment2
 	Vehicle::Vehicle(unsigned int maxPassengersCount)
 		: mPassengersCount(0)
 		, mMaxPassengersCount(maxPassengersCount)
+		, mRunnableHours(0)
+		, mBreakHours(0)
+		, mTotalTravelHours(0)
 	{
 		mPassangers = new const Person*[mMaxPassengersCount];
 	}
@@ -14,11 +17,59 @@ namespace assignment2
 		delete[] mPassangers;
 	}
 
+	Vehicle::Vehicle(const Vehicle& other)
+		: mPassengersCount(other.mPassengersCount)
+		, mMaxPassengersCount(other.mMaxPassengersCount)
+		, mRunnableHours(other.mRunnableHours)
+		, mBreakHours(other.mBreakHours)
+		, mTotalTravelHours(other.mTotalTravelHours)
+	{
+		delete[] mPassangers;
+
+		mPassangers = new const Person*[mPassengersCount];
+		for (size_t i = 0; i < other.mPassengersCount; ++i)
+		{
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
+		}
+	}
+
+	Vehicle& Vehicle::operator=(const Vehicle& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		mPassengersCount = other.mPassengersCount;
+		mMaxPassengersCount = other.mMaxPassengersCount;
+		mRunnableHours = other.mRunnableHours;
+		mBreakHours = other.mBreakHours;
+		mTotalTravelHours = other.mTotalTravelHours;
+
+		delete[] mPassangers;
+
+		mPassangers = new const Person * [mPassengersCount];
+		for (size_t i = 0; i < other.mPassengersCount; ++i)
+		{
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
+		}
+
+		return *this;
+	}
+
 	bool Vehicle::AddPassenger(const Person* person)
 	{
-		if (mMaxPassengersCount <= mPassengersCount)
+		if (mMaxPassengersCount <= mPassengersCount || person == nullptr)
 		{
 			return false;
+		}
+
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			if (mPassangers[i] == person)
+			{
+				return false;
+			}
 		}
 
 		mPassangers[mPassengersCount] = person;
@@ -35,12 +86,12 @@ namespace assignment2
 			return false;
 		}
 
-		--mPassengersCount;
-
+		delete mPassangers[i];
 		for (size_t index = i; index < mPassengersCount; ++index)
 		{
-			mPassangers[i] = mPassangers[i + 1];
+			mPassangers[index] = mPassangers[index + 1];
 		}
+		--mPassengersCount;
 
 		return true;
 	}
@@ -75,5 +126,41 @@ namespace assignment2
 		}
 
 		return static_cast<int>(weightSum);
+	}
+
+	void Vehicle::SetDrivePattern(unsigned int runnableHours, unsigned int breakHours)
+	{
+		mRunnableHours = runnableHours;
+		mBreakHours = breakHours;
+	}
+
+	void Vehicle::AddTravelHour()
+	{
+		++mTotalTravelHours;
+	}
+
+	unsigned int Vehicle::GetTotalTravelKilometer() const
+	{
+		unsigned int cycleCount = mTotalTravelHours / (mRunnableHours + mBreakHours);
+		
+		unsigned int result = GetMaxSpeed() * (mRunnableHours * cycleCount);
+
+		return result;
+	}
+
+	bool Vehicle::MovePassenger(unsigned int i)
+	{
+		if (mPassengersCount == 0 || mPassengersCount <= i)
+		{
+			return false;
+		}
+
+		for (size_t index = i; index < mPassengersCount; ++index)
+		{
+			mPassangers[index] = mPassangers[index + 1];
+		}
+		--mPassengersCount;
+
+		return true;
 	}
 }

@@ -5,6 +5,7 @@ namespace assignment2
 	UBoat::UBoat()
 		: Vehicle(50)
 	{
+		Vehicle::SetDrivePattern(2, 4);
 	}
 
 	UBoat::~UBoat()

@@ -6,6 +6,7 @@ namespace assignment2
 	Motorcycle::Motorcycle()
 		: Vehicle(2)
 	{
+		Vehicle::SetDrivePattern(5, 1);
 	}
 
 	Motorcycle::~Motorcycle()

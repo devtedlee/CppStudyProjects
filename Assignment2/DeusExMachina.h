@@ -18,11 +18,9 @@ namespace assignment2
 			MAX_VEHICLE_COUNT = 10
 		};
 		Vehicle* mVehicles[MAX_VEHICLE_COUNT];
-		unsigned int mVehicleTravelDistances[MAX_VEHICLE_COUNT];
 		size_t mVehicleCount;
 		DeusExMachina()
 			: mVehicleCount(0)
-			, mVehicleTravelDistances()
 			, mVehicles()
 		{
 		};
