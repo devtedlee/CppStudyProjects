@@ -16,22 +16,19 @@ namespace assignment2
 	Boatplane Boat::operator+(Airplane& plane)
 	{
 		Boatplane* bp = new Boatplane(GetMaxPassengersCount() + plane.GetMaxPassengersCount());
-		const Person* passenger;
-
-		int passIndex = static_cast<int>(GetPassengersCount()) - 1;
-		for (; passIndex > -1; --passIndex)
+		size_t i = 0;
+		size_t passCount = GetPassengersCount();
+		for (; i < passCount; ++i)
 		{
-			passenger = GetPassenger(passIndex);
-			bp->AddPassenger(new Person(*passenger));
-			MovePassenger(passIndex);
+			bp->AddPassenger(GetPassenger(0));
+			MovePassenger(0);
 		}
 
-		passIndex = static_cast<int>(plane.GetPassengersCount()) - 1;
-		for (; passIndex > -1; --passIndex)
+		passCount = plane.GetPassengersCount();
+		for (i = 0; i < passCount; ++i)
 		{
-			passenger = plane.GetPassenger(passIndex);
-			bp->AddPassenger(new Person(*passenger));
-			plane.MovePassenger(passIndex);
+			bp->AddPassenger(plane.GetPassenger(0));
+			plane.MovePassenger(0);
 		}
 
 		return *bp;
