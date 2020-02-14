@@ -63,15 +63,15 @@ namespace assignment2
 		{
 			speed = 480;
 		}
-		else if (weight > 80)
+		else if (weight > 80 && weight <= 160)
 		{
 			speed = 458;
 		}
-		else if (weight > 160)
+		else if (weight > 160 && weight <= 260)
 		{
 			speed = 400;
 		}
-		else if (weight > 260)
+		else if (weight > 260 && weight <= 350)
 		{
 			speed = 380;
 		}

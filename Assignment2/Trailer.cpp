@@ -3,7 +3,7 @@
 namespace assignment2
 {
 	Trailer::Trailer(unsigned int weight)
-		:mWeight(weight)
+		: mWeight(weight)
 	{
 	}
 

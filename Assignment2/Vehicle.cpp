@@ -29,7 +29,7 @@ namespace assignment2
 		mPassangers = new const Person*[mPassengersCount];
 		for (size_t i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*(other.mPassangers[i]));
+			mPassangers[i] = other.mPassangers[i];
 		}
 	}
 
@@ -48,10 +48,10 @@ namespace assignment2
 
 		delete[] mPassangers;
 
-		mPassangers = new const Person * [mPassengersCount];
+		mPassangers = new const Person*[mPassengersCount];
 		for (size_t i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*(other.mPassangers[i]));
+			mPassangers[i] = other.mPassangers[i];
 		}
 
 		return *this;
@@ -62,14 +62,6 @@ namespace assignment2
 		if (mMaxPassengersCount <= mPassengersCount || person == nullptr)
 		{
 			return false;
-		}
-
-		for (size_t i = 0; i < mPassengersCount; ++i)
-		{
-			if (mPassangers[i] == person)
-			{
-				return false;
-			}
 		}
 
 		mPassangers[mPassengersCount] = person;
