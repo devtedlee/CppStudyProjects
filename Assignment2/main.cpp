@@ -244,8 +244,7 @@ void test2()
 	b1.AddPassenger(p4);
 	b1.AddPassenger(p5);
 	b1.AddPassenger(p6);
-	//Airplane a2(a1);
-	Airplane a2 = a1;
+	Airplane a2(a1);
 	Boat b2(b1);
 	Boatplane bp1 = a1 + b1;
 	Boatplane bp2 = b2 + a2;

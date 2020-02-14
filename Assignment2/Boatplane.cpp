@@ -1,6 +1,8 @@
 #define M_E (2.71828182845904523536)
 #include <cmath>
 #include "Boatplane.h"
+#include "Boat.h"
+#include "Airplane.h"
 
 namespace assignment2
 {
@@ -8,6 +10,25 @@ namespace assignment2
 		: Vehicle(maxPassengersCount)
 	{
 		Vehicle::SetDrivePattern(1, 3);
+	}
+
+	Boatplane::Boatplane(Airplane& plane, Boat& boat)
+		: Vehicle(plane.GetMaxPassengersCount() + boat.GetMaxPassengersCount())
+	{
+		size_t i = 0;
+		size_t passCount = plane.GetPassengersCount();
+		for (; i < passCount; ++i)
+		{
+			AddPassenger(new Person(*(plane.GetPassenger(0))));
+			plane.RemovePassenger(0);
+		}
+
+		passCount = boat.GetPassengersCount();
+		for (i = 0; i < passCount; ++i)
+		{
+			AddPassenger(new Person(*(boat.GetPassenger(0))));
+			boat.RemovePassenger(0);
+		}
 	}
 
 	Boatplane::~Boatplane()

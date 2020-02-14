@@ -40,7 +40,7 @@ namespace assignment2
 		mPassangers = new const Person*[mPassengersCount];
 		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*other.mPassangers[i]);
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}
 	}
 
@@ -67,7 +67,7 @@ namespace assignment2
 		mPassangers = new const Person*[mPassengersCount];
 		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*other.mPassangers[i]);
+			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}
 
 		return *this;
