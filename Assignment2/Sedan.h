@@ -13,6 +13,7 @@ namespace assignment2
 	public:
 		Sedan();
 		virtual ~Sedan();
+		Sedan(const Sedan& other);
 
 		bool AddTrailer(const Trailer* trailer);
 		bool RemoveTrailer();

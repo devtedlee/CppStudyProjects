@@ -14,6 +14,11 @@ namespace assignment2
 	{
 	}
 
+	Boatplane::Boatplane(const Boatplane& other)
+		: Vehicle(other)
+	{
+	}
+
 	unsigned int Boatplane::GetMaxSpeed() const
 	{
 		unsigned int flySpeed = GetFlySpeed();

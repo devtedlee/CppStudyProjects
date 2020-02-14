@@ -15,6 +15,11 @@ namespace assignment2
 	{
 	}
 
+	Airplane::Airplane(const Airplane& other)
+		: Vehicle(other)
+	{
+	}
+
 	Boatplane Airplane::operator+(Boat& boat)
 	{
 		Boatplane* bp = new Boatplane(GetMaxPassengersCount() + boat.GetMaxPassengersCount());
@@ -23,15 +28,15 @@ namespace assignment2
 		size_t passCount = GetPassengersCount();
 		for (; i < passCount; ++i)
 		{
-			bp->AddPassenger(GetPassenger(0));
-			MovePassenger(0);
+			bp->AddPassenger(new Person(*GetPassenger(0)));
+			RemovePassenger(0);
 		}
 
 		passCount = boat.GetPassengersCount();
 		for (i = 0; i < passCount; ++i)
 		{
-			bp->AddPassenger(boat.GetPassenger(0));
-			boat.MovePassenger(0);
+			bp->AddPassenger(new Person(*(boat.GetPassenger(0))));
+			boat.RemovePassenger(0);
 		}
 
 		return *bp;

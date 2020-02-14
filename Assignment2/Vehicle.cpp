@@ -14,6 +14,11 @@ namespace assignment2
 
 	Vehicle::~Vehicle()
 	{
+		for (size_t i = 0; i < mPassengersCount; ++i)
+		{
+			delete mPassangers[i];
+		}
+
 		delete[] mPassangers;
 	}
 
@@ -29,14 +34,13 @@ namespace assignment2
 			delete mPassangers[i];
 		}
 
-		mPassengersCount = other.mPassengersCount;
-
 		delete[] mPassangers;
 
+		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];
 		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*(other.mPassangers[i]));
+			mPassangers[i] = new Person(*other.mPassangers[i]);
 		}
 	}
 
@@ -57,15 +61,13 @@ namespace assignment2
 		{
 			delete mPassangers[i];
 		}
-
-		mPassengersCount = other.mPassengersCount;
-
 		delete[] mPassangers;
 
-		mPassangers = new const Person * [mPassengersCount];
+		mPassengersCount = other.mPassengersCount;
+		mPassangers = new const Person*[mPassengersCount];
 		for (i = 0; i < other.mPassengersCount; ++i)
 		{
-			mPassangers[i] = new Person(*(other.mPassangers[i]));
+			mPassangers[i] = new Person(*other.mPassangers[i]);
 		}
 
 		return *this;

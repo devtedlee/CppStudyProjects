@@ -11,6 +11,7 @@ namespace assignment2
 	public:
 		UBoat();
 		virtual ~UBoat();
+		UBoat(const UBoat& other);
 
 		unsigned int GetMaxSpeed() const;
 		unsigned int GetSailSpeed() const;

@@ -18,6 +18,14 @@ namespace assignment2
 		}
 	}
 
+	Sedan::Sedan(const Sedan& other)
+		: Vehicle(other)
+	{
+		delete mTrailer;
+
+		mTrailer = new Trailer(*other.mTrailer);
+	}
+
 	bool Sedan::AddTrailer(const Trailer* trailer)
 	{
 		if (mTrailer != nullptr)

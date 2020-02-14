@@ -13,6 +13,11 @@ namespace assignment2
 	{
 	}
 
+	Motorcycle::Motorcycle(const Motorcycle& other)
+		: Vehicle(other)
+	{
+	}
+
 	unsigned int Motorcycle::GetMaxSpeed() const
 	{
 		return GetDriveSpeed();

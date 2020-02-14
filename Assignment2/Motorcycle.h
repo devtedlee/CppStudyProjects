@@ -10,6 +10,7 @@ namespace assignment2
 	public:
 		Motorcycle();
 		virtual ~Motorcycle();
+		Motorcycle(const Motorcycle& other);
 
 		unsigned int GetMaxSpeed() const;
 		unsigned int GetDriveSpeed() const;
