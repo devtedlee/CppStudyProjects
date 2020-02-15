@@ -17,9 +17,11 @@ namespace assignment2
 		for (size_t i = 0; i < mPassengersCount; ++i)
 		{
 			delete mPassangers[i];
+			mPassangers[i] = nullptr;
 		}
 
 		delete[] mPassangers;
+		mPassangers = nullptr;
 	}
 
 	Vehicle::Vehicle(const Vehicle& other)
@@ -32,9 +34,11 @@ namespace assignment2
 		for (; i < mPassengersCount; ++i)
 		{
 			delete mPassangers[i];
+			mPassangers[i] = nullptr;
 		}
 
 		delete[] mPassangers;
+		mPassangers = nullptr;
 
 		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];
@@ -60,8 +64,10 @@ namespace assignment2
 		for (; i < mPassengersCount; ++i)
 		{
 			delete mPassangers[i];
+			mPassangers[i] = nullptr;
 		}
 		delete[] mPassangers;
+		mPassangers = nullptr;
 
 		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];

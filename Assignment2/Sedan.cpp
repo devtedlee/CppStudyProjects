@@ -15,6 +15,7 @@ namespace assignment2
 		if (mTrailer != nullptr)
 		{
 			delete mTrailer;
+			mTrailer = nullptr;
 		}
 	}
 
@@ -24,6 +25,7 @@ namespace assignment2
 		if (mTrailer != nullptr)
 		{
 			delete mTrailer;
+			mTrailer = nullptr;
 		}
 
 		mTrailer = new Trailer(*(other.mTrailer));
@@ -41,6 +43,7 @@ namespace assignment2
 		if (mTrailer != nullptr)
 		{
 			delete mTrailer;
+			mTrailer = nullptr;
 		}
 
 		mTrailer = new Trailer(*(other.mTrailer));
