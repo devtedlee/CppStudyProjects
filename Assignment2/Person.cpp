@@ -17,7 +17,7 @@ namespace assignment2
 		: mWeight(other.mWeight)
 	{
 		delete mName;
-		mName = new std::string(other.mName->c_str());
+		mName = new std::string(*other.mName);
 	}
 
 	Person& Person::operator=(const Person& other)
@@ -26,11 +26,10 @@ namespace assignment2
 		{
 			return *this;
 		}
+		mWeight = other.mWeight;
 
 		delete mName;
-
-		mWeight = other.mWeight;
-		mName = new std::string(other.mName->c_str());
+		mName = new std::string(*other.mName);
 
 		return *this;
 	}

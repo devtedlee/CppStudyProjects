@@ -13,6 +13,14 @@ namespace assignment2
 		return instance;
 	}
 
+	DeusExMachina::~DeusExMachina()
+	{
+		for (size_t i = 0; i < mVehicleCount; ++i)
+		{
+			delete mVehicles[i];
+		}
+	}
+
 	void DeusExMachina::Travel() const
 	{
 		for (size_t i = 0; i < mVehicleCount; ++i)
