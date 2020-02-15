@@ -26,7 +26,7 @@ namespace assignment2
 		: mMaxPassengersCount(other.mMaxPassengersCount)
 		, mRunnableHours(other.mRunnableHours)
 		, mBreakHours(other.mBreakHours)
-		, mTotalTravelHours(other.mTotalTravelHours)
+		, mTotalTravelHours(0)
 	{
 		size_t i = 0;
 		for (; i < mPassengersCount; ++i)
@@ -54,7 +54,7 @@ namespace assignment2
 		mMaxPassengersCount = other.mMaxPassengersCount;
 		mRunnableHours = other.mRunnableHours;
 		mBreakHours = other.mBreakHours;
-		mTotalTravelHours = other.mTotalTravelHours;
+		mTotalTravelHours = 0;
 		
 		size_t i = 0;
 		for (; i < mPassengersCount; ++i)

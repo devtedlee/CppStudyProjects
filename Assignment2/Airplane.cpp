@@ -20,6 +20,18 @@ namespace assignment2
 	{
 	}
 
+	Airplane& Airplane::operator=(const Airplane& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		Vehicle::operator=(other);
+
+		return *this;
+	}
+
 	Boatplane Airplane::operator+(Boat& boat)
 	{
 		return Boatplane(*this, boat);

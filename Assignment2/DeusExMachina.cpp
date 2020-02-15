@@ -65,7 +65,7 @@ namespace assignment2
 		const Vehicle* furtherestTravelledVehicle = nullptr;
 
 		unsigned int furtherestKillometer = 0;
-		for (size_t i = 1; i < mVehicleCount; ++i)
+		for (size_t i = 0; i < mVehicleCount; ++i)
 		{
 			unsigned int tempTravelKilometer = mVehicles[i]->GetTotalTravelKilometer();
 			if (furtherestKillometer < tempTravelKilometer)

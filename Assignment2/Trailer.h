@@ -6,6 +6,7 @@ namespace assignment2
 	{
 	public:
 		Trailer(unsigned int weight);
+		~Trailer();
 
 		unsigned int GetWeight() const;
 	private:

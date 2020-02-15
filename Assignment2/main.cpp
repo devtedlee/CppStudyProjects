@@ -63,6 +63,20 @@ int main()
 	assert(a.GetPassengersCount() == 0);
 	assert(b.GetPassengersCount() == 0);
 
+	// operator= test
+	Boat boatop(5);
+
+	p4 = new Person("Peter", 78);
+	p5 = new Person("Jane", 48);
+	p6 = new Person("Steve", 88);
+
+	b.AddPassenger(p4);
+	b.AddPassenger(p5);
+	b.AddPassenger(p6);
+	boatop = b;
+
+	assert(boatop.GetPassenger(0)->GetWeight() == p4->GetWeight());
+
 	DeusExMachina* deusExMachina1 = DeusExMachina::GetInstance();
 	DeusExMachina* deusExMachina2 = DeusExMachina::GetInstance();
 

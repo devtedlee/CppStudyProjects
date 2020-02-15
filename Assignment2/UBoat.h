@@ -12,6 +12,7 @@ namespace assignment2
 		UBoat();
 		virtual ~UBoat();
 		UBoat(const UBoat& other);
+		UBoat& operator=(const UBoat& other);
 
 		unsigned int GetMaxSpeed() const;
 		unsigned int GetSailSpeed() const;

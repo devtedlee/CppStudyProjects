@@ -14,6 +14,7 @@ namespace assignment2
 		Sedan();
 		virtual ~Sedan();
 		Sedan(const Sedan& other);
+		Sedan& operator=(const Sedan& other);
 
 		bool AddTrailer(const Trailer* trailer);
 		bool RemoveTrailer();

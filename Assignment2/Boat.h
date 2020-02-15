@@ -14,7 +14,7 @@ namespace assignment2
 		Boat(unsigned int maxPassengersCount);
 		virtual ~Boat();
 		Boat(const Boat& other);
-
+		Boat& operator=(const Boat& other);
 		Boatplane operator+(Airplane& plane);
 
 		unsigned int GetMaxSpeed() const;

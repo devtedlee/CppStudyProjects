@@ -29,6 +29,25 @@ namespace assignment2
 		mTrailer = new Trailer(*(other.mTrailer));
 	}
 
+	Sedan& Sedan::operator=(const Sedan& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		Vehicle::operator=(other);
+
+		if (mTrailer != nullptr)
+		{
+			delete mTrailer;
+		}
+
+		mTrailer = new Trailer(*(other.mTrailer));
+
+		return *this;
+	}
+
 	bool Sedan::AddTrailer(const Trailer* trailer)
 	{
 		if (mTrailer != nullptr)

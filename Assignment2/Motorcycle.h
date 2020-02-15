@@ -11,6 +11,7 @@ namespace assignment2
 		Motorcycle();
 		virtual ~Motorcycle();
 		Motorcycle(const Motorcycle& other);
+		Motorcycle& operator=(const Motorcycle& other);
 
 		unsigned int GetMaxSpeed() const;
 		unsigned int GetDriveSpeed() const;

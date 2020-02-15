@@ -16,6 +16,7 @@ namespace assignment2
 		Boatplane(Airplane& plane, Boat& boat);
 		virtual ~Boatplane();
 		Boatplane(const Boatplane& other);
+		Boatplane& operator=(const Boatplane& other);
 
 		unsigned int GetMaxSpeed() const;
 		unsigned int GetFlySpeed() const;
