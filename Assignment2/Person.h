@@ -16,7 +16,7 @@ namespace assignment2
 		unsigned int GetWeight() const;
 
 	private:
-		char* mName;
+		std::string mName;
 		unsigned int mWeight;
 	};
 }

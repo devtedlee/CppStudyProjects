@@ -30,6 +30,11 @@ int main()
 {
 	Person* p = new Person("Bob", 85);
 
+	Person* pp1 = new Person("Rob", 11);
+	Person pp2(*pp1);
+	Person pp3("AA", 11);
+	pp3 = pp2;
+
 	std::string pname = p->GetName();
 	assert(pname == std::string("Bob"));
 	assert(p->GetWeight() == 85);
