@@ -25,5 +25,10 @@ namespace assignment2
 			, mVehicles()
 		{
 		};
+		DeusExMachina(const DeusExMachina& other)
+			:mVehicleCount(0)
+			, mVehicles()
+		{
+		};
 	};
 }

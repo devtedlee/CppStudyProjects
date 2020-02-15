@@ -62,16 +62,15 @@ namespace assignment2
 
 	const Vehicle* DeusExMachina::GetFurthestTravelled() const
 	{
-		if (mVehicleCount == 0)
-		{
-			return nullptr;
-		}
+		const Vehicle* furtherestTravelledVehicle = nullptr;
 
-		const Vehicle* furtherestTravelledVehicle = mVehicles[0];
+		unsigned int furtherestKillometer = 0;
 		for (size_t i = 1; i < mVehicleCount; ++i)
 		{
-			if (furtherestTravelledVehicle->GetTotalTravelKilometer() < mVehicles[i]->GetTotalTravelKilometer())
+			unsigned int tempTravelKilometer = mVehicles[i]->GetTotalTravelKilometer();
+			if (furtherestKillometer < tempTravelKilometer)
 			{
+				furtherestKillometer = tempTravelKilometer;
 				furtherestTravelledVehicle = mVehicles[i];
 			}
 		}

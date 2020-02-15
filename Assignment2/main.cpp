@@ -97,6 +97,7 @@ int main()
 	deusExMachina1->AddVehicle(new Airplane(5));
 
 	bAdded = deusExMachina1->AddVehicle(new Airplane(5));
+	DeusExMachina* deusEx3 = deusExMachina1;
 
 	assert(!bAdded);
 
