@@ -21,6 +21,7 @@ namespace assignment2
 		unsigned int GetMaxPassengersCount() const;
 		int GetPassangersWeight() const;
 		void SetDrivePattern(unsigned int runnableHours, unsigned int breakHours);
+		void ResetTotalDriveHours();
 		void AddTravelHour();
 		unsigned int GetTotalTravelKilometer() const;
 		bool MovePassenger(unsigned int i);

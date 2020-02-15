@@ -37,6 +37,7 @@ namespace assignment2
 		}
 
 		mVehicles[mVehicleCount] = vehicle;
+		mVehicles[mVehicleCount]->ResetTotalDriveHours();
 		++mVehicleCount;
 
 		return true;
@@ -62,6 +63,11 @@ namespace assignment2
 
 	const Vehicle* DeusExMachina::GetFurthestTravelled() const
 	{
+		if (mVehicleCount == 0)
+		{
+			return nullptr;
+		}
+
 		const Vehicle* furtherestTravelledVehicle = nullptr;
 
 		unsigned int furtherestKillometer = 0;

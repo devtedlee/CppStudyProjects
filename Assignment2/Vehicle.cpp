@@ -26,7 +26,7 @@ namespace assignment2
 		: mMaxPassengersCount(other.mMaxPassengersCount)
 		, mRunnableHours(other.mRunnableHours)
 		, mBreakHours(other.mBreakHours)
-		, mTotalTravelHours(0)
+		, mTotalTravelHours(other.mTotalTravelHours)
 	{
 		size_t i = 0;
 		for (; i < mPassengersCount; ++i)
@@ -54,7 +54,7 @@ namespace assignment2
 		mMaxPassengersCount = other.mMaxPassengersCount;
 		mRunnableHours = other.mRunnableHours;
 		mBreakHours = other.mBreakHours;
-		mTotalTravelHours = 0;
+		mTotalTravelHours = other.mTotalTravelHours;
 		
 		size_t i = 0;
 		for (; i < mPassengersCount; ++i)
@@ -142,6 +142,11 @@ namespace assignment2
 		mBreakHours = breakHours;
 	}
 
+	void Vehicle::ResetTotalDriveHours()
+	{
+		mTotalTravelHours = 0;
+	}
+
 	void Vehicle::AddTravelHour()
 	{
 		++mTotalTravelHours;
@@ -149,9 +154,30 @@ namespace assignment2
 
 	unsigned int Vehicle::GetTotalTravelKilometer() const
 	{
-		unsigned int cycleCount = mTotalTravelHours / (mRunnableHours + mBreakHours);
-		
-		unsigned int result = GetMaxSpeed() * (mRunnableHours * cycleCount);
+		unsigned int result = 0;
+		unsigned int maxSpeed = GetMaxSpeed();
+		unsigned int totalHours = mTotalTravelHours;
+		unsigned int runnalbleHours = mRunnableHours;
+		unsigned int breakHours = mBreakHours;
+
+		while (totalHours != 0)
+		{
+			while (runnalbleHours != 0 && totalHours != 0)
+			{
+				result += maxSpeed;
+
+				--runnalbleHours;
+				--totalHours;
+			}
+
+			while (breakHours != 0 && totalHours != 0)
+			{
+				--breakHours;
+				--totalHours;
+			}
+			runnalbleHours = mRunnableHours;
+			breakHours = mBreakHours;
+		}
 
 		return result;
 	}
