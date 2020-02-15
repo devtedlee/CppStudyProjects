@@ -4,20 +4,26 @@ namespace assignment2
 {
 	Person::Person(const char* name, unsigned int weight)
 		: mWeight(weight)
-		, mName(new std::string(name))
 	{
+		size_t name_len = strlen(name);
+		mName = new char[name_len + 1];
+		strncpy(mName, name, name_len + 1);
+		mName[name_len] = '\0';
 	}
 
 	Person::~Person()
 	{
-		delete mName;
+		delete[] mName;
 	}
 
 	Person::Person(const Person& other)
 		: mWeight(other.mWeight)
 	{
-		delete mName;
-		mName = new std::string(*(other.mName));
+		delete[] mName;
+		size_t name_len = strlen(other.mName);
+		mName = new char[name_len + 1];
+		strncpy(mName, other.mName, name_len + 1);
+		mName[name_len] = '\0';
 	}
 
 	Person& Person::operator=(const Person& other)
@@ -28,15 +34,19 @@ namespace assignment2
 		}
 		mWeight = other.mWeight;
 
-		delete mName;
-		mName = new std::string(*(other.mName));
+		delete[] mName;
+		size_t name_len = strlen(other.mName);
+		mName = new char[name_len + 1];
+		strncpy(mName, other.mName, name_len + 1);
+		mName[name_len] = '\0';
 
 		return *this;
 	}
 
 	const std::string& Person::GetName() const
 	{
-		return *mName;
+		std::string* name = new std::string(mName);
+		return *name;
 	}
 
 	unsigned int Person::GetWeight() const

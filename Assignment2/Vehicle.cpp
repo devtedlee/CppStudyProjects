@@ -42,7 +42,7 @@ namespace assignment2
 
 		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];
-		for (i = 0; i < other.mPassengersCount; ++i)
+		for (i = 0; i < mPassengersCount; ++i)
 		{
 			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}
