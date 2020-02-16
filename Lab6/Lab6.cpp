@@ -61,13 +61,8 @@ namespace lab6
 
 		for (size_t i = 0; i < vSize; ++i)
 		{
-			for (size_t j = 0; j < vSize; ++j)
+			for (size_t j = i + 1; j < vSize; ++j)
 			{
-				if (i == j)
-				{
-					continue;
-				}
-
 				if (v[i] == v[j])
 				{
 					v2[i] = v2[i] + 1;
@@ -87,7 +82,7 @@ namespace lab6
 			}
 		}
 
-		if (max != INT_MAX)
+		if (max != INT_MIN)
 		{
 			result = v[resultIndex];
 		}
@@ -98,12 +93,10 @@ namespace lab6
 	void SortDescending(std::vector<int>& v)
 	{
 		size_t vSize = v.size();
-		std::vector<int> v2(v);
-		int max = INT_MIN;
-
+		
 		for (size_t i = 0; i < vSize; ++i)
 		{
-			max = v[i];
+			int max = v[i];
 			size_t maxIndex = i;
 			for (size_t j = i + 1; j < vSize; ++j)
 			{
