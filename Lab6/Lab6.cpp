@@ -70,7 +70,7 @@ namespace lab6
 
 				if (v[i] == v[j])
 				{
-					++v2[i] = v2[i] + 1;
+					v2[i] = v2[i] + 1;
 				}
 			}
 		}
