@@ -8,7 +8,7 @@ namespace assignment2
 		, mRunnableHours(0)
 		, mBreakHours(0)
 		, mTotalTravelHours(0)
-		, mPassangers(new const Person* [maxPassengersCount])
+		, mPassangers(new const Person * [maxPassengersCount])
 	{
 	}
 
@@ -30,7 +30,7 @@ namespace assignment2
 		, mBreakHours(other.mBreakHours)
 		, mTotalTravelHours(other.mTotalTravelHours)
 		, mPassengersCount(other.mPassengersCount)
-		, mPassangers(new const Person* [other.mMaxPassengersCount])
+		, mPassangers(new const Person * [other.mMaxPassengersCount])
 	{
 		for (size_t i = 0; i < mPassengersCount; ++i)
 		{
