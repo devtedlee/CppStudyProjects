@@ -29,9 +29,9 @@ namespace assignment2
 		, mRunnableHours(other.mRunnableHours)
 		, mBreakHours(other.mBreakHours)
 		, mTotalTravelHours(other.mTotalTravelHours)
+		, mPassengersCount(other.mPassengersCount)
+		, mPassangers(new const Person*[other.mMaxPassengersCount])
 	{
-		mPassengersCount = other.mPassengersCount;
-		mPassangers = new const Person*[mPassengersCount];
 		for (size_t i = 0; i < mPassengersCount; ++i)
 		{
 			mPassangers[i] = new Person(*(other.mPassangers[i]));
