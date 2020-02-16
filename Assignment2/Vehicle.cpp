@@ -8,8 +8,8 @@ namespace assignment2
 		, mRunnableHours(0)
 		, mBreakHours(0)
 		, mTotalTravelHours(0)
+		, mPassangers(new const Person*[maxPassengersCount])
 	{
-		mPassangers = new const Person*[mMaxPassengersCount];
 	}
 
 	Vehicle::~Vehicle()
@@ -30,19 +30,9 @@ namespace assignment2
 		, mBreakHours(other.mBreakHours)
 		, mTotalTravelHours(other.mTotalTravelHours)
 	{
-		size_t i = 0;
-		for (; i < mPassengersCount; ++i)
-		{
-			delete mPassangers[i];
-			mPassangers[i] = nullptr;
-		}
-
-		delete[] mPassangers;
-		mPassangers = nullptr;
-
 		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];
-		for (i = 0; i < mPassengersCount; ++i)
+		for (size_t i = 0; i < mPassengersCount; ++i)
 		{
 			mPassangers[i] = new Person(*(other.mPassangers[i]));
 		}

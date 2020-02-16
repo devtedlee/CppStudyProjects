@@ -22,12 +22,6 @@ namespace assignment2
 	Sedan::Sedan(const Sedan& other)
 		: Vehicle(other)
 	{
-		if (mTrailer != nullptr)
-		{
-			delete mTrailer;
-			mTrailer = nullptr;
-		}
-
 		mTrailer = new Trailer(*(other.mTrailer));
 	}
 
