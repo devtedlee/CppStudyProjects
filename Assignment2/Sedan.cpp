@@ -102,7 +102,7 @@ namespace assignment2
 		{
 			speed = 380;
 		}
-		else if (weight > 350)
+		else
 		{
 			speed = 300;
 		}

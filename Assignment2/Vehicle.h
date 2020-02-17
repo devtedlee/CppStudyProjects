@@ -24,7 +24,6 @@ namespace assignment2
 		void ResetTotalDriveHours();
 		void AddTravelHour();
 		unsigned int GetTotalTravelKilometer() const;
-		bool MovePassenger(unsigned int i);
 	private:
 		const Person** mPassangers;
 		unsigned int mPassengersCount;

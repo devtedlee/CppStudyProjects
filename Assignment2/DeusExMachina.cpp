@@ -5,11 +5,12 @@ namespace assignment2
 	DeusExMachina* DeusExMachina::GetInstance()
 	{
 		static DeusExMachina* instance;
+
 		if (instance == nullptr)
 		{
 			instance = new DeusExMachina();
 		}
-		
+	
 		return instance;
 	}
 

@@ -3,8 +3,8 @@
 namespace assignment2
 {
 	Person::Person(const char* name, unsigned int weight)
-		: mWeight(weight)
-		, mName(name)
+		: mName(name)
+		, mWeight(weight)
 	{
 	}
 
@@ -13,8 +13,8 @@ namespace assignment2
 	}
 
 	Person::Person(const Person& other)
-		: mWeight(other.mWeight)
-		, mName(other.mName)
+		: mName(other.mName)
+		, mWeight(other.mWeight)
 	{
 	}
 
@@ -24,9 +24,9 @@ namespace assignment2
 		{
 			return *this;
 		}
-		mWeight = other.mWeight;
 
 		mName = std::string(other.mName);
+		mWeight = other.mWeight;
 
 		return *this;
 	}

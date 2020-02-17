@@ -44,11 +44,6 @@ namespace assignment2
 		{
 			return *this;
 		}
-
-		mMaxPassengersCount = other.mMaxPassengersCount;
-		mRunnableHours = other.mRunnableHours;
-		mBreakHours = other.mBreakHours;
-		mTotalTravelHours = other.mTotalTravelHours;
 		
 		size_t i = 0;
 		for (; i < mPassengersCount; ++i)
@@ -58,6 +53,11 @@ namespace assignment2
 		}
 		delete[] mPassangers;
 		mPassangers = nullptr;
+
+		mMaxPassengersCount = other.mMaxPassengersCount;
+		mRunnableHours = other.mRunnableHours;
+		mBreakHours = other.mBreakHours;
+		mTotalTravelHours = other.mTotalTravelHours;
 
 		mPassengersCount = other.mPassengersCount;
 		mPassangers = new const Person*[mPassengersCount];
@@ -114,7 +114,7 @@ namespace assignment2
 	{
 		if (mPassengersCount == 0 || mPassengersCount <= i)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		return mPassangers[i];
@@ -176,21 +176,5 @@ namespace assignment2
 		}
 
 		return result;
-	}
-
-	bool Vehicle::MovePassenger(unsigned int i)
-	{
-		if (mPassengersCount == 0 || mPassengersCount <= i)
-		{
-			return false;
-		}
-
-		for (size_t index = i; index < mPassengersCount; ++index)
-		{
-			mPassangers[index] = mPassangers[index + 1];
-		}
-		--mPassengersCount;
-
-		return true;
 	}
 }
