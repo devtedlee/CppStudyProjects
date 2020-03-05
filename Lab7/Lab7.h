@@ -86,7 +86,7 @@ namespace lab7
 		std::vector<T> combined;
 
 		typename std::vector<T>::const_iterator iter = v1.begin();
-		for (;iter != v1.end(); ++iter)
+		for (; iter != v1.end(); ++iter)
 		{
 			if (!IsDuplicatedValueExist(combined, *iter))
 			{
