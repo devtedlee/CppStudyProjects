@@ -67,7 +67,7 @@ namespace lab7
 	}
 
 	template <typename T>
-	bool IsDuplicatedValueExist(const std::vector<T>& v, T value)
+	bool IsDuplicatedValueExist(const std::vector<T>& v, const T value)
 	{
 		for (typename std::vector<T>::const_iterator iter = v.begin(); iter != v.end(); ++iter)
 		{
