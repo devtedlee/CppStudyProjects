@@ -19,6 +19,13 @@ namespace lab1
 		}
 	}
 
+	Animal::Animal(Animal& other)
+		: mName(nullptr)
+		, mAge(nullptr)
+	{
+		mAge = new int(other.mAge);
+	}
+
 	Animal::~Animal()
 	{
 		delete[] mName;
