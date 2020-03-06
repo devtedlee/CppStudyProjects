@@ -60,22 +60,41 @@ namespace assignment3
 	template<typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
+		if (mStackCount * mMaxStackSize - mCount == 0)
+		{
+			mQueueStack->push(new stack<T>);
+			++mStackCount;
+		}
+
+		stack<T>* frontStack = mQueueStack.front();
+		frontStack->push(number);
+		++mCount;
 	}
 
 	template<typename T>
 	T QueueStack<T>::Peek() const
 	{
-		T a = 0;
+		stack<T>* frontStack = mQueueStack.front();
 
-		return a;
+		return frontStack->top();
 	}
 
 	template<typename T>
 	T QueueStack<T>::Dequeue()
 	{
-		T a = 0;
+		stack<T>* frontStack = mQueueStack.front();
+		T returnValue = frontStack->top();
+		frontStack->pop();
+		--mCount;
+		
+		if (mStackCount * mMaxStackSize - mCount == 0)
+		{
+			mQueueStack->pop();
+			delete frontStack;
+			--mStackCount;
+		}
 
-		return a;
+		return returnValue;
 	}
 
 	template<typename T>
