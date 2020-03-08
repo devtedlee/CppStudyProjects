@@ -14,8 +14,10 @@ namespace assignment3
 	public:
 		SmartStack();
 		virtual ~SmartStack();
+		SmartStack(const SmartStack<T>& other);
+		SmartStack& operator=(const SmartStack<T>& other);
 
-		void Push(T number);
+		void Push(const T& number);
 		T Pop();
 		T Peek() const;
 		T GetMax() const;
@@ -44,7 +46,31 @@ namespace assignment3
 	}
 
 	template<typename T>
-	void SmartStack<T>::Push(T number)
+	SmartStack<T>::SmartStack(const SmartStack<T>& other)
+		: mCount(other.mCount)
+	{
+		delete mStack;
+		mStack = new stack<T>(*other.mStack);
+	}
+
+	template<typename T>
+	SmartStack<T>& SmartStack<T>::operator=(const SmartStack<T>& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		mCount = other.mCount;
+		
+		delete mStack;
+		mStack = new stack<T>(*other.mStack);
+
+		return *this;
+	}
+
+	template<typename T>
+	void SmartStack<T>::Push(const T& number)
 	{
 		mStack->push(number);
 		++mCount;
@@ -78,7 +104,7 @@ namespace assignment3
 	{
 		T maxValue = numeric_limits<T>::min();
 		stack<T> tempStack;
-		T tempValue = numeric_limits<T>::epsilon();
+		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
@@ -93,9 +119,8 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			tempValue = tempStack.top();
+			mStack->push(tempStack.top());
 			tempStack.pop();
-			mStack->push(tempValue);
 		}
 
 		return maxValue;
@@ -106,7 +131,7 @@ namespace assignment3
 	{
 		T minValue = numeric_limits<T>::max();
 		stack<T> tempStack;
-		T tempValue = numeric_limits<T>::epsilon();
+		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
@@ -121,9 +146,8 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			tempValue = tempStack.top();
+			mStack->push(tempStack.top());
 			tempStack.pop();
-			mStack->push(tempValue);
 		}
 
 		return minValue;
@@ -140,9 +164,9 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetSum() const
 	{
-		T sum = numeric_limits<T>::epsilon();
+		double sum = 0.0;
 		stack<T> tempStack;
-		T tempValue = numeric_limits<T>::epsilon();
+		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
@@ -150,17 +174,16 @@ namespace assignment3
 			mStack->pop();
 			tempStack.push(tempValue);
 
-			sum += tempValue;
+			sum = sum + static_cast<double>(tempValue);
 		}
 
 		while (!tempStack.empty())
 		{
-			tempValue = tempStack.top();
+			mStack->push(tempStack.top());
 			tempStack.pop();
-			mStack->push(tempValue);
 		}
 
-		return sum;
+		return static_cast<T>(sum);
 	}
 
 	template<typename T>
@@ -170,7 +193,7 @@ namespace assignment3
 		double average = GetAverage();
 
 		stack<T> tempStack;
-		T tempValue = numeric_limits<T>::epsilon();
+		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
@@ -183,9 +206,8 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			tempValue = tempStack.top();
+			mStack->push(tempStack.top());
 			tempStack.pop();
-			mStack->push(tempValue);
 		}
 
 		return GetRoundOffTo3DecimalPlaces(distanceSum / static_cast<double>(mCount));

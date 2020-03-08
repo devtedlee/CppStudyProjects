@@ -14,6 +14,8 @@ namespace assignment3
 	public:
 		QueueStack(unsigned int maxStackSize);
 		virtual ~QueueStack();
+		QueueStack(const QueueStack<T>& other);
+		QueueStack<T>& operator=(const QueueStack<T>& other);
 
 		void Enqueue(T number);
 		T Peek() const;
@@ -58,6 +60,23 @@ namespace assignment3
 	}
 
 	template<typename T>
+	QueueStack<T>::QueueStack(const QueueStack<T>& other)
+	{
+
+	}
+
+	template<typename T>
+	QueueStack<T>& QueueStack<T>::operator=(const QueueStack<T>& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		return *this;
+	}
+
+	template<typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
 		if (mStackCount * mMaxStackSize - mCount == 0)
@@ -66,7 +85,7 @@ namespace assignment3
 			++mStackCount;
 		}
 
-		stack<T>* frontStack = mQueueStack.front();
+		stack<T>* frontStack = mQueueStack->front();
 		frontStack->push(number);
 		++mCount;
 	}
@@ -74,7 +93,7 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::Peek() const
 	{
-		stack<T>* frontStack = mQueueStack.front();
+		stack<T>* frontStack = mQueueStack->front();
 
 		return frontStack->top();
 	}
@@ -82,7 +101,7 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::Dequeue()
 	{
-		stack<T>* frontStack = mQueueStack.front();
+		stack<T>* frontStack = mQueueStack->front();
 		T returnValue = frontStack->top();
 		frontStack->pop();
 		--mCount;

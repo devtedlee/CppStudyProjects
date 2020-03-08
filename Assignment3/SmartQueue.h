@@ -1,7 +1,8 @@
 #pragma once
 
-#include <limits>
+#include <cmath>
 #include <queue>
+#include "MyMath.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ namespace assignment3
 	public:
 		SmartQueue();
 		virtual ~SmartQueue();
+		SmartQueue(const SmartQueue<T>& other);
+		SmartQueue& operator=(const SmartQueue<T>& other);
 
 		void Enqueue(T number);
 		T Peek() const;
@@ -43,8 +46,34 @@ namespace assignment3
 	}
 
 	template<typename T>
+	SmartQueue<T>::SmartQueue(const SmartQueue<T>& other)
+		: mCount(other.mCount)
+	{
+		delete mQueue;
+		mQueue = new stack<T>(*other.mQueue);
+	}
+
+	template<typename T>
+	SmartQueue<T>& SmartQueue<T>::operator=(const SmartQueue<T>& other)
+	{
+		if (this == &other)
+		{
+			return *this;
+		}
+
+		mCount = other.mCount;
+
+		delete mQueue;
+		mQueue = new stack<T>(*other.mQueue);
+
+		return *this;
+	}
+
+	template<typename T>
 	void SmartQueue<T>::Enqueue(T number)
 	{
+		mQueue->push(number);
+		++mCount;
 	}
 
 	template<typename T>
@@ -60,56 +89,139 @@ namespace assignment3
 	template<typename T>
 	T SmartQueue<T>::Dequeue()
 	{
-		T a = 0;
+		T value = mQueue->front();
 
-		return a;
+		mQueue->pop();
+		--mCount;
+
+		return value;
 	}
 
 	template<typename T>
 	T SmartQueue<T>::GetMax() const
 	{
-		T a = 0;
+		T maxValue = numeric_limits<T>::min();
+		queue<T> tempQueue;
+		T tempValue = 0;
 
-		return a;
+		while (!mQueue->empty())
+		{
+			tempValue = mQueue->front();
+			mQueue->pop();
+			tempQueue.push(tempValue);
+			if (tempValue > maxValue)
+			{
+				maxValue = tempValue;
+			}
+		}
+
+		while (!tempQueue.empty())
+		{
+			mQueue->push(tempQueue.front());
+			tempQueue.pop();
+		}
+
+		return maxValue;
 	}
 
 	template<typename T>
 	T SmartQueue<T>::GetMin() const
 	{
-		T a = 0;
+		T minValue = numeric_limits<T>::max();
+		queue<T> tempQueue;
+		T tempValue = 0;
 
-		return a;
+		while (!mQueue->empty())
+		{
+			tempValue = mQueue->front();
+			mQueue->pop();
+			tempQueue.push(tempValue);
+			if (tempValue < minValue)
+			{
+				minValue = tempValue;
+			}
+		}
+
+		while (!tempQueue.empty())
+		{
+			mQueue->push(tempQueue.front());
+			tempQueue.pop();
+		}
+
+		return minValue;
 	}
 
 	template<typename T>
 	double SmartQueue<T>::GetAverage() const
 	{
-		return 0.0;
+		T sum = GetSum();
+
+		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
 	}
 
 	template<typename T>
 	T SmartQueue<T>::GetSum() const
 	{
-		T a = 0;
+		double sum = 0.0;
+		queue<T> tempQueue;
+		T tempValue = 0;
 
-		return a;
+		while (!mQueue->empty())
+		{
+			tempValue = mQueue->front();
+			mQueue->pop();
+			tempQueue.push(tempValue);
+
+			sum = sum + static_cast<double>(tempValue);
+		}
+
+		while (!tempQueue.empty())
+		{
+			mQueue->push(tempQueue.front());
+			tempQueue.pop();
+		}
+
+		return static_cast<T>(sum);
 	}
 
 	template<typename T>
 	double SmartQueue<T>::GetVariance() const
 	{
-		return 0.0;
+		double distanceSum = 0.0;
+		double average = GetAverage();
+
+		queue<T> tempQueue;
+		T tempValue = 0;
+
+		while (!mQueue->empty())
+		{
+			tempValue = mQueue->front();
+			mQueue->pop();
+			tempQueue.push(tempValue);
+
+			distanceSum += pow(abs(static_cast<double>(tempValue) - average), 2.0);
+		}
+
+		while (!tempQueue.empty())
+		{
+			mQueue->push(tempQueue.front());
+			tempQueue.pop();
+		}
+
+		return GetRoundOffTo3DecimalPlaces(distanceSum / static_cast<double>(mCount));
 	}
 
 	template<typename T>
 	double SmartQueue<T>::GetStandardDeviation() const
 	{
-		return 0.0;
+		double variance = GetVariance();
+
+		return GetRoundOffTo3DecimalPlaces(sqrt(variance));
 	}
 
 	template<typename T>
 	unsigned int SmartQueue<T>::GetCount() const
 	{
-		return 0U;
+		return mCount;
 	}
 }
