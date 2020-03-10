@@ -21,37 +21,35 @@ namespace assignment3
 		void Push(const T& number);
 		T Pop();
 		T Peek() const;
-		T GetMax() const;
-		T GetMin() const;
-		double GetAverage() const;
-		T GetSum() const;
-		double GetVariance() const;
-		double GetStandardDeviation() const;
+		T GetMax();
+		T GetMin();
+		double GetAverage();
+		T GetSum();
+		double GetVariance();
+		double GetStandardDeviation();
 		unsigned int GetCount() const;
 	private:
 		unsigned int mCount;
-		stack<T>* mStack;
+		stack<T> mStack;
 	};
 
 	template<typename T>
 	SmartStack<T>::SmartStack()
 		: mCount(0)
-		, mStack(new stack<T>)
+		, mStack()
 	{
 	}
 
 	template<typename T>
 	SmartStack<T>::~SmartStack()
 	{
-		delete mStack;
 	}
 
 	template<typename T>
 	SmartStack<T>::SmartStack(const SmartStack<T>& other)
 		: mCount(other.mCount)
+		, mStack(other.mStack)
 	{
-		delete mStack;
-		mStack = new stack<T>(*other.mStack);
 	}
 
 	template<typename T>
@@ -63,9 +61,7 @@ namespace assignment3
 		}
 
 		mCount = other.mCount;
-		
-		delete mStack;
-		mStack = new stack<T>(*other.mStack);
+		mStack = other.mStack;
 
 		return *this;
 	}
@@ -73,7 +69,7 @@ namespace assignment3
 	template<typename T>
 	void SmartStack<T>::Push(const T& number)
 	{
-		mStack->push(number);
+		mStack.push(number);
 		++mCount;
 	}
 
@@ -82,9 +78,9 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		T value = mStack->top();
+		T value = mStack.top();
 
-		mStack->pop();
+		mStack.pop();
 		--mCount;
 
 		return value;
@@ -95,21 +91,21 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		T value = mStack->top();
+		T value = mStack.top();
 
 		return value;
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetMax() const
+	T SmartStack<T>::GetMax()
 	{
 		T maxValue = numeric_limits<T>::lowest();
 		stack<T> tempStack;
 
-		while (!mStack->empty())
+		while (!mStack.empty())
 		{
-			T tempValue = mStack->top();
-			mStack->pop();
+			T tempValue = mStack.top();
+			mStack.pop();
 			tempStack.push(tempValue);
 			if (tempValue > maxValue)
 			{
@@ -119,7 +115,7 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			mStack->push(tempStack.top());
+			mStack.push(tempStack.top());
 			tempStack.pop();
 		}
 
@@ -127,16 +123,16 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetMin() const
+	T SmartStack<T>::GetMin()
 	{
 		T minValue = numeric_limits<T>::max();
 		stack<T> tempStack;
 		T tempValue = 0;
 
-		while (!mStack->empty())
+		while (!mStack.empty())
 		{
-			tempValue = mStack->top();
-			mStack->pop();
+			tempValue = mStack.top();
+			mStack.pop();
 			tempStack.push(tempValue);
 			if (tempValue < minValue)
 			{
@@ -146,7 +142,7 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			mStack->push(tempStack.top());
+			mStack.push(tempStack.top());
 			tempStack.pop();
 		}
 
@@ -154,9 +150,9 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetAverage() const
+	double SmartStack<T>::GetAverage()
 	{
-		if (mStack->empty())
+		if (mStack.empty())
 		{
 			return 0.0;
 		}
@@ -167,21 +163,21 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetSum() const
+	T SmartStack<T>::GetSum()
 	{
 		double sum = 0.0;
 
-		if (mStack->empty())
+		if (mStack.empty())
 		{
 			return static_cast<T>(sum);
 		}
 
 		stack<T> tempStack;
 
-		while (!mStack->empty())
+		while (!mStack.empty())
 		{
-			T tempValue = mStack->top();
-			mStack->pop();
+			T tempValue = mStack.top();
+			mStack.pop();
 			tempStack.push(tempValue);
 
 			sum += static_cast<double>(tempValue);
@@ -189,7 +185,7 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			mStack->push(tempStack.top());
+			mStack.push(tempStack.top());
 			tempStack.pop();
 		}
 
@@ -197,9 +193,9 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetVariance() const
+	double SmartStack<T>::GetVariance()
 	{
-		if (mStack->empty())
+		if (mStack.empty())
 		{
 			return 0.0;
 		}
@@ -208,12 +204,11 @@ namespace assignment3
 		double average = GetAverage();
 
 		stack<T> tempStack;
-		T tempValue = 0;
 
-		while (!mStack->empty())
+		while (!mStack.empty())
 		{
-			tempValue = mStack->top();
-			mStack->pop();
+			T tempValue = mStack.top();
+			mStack.pop();
 			tempStack.push(tempValue);
 
 			distanceSum += pow(abs(static_cast<double>(tempValue) - average), 2.0);
@@ -221,7 +216,7 @@ namespace assignment3
 
 		while (!tempStack.empty())
 		{
-			mStack->push(tempStack.top());
+			mStack.push(tempStack.top());
 			tempStack.pop();
 		}
 
@@ -229,9 +224,9 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetStandardDeviation() const
+	double SmartStack<T>::GetStandardDeviation()
 	{
-		if (mStack->empty())
+		if (mStack.empty())
 		{
 			return 0.0;
 		}
