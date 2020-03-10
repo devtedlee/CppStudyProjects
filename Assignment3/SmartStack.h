@@ -169,12 +169,13 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetSum() const
 	{
+		double sum = 0.0;
+
 		if (mStack->empty())
 		{
-			return 0.0;
+			return static_cast<T>(sum);
 		}
 
-		double sum = 0.0;
 		stack<T> tempStack;
 
 		while (!mStack->empty())

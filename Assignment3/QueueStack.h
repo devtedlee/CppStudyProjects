@@ -277,6 +277,11 @@ namespace assignment3
 	template<typename T>
 	double QueueStack<T>::GetAverage() const
 	{
+		if (mQueueStack->empty())
+		{
+			return 0.0;
+		}
+
 		T sum = GetSum();
 
 		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
@@ -286,6 +291,12 @@ namespace assignment3
 	T QueueStack<T>::GetSum() const
 	{
 		double sum = 0.0;
+
+		if (mQueueStack->empty())
+		{
+			return static_cast<T>(sum);
+		}
+
 		queue<stack<T>*> tempQueueStack;
 		stack<T> tempStack;
 
@@ -323,6 +334,11 @@ namespace assignment3
 	template<typename T>
 	double QueueStack<T>::GetVariance() const
 	{
+		if (mQueueStack->empty())
+		{
+			return 0.0;
+		}
+
 		double distanceSum = 0.0;
 		double average = GetAverage();
 
@@ -363,6 +379,11 @@ namespace assignment3
 	template<typename T>
 	double QueueStack<T>::GetStandardDeviation() const
 	{
+		if (mQueueStack->empty())
+		{
+			return 0.0;
+		}
+
 		double variance = GetVariance();
 
 		return GetRoundOffTo3DecimalPlaces(sqrt(variance));

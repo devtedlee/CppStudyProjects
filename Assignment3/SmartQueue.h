@@ -90,6 +90,8 @@ namespace assignment3
 	template<typename T>
 	T SmartQueue<T>::Dequeue()
 	{
+		// ignore empty queue case
+
 		T value = mQueue->front();
 
 		mQueue->pop();
@@ -103,11 +105,10 @@ namespace assignment3
 	{
 		T maxValue = numeric_limits<T>::lowest();
 		queue<T> tempQueue;
-		T tempValue = 0;
 
 		while (!mQueue->empty())
 		{
-			tempValue = mQueue->front();
+			T tempValue = mQueue->front();
 			mQueue->pop();
 			tempQueue.push(tempValue);
 			if (tempValue > maxValue)
@@ -130,11 +131,10 @@ namespace assignment3
 	{
 		T minValue = numeric_limits<T>::max();
 		queue<T> tempQueue;
-		T tempValue = 0;
 
 		while (!mQueue->empty())
 		{
-			tempValue = mQueue->front();
+			T tempValue = mQueue->front();
 			mQueue->pop();
 			tempQueue.push(tempValue);
 			if (tempValue < minValue)
@@ -155,6 +155,11 @@ namespace assignment3
 	template<typename T>
 	double SmartQueue<T>::GetAverage() const
 	{
+		if (mQueue->empty())
+		{
+			return 0.0;
+		}
+
 		T sum = GetSum();
 
 		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
@@ -163,6 +168,11 @@ namespace assignment3
 	template<typename T>
 	T SmartQueue<T>::GetSum() const
 	{
+		if (mQueue->empty())
+		{
+			return 0.0;
+		}
+
 		double sum = 0.0;
 		queue<T> tempQueue;
 		T tempValue = 0;
@@ -188,6 +198,11 @@ namespace assignment3
 	template<typename T>
 	double SmartQueue<T>::GetVariance() const
 	{
+		if (mQueue->empty())
+		{
+			return 0.0;
+		}
+
 		double distanceSum = 0.0;
 		double average = GetAverage();
 
@@ -215,6 +230,11 @@ namespace assignment3
 	template<typename T>
 	double SmartQueue<T>::GetStandardDeviation() const
 	{
+		if (mQueue->empty())
+		{
+			return 0.0;
+		}
+
 		double variance = GetVariance();
 
 		return GetRoundOffTo3DecimalPlaces(sqrt(variance));
