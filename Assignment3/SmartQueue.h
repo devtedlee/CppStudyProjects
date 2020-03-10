@@ -172,7 +172,7 @@ namespace assignment3
 			mQueue->pop();
 			tempQueue.push(tempValue);
 
-			sum = sum + static_cast<double>(tempValue);
+			sum += static_cast<double>(tempValue);
 		}
 
 		while (!tempQueue.empty())

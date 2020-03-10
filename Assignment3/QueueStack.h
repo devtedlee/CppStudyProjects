@@ -1,8 +1,9 @@
 #pragma once
 
-#include <limits>
+#include <cmath>
 #include <queue>
 #include <stack>
+#include "MyMath.h"
 
 using namespace std;
 
@@ -47,13 +48,13 @@ namespace assignment3
 	template<typename T>
 	QueueStack<T>::~QueueStack()
 	{
-		stack<T>* tempStack;
+		stack<T>* tempStackP;
 		for (unsigned int i = 0; i < mStackCount; ++i)
 		{
-			tempStack = mQueueStack->front();
+			tempStackP = mQueueStack->front();
 			mQueueStack->pop();
 
-			delete tempStack;
+			delete tempStackP;
 		}
 
 		delete mQueueStack;
@@ -61,8 +62,27 @@ namespace assignment3
 
 	template<typename T>
 	QueueStack<T>::QueueStack(const QueueStack<T>& other)
+		: mCount(other.mCount)
+		, mStackCount(other.mStackCount)
+		, mMaxStackSize(other.mMaxStackSize)
+		, mQueueStack(new queue<stack<T>*>)
 	{
+		queue<stack<T>*> tempQueueStack;
 
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = other.mQueueStack->front();
+			other.mQueueStack->pop();
+
+			tempQueueStack->push(tempStackP);
+			mQueueStack->push(new stack<T>(*tempStackP));
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			other.mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
 	}
 
 	template<typename T>
@@ -73,21 +93,78 @@ namespace assignment3
 			return *this;
 		}
 
+		stack<T>* tempStackP;
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+
+			delete tempStackP;
+		}
+
+		delete mQueueStack;
+
+		mCount = other.mCount;
+		mStackCount = other.mStackCount;
+		mMaxStackSize = other.mMaxStackSize;
+		mQueueStack = new queue<stack<T>*>;
+
+		queue<stack<T>*> tempQueueStack;
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = other.mQueueStack->front();
+			other.mQueueStack->pop();
+
+			tempQueueStack.push(tempStackP);
+			mQueueStack->push(new stack<T>(*tempStackP));
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			other.mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
 		return *this;
 	}
 
 	template<typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		if (mStackCount * mMaxStackSize - mCount == 0)
+		queue<stack<T>*> tempQueueStack;
+		stack<T>* tempStackP = nullptr;
+
+		bool bPushed = false;
+		for (unsigned int i = 0; i < mStackCount; ++i)
 		{
-			mQueueStack->push(new stack<T>);
-			++mStackCount;
+			tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+			if (tempStackP->size() < mMaxStackSize)
+			{
+				tempStackP->push(number);
+				++mCount;
+
+				bPushed = true;
+			}
+
+			tempQueueStack.push(tempStackP);
 		}
 
-		stack<T>* frontStack = mQueueStack->front();
-		frontStack->push(number);
-		++mCount;
+		if (!bPushed)
+		{
+			tempStackP = new stack<T>;
+			tempStackP->push(number);
+			tempQueueStack.push(tempStackP);
+			++mStackCount;
+			++mCount;
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
 	}
 
 	template<typename T>
@@ -106,7 +183,7 @@ namespace assignment3
 		frontStack->pop();
 		--mCount;
 		
-		if (mStackCount * mMaxStackSize - mCount == 0)
+		if (frontStack->empty())
 		{
 			mQueueStack->pop();
 			delete frontStack;
@@ -119,43 +196,175 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::GetMax() const
 	{
-		T a = 0;
+		T maxValue = numeric_limits<T>::min();
+		queue<stack<T>*> tempQueueStack;
+		stack<T> tempStack;
 
-		return a;
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+			tempQueueStack.push(tempStackP);
+
+			while (!tempStackP->empty())
+			{
+				T tempValue = tempStackP->top();
+				tempStackP->pop();
+				tempStack.push(tempValue);
+				if (tempValue > maxValue)
+				{
+					maxValue = tempValue;
+				}
+			}
+
+			while (!tempStack.empty())
+			{
+				tempStackP->push(tempStack.top());
+				tempStack.pop();
+			}
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		return maxValue;
 	}
 
 	template<typename T>
 	T QueueStack<T>::GetMin() const
 	{
-		T a = 0;
+		T minValue = numeric_limits<T>::max();
+		queue<stack<T>*> tempQueueStack;
+		stack<T> tempStack;
 
-		return a;
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+			tempQueueStack.push(tempStackP);
+
+			while (!tempStackP->empty())
+			{
+				T tempValue = tempStackP->top();
+				tempStackP->pop();
+				tempStack.push(tempValue);
+				if (tempValue < minValue)
+				{
+					minValue = tempValue;
+				}
+			}
+
+			while (!tempStack.empty())
+			{
+				tempStackP->push(tempStack.top());
+				tempStack.pop();
+			}
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		return minValue;
 	}
 
 	template<typename T>
 	double QueueStack<T>::GetAverage() const
 	{
-		return 0.0;
+		T sum = GetSum();
+
+		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
 	}
 
 	template<typename T>
 	T QueueStack<T>::GetSum() const
 	{
-		T a = 0;
+		double sum = 0.0;
+		queue<stack<T>*> tempQueueStack;
+		stack<T> tempStack;
 
-		return a;
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+			tempQueueStack.push(tempStackP);
+
+			while (!tempStackP->empty())
+			{
+				T tempValue = tempStackP->top();
+				tempStackP->pop();
+				tempStack.push(tempValue);
+				
+				sum += static_cast<double>(tempValue);
+			}
+
+			while (!tempStack.empty())
+			{
+				tempStackP->push(tempStack.top());
+				tempStack.pop();
+			}
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		return static_cast<T>(sum);
 	}
 
 	template<typename T>
 	double QueueStack<T>::GetVariance() const
 	{
-		return 0.0;
+		double distanceSum = 0.0;
+		double average = GetAverage();
+
+		queue<stack<T>*> tempQueueStack;
+		stack<T> tempStack;
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			stack<T>* tempStackP = mQueueStack->front();
+			mQueueStack->pop();
+			tempQueueStack.push(tempStackP);
+
+			while (!tempStackP->empty())
+			{
+				T tempValue = tempStackP->top();
+				tempStackP->pop();
+				tempStack.push(tempValue);
+
+				distanceSum += pow(abs(static_cast<double>(tempValue) - average), 2.0);
+			}
+
+			while (!tempStack.empty())
+			{
+				tempStackP->push(tempStack.top());
+				tempStack.pop();
+			}
+		}
+
+		for (unsigned int i = 0; i < mStackCount; ++i)
+		{
+			mQueueStack->push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		return GetRoundOffTo3DecimalPlaces(distanceSum / static_cast<double>(mCount));
 	}
 
 	template<typename T>
 	double QueueStack<T>::GetStandardDeviation() const
 	{
-		return 0.0;
+		double variance = GetVariance();
+
+		return GetRoundOffTo3DecimalPlaces(sqrt(variance));
 	}
 
 	template<typename T>

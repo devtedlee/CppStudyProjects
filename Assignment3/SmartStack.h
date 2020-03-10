@@ -174,7 +174,7 @@ namespace assignment3
 			mStack->pop();
 			tempStack.push(tempValue);
 
-			sum = sum + static_cast<double>(tempValue);
+			sum += static_cast<double>(tempValue);
 		}
 
 		while (!tempStack.empty())
