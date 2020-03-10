@@ -29,6 +29,7 @@ namespace assignment3
 		double GetStandardDeviation();
 		unsigned int GetCount() const;
 	private:
+		double GetSumDouble();
 		unsigned int mCount;
 		stack<T> mStack;
 	};
@@ -157,9 +158,9 @@ namespace assignment3
 			return 0.0;
 		}
 
-		T sum = GetSum();
+		double sum = GetSumDouble();
 
-		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
+		return GetRoundOffTo3DecimalPlaces(sum / static_cast<double>(mCount));
 	}
 
 	template<typename T>
@@ -170,23 +171,7 @@ namespace assignment3
 			return 0;
 		}
 
-		double sum = 0.0;
-		stack<T> tempStack;
-
-		while (!mStack.empty())
-		{
-			T tempValue = mStack.top();
-			mStack.pop();
-			tempStack.push(tempValue);
-
-			sum += static_cast<double>(tempValue);
-		}
-
-		while (!tempStack.empty())
-		{
-			mStack.push(tempStack.top());
-			tempStack.pop();
-		}
+		double sum = GetSumDouble();
 
 		return static_cast<T>(sum);
 	}
@@ -200,7 +185,8 @@ namespace assignment3
 		}
 
 		double distanceSum = 0.0;
-		double average = GetAverage();
+
+		double average = GetSumDouble() / static_cast<double>(mCount);
 
 		stack<T> tempStack;
 
@@ -239,5 +225,29 @@ namespace assignment3
 	unsigned int SmartStack<T>::GetCount() const
 	{
 		return mCount;
+	}
+
+	template<typename T>
+	double SmartStack<T>::GetSumDouble()
+	{
+		double sum = 0.0;
+		stack<T> tempStack;
+
+		while (!mStack.empty())
+		{
+			T tempValue = mStack.top();
+			mStack.pop();
+			tempStack.push(tempValue);
+
+			sum += static_cast<double>(tempValue);
+		}
+
+		while (!tempStack.empty())
+		{
+			mStack.push(tempStack.top());
+			tempStack.pop();
+		}
+
+		return sum;
 	}
 }
