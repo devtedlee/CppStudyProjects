@@ -8,6 +8,28 @@ using namespace assignment3;
 
 int main()
 {
+	SmartStack<char> cs;
+	cs.Push('a');
+	cs.Push('b');
+	cs.Push('c');
+	cs.Push('d');
+	cs.Push('1');
+	cs.Push('5');
+	cs.Push(' ');
+	cs.Push('A');
+	cs.Push('2');
+	cs.Push('-');
+
+	cs.GetCount();
+	cs.Peek();
+	cs.GetMax();
+	cs.GetMin();
+	cs.GetSum();
+	cs.GetAverage();
+	cs.GetVariance();
+	cs.GetStandardDeviation();
+	cs.Peek();
+
 	SmartStack<int> s;
 	s.Push(6);
 	s.Push(5);
