@@ -103,13 +103,12 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetMax() const
 	{
-		T maxValue = numeric_limits<T>::min();
+		T maxValue = numeric_limits<T>::lowest();
 		stack<T> tempStack;
-		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
-			tempValue = mStack->top();
+			T tempValue = mStack->top();
 			mStack->pop();
 			tempStack.push(tempValue);
 			if (tempValue > maxValue)
@@ -157,6 +156,11 @@ namespace assignment3
 	template<typename T>
 	double SmartStack<T>::GetAverage() const
 	{
+		if (mStack->empty())
+		{
+			return 0.0;
+		}
+
 		T sum = GetSum();
 
 		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / static_cast<double>(mCount));
@@ -165,13 +169,17 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetSum() const
 	{
+		if (mStack->empty())
+		{
+			return 0.0;
+		}
+
 		double sum = 0.0;
 		stack<T> tempStack;
-		T tempValue = 0;
 
 		while (!mStack->empty())
 		{
-			tempValue = mStack->top();
+			T tempValue = mStack->top();
 			mStack->pop();
 			tempStack.push(tempValue);
 
@@ -190,6 +198,11 @@ namespace assignment3
 	template<typename T>
 	double SmartStack<T>::GetVariance() const
 	{
+		if (mStack->empty())
+		{
+			return 0.0;
+		}
+
 		double distanceSum = 0.0;
 		double average = GetAverage();
 
@@ -217,6 +230,11 @@ namespace assignment3
 	template<typename T>
 	double SmartStack<T>::GetStandardDeviation() const
 	{
+		if (mStack->empty())
+		{
+			return 0.0;
+		}
+
 		double variance = GetVariance();
 
 		return GetRoundOffTo3DecimalPlaces(sqrt(variance));

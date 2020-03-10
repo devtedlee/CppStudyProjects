@@ -197,7 +197,7 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::GetMax() const
 	{
-		T maxValue = numeric_limits<T>::min();
+		T maxValue = numeric_limits<T>::lowest();
 		queue<stack<T>*> tempQueueStack;
 		stack<T> tempStack;
 
