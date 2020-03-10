@@ -18,7 +18,7 @@ namespace assignment3
 		SmartStack(const SmartStack<T>& other);
 		SmartStack& operator=(const SmartStack<T>& other);
 
-		void Push(const T& number);
+		void Push(const T number);
 		T Pop();
 		T Peek() const;
 		T GetMax();
@@ -67,7 +67,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	void SmartStack<T>::Push(const T& number)
+	void SmartStack<T>::Push(const T number)
 	{
 		mStack.push(number);
 		++mCount;
@@ -165,13 +165,12 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetSum()
 	{
-		double sum = 0.0;
-
 		if (mStack.empty())
 		{
-			return static_cast<T>(sum);
+			return 0;
 		}
 
+		double sum = 0.0;
 		stack<T> tempStack;
 
 		while (!mStack.empty())

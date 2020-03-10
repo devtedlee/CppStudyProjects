@@ -170,7 +170,7 @@ namespace assignment3
 	{
 		if (mQueue->empty())
 		{
-			return 0.0;
+			return 0;
 		}
 
 		double sum = 0.0;

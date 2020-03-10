@@ -290,13 +290,12 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::GetSum() const
 	{
-		double sum = 0.0;
-
 		if (mQueueStack->empty())
 		{
-			return static_cast<T>(sum);
+			return 0;
 		}
 
+		double sum = 0.0;
 		queue<stack<T>*> tempQueueStack;
 		stack<T> tempStack;
 
