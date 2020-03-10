@@ -31,7 +31,7 @@ namespace assignment3
 	private:
 		unsigned int mCount;
 		double mSum;
-		T mAverage;
+		double mAverage;
 		double mDistanceSum;
 		stack<T> mStack;
 	};
@@ -40,7 +40,7 @@ namespace assignment3
 	SmartStack<T>::SmartStack()
 		: mCount(0)
 		, mSum(0.0)
-		, mAverage(static_cast<T>(0))
+		, mAverage(0.0)
 		, mDistanceSum(0.0)
 		, mStack()
 	{
@@ -81,7 +81,7 @@ namespace assignment3
 	template<typename T>
 	void SmartStack<T>::Push(const T number)
 	{
-		T postAverage = mAverage;
+		double postAverage = mAverage;
 		unsigned int postCount = mCount;
 
 		mStack.push(number);
@@ -89,8 +89,8 @@ namespace assignment3
 		++mCount;
 		mSum += static_cast<double>(number);
 		mAverage = static_cast<T>(mSum / mCount);
-		double remainderSum = pow((static_cast<double>(mAverage) - static_cast<double>(postAverage)), 2.0) * postCount;
-		mDistanceSum += pow(abs(static_cast<double>(number) - static_cast<double>(mAverage)), 2.0) + remainderSum;
+		double remainderSum = pow(mAverage - postAverage, 2.0) * postCount;
+		mDistanceSum += pow(abs(static_cast<double>(number) - mAverage), 2.0) + remainderSum;
 	}
 
 	template<typename T>
@@ -98,7 +98,7 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		T postAverage = mAverage;
+		double postAverage = mAverage;
 		unsigned int postCount = mCount;
 
 		T value = mStack.top();
@@ -109,7 +109,7 @@ namespace assignment3
 		{
 			mCount = 0U;
 			mSum = 0.0;
-			mAverage = static_cast<T>(0);
+			mAverage = 0.0;
 			mDistanceSum = 0.0;
 
 			return value;
@@ -117,8 +117,8 @@ namespace assignment3
 
 		mSum -= static_cast<double>(value);
 		mAverage = static_cast<T>(mSum / mCount);
-		double remainderSum = pow((static_cast<double>(mAverage) - static_cast<double>(postAverage)), 2.0) * postCount;
-		mDistanceSum -= pow(abs(static_cast<double>(value) - static_cast<double>(mAverage)), 2.0) - remainderSum;
+		double remainderSum = pow((mAverage - postAverage), 2.0) * postCount;
+		mDistanceSum -= pow(abs(static_cast<double>(value) - mAverage), 2.0) - remainderSum;
 
 		return value;
 	}
@@ -191,13 +191,13 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		return GetRoundOffTo3DecimalPlaces(mAverage);
+		return GetRoundOffTo3DecimalPlaces(static_cast<double>(mAverage));
 	}
 
 	template<typename T>
 	T SmartStack<T>::GetSum()
 	{
-		if (mSum > static_cast<double>(numeric_limits<T>::max()))
+		if (mSum >= static_cast<double>(numeric_limits<T>::max()))
 		{
 			return numeric_limits<T>::max();
 		}
