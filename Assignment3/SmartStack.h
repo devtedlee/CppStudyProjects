@@ -42,7 +42,6 @@ namespace assignment3
 		, mSum(0.0)
 		, mAverage(0.0)
 		, mDistanceSum(0.0)
-		, mStack()
 	{
 	}
 
@@ -88,7 +87,7 @@ namespace assignment3
 
 		++mCount;
 		mSum += static_cast<double>(number);
-		mAverage = static_cast<T>(mSum / mCount);
+		mAverage = mSum / mCount;
 		double remainderSum = pow(mAverage - postAverage, 2.0) * postCount;
 		mDistanceSum += pow(abs(static_cast<double>(number) - mAverage), 2.0) + remainderSum;
 	}
@@ -116,7 +115,7 @@ namespace assignment3
 		}
 
 		mSum -= static_cast<double>(value);
-		mAverage = static_cast<T>(mSum / mCount);
+		mAverage = mSum / mCount;
 		double remainderSum = pow((mAverage - postAverage), 2.0) * postCount;
 		mDistanceSum -= pow(abs(static_cast<double>(value) - mAverage), 2.0) - remainderSum;
 
@@ -191,7 +190,7 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		return GetRoundOffTo3DecimalPlaces(static_cast<double>(mAverage));
+		return GetRoundOffTo3DecimalPlaces(mAverage);
 	}
 
 	template<typename T>
