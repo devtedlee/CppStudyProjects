@@ -73,6 +73,11 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
+			while (!mQueueStack.front().empty())
+			{
+				mQueueStack.front().pop();
+			}
+
 			mQueueStack.pop();
 		}
 
@@ -247,8 +252,7 @@ namespace assignment3
 	{
 		// ignore empty queue case
 		
-		double doubleSum = 0.0;
-		T sum = 0;
+		double sum = 0;
 		queue<stack<T>> tempQueueStack;
 		
 		bool bUseDoubleSum = false;
@@ -265,18 +269,7 @@ namespace assignment3
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
-
-				if (doubleSum + static_cast<double>(tempValue) >= static_cast<double>(numeric_limits<T>::max()))
-				{
-					bUseDoubleSum = true;
-					sum = numeric_limits<T>::max();
-				}
-				else
-				{
-					sum += tempValue;
-				}
-
-				doubleSum += static_cast<double>(tempValue);
+				sum += static_cast<double>(tempValue);
 
 				mQueueStack.front().push(tempValue);
 				tempStack.pop();
