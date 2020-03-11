@@ -112,7 +112,7 @@ namespace assignment3
 			other.mQueueStack.pop();
 
 			tempQueueStack.push(tempStackP);
-			mQueueStack->push(new stack<T>(*tempStackP));
+			mQueueStack.push(new stack<T>(*tempStackP));
 		}
 
 		while (!tempQueueStack.empty())
