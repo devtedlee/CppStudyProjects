@@ -257,17 +257,18 @@ namespace assignment3
 
 			while (!tempFrontStack.empty())
 			{
-				T tempValue = tempFrontStack.top();
+				tempStack.push(tempFrontStack.top());
 				tempFrontStack.pop();
-				tempStack.push(tempValue);
-
-				sum += static_cast<double>(tempValue);
 			}
 
 			while (!tempStack.empty())
 			{
-				tempFrontStack.push(tempStack.top());
+				T tempValue = tempStack.top();
+
+				tempFrontStack.push(tempValue);
 				tempStack.pop();
+
+				sum += static_cast<double>(tempValue);
 			}
 
 			tempQueueStack.push(tempFrontStack);
@@ -296,17 +297,18 @@ namespace assignment3
 
 			while (!tempFrontStack.empty())
 			{
-				T tempValue = tempFrontStack.top();
+				tempStack.push(tempFrontStack.top());
 				tempFrontStack.pop();
-				tempStack.push(tempValue);
-				
-				sum += static_cast<double>(tempValue);
 			}
 
 			while (!tempStack.empty())
 			{
+				T tempValue = tempStack.top();
+
 				tempFrontStack.push(tempStack.top());
 				tempStack.pop();
+
+				sum += static_cast<double>(tempValue);
 			}
 
 			tempQueueStack.push(tempFrontStack);
