@@ -264,11 +264,10 @@ namespace assignment3
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
+				sum += static_cast<double>(tempValue);
 
 				tempFrontStack.push(tempValue);
 				tempStack.pop();
-
-				sum += static_cast<double>(tempValue);
 			}
 
 			tempQueueStack.push(tempFrontStack);
@@ -287,7 +286,8 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::GetSum()
 	{
-		double sum = 0.0;
+		double doubleSum = 0.0;
+		T sum = 0;
 		queue<stack<T>> tempQueueStack;
 
 		while (!mQueueStack.empty())
@@ -304,11 +304,19 @@ namespace assignment3
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
+				if (doubleSum + static_cast<double>(tempValue) > static_cast<double>(numeric_limits<T>::max()))
+				{
+					doubleSum = static_cast<double>(numeric_limits<T>::max());
+					sum = numeric_limits<T>::max();
+				}
+				else
+				{
+					doubleSum += static_cast<double>(tempValue);
+					sum += tempValue;
+				}
 
-				tempFrontStack.push(tempStack.top());
+				tempFrontStack.push(tempValue);
 				tempStack.pop();
-
-				sum += static_cast<double>(tempValue);
 			}
 
 			tempQueueStack.push(tempFrontStack);

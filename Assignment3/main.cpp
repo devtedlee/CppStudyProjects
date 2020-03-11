@@ -81,6 +81,8 @@ int main()
 	ss.Push(-12.4f);
 	ss.Push(9.2f);
 
+	float ssSum = 3.4999f + 1.2f + 4.6555f + 3.3299f + 10.2f + 1.1f - 5.9f + 1.1f - 12.4f + 9.2f;
+
 	assert(ss.Peek() == 9.2f);
 	assert(ss.GetMax() == 10.2f);
 	assert(ss.GetMin() == -12.4f);
@@ -159,12 +161,36 @@ int main()
 	qs.Enqueue(-12.4f);
 	qs.Enqueue(9.2f);
 
+	float qsSum = 3.4f + 1.2f + 4.6f + 3.32f + 10.2f + 1.1f - 5.9f + 1.1f - 12.4f + 9.2f;
+
+	double qsSum1 = static_cast<double>(3.4f);
+	qsSum1 += static_cast<double>(1.2f);
+	qsSum1 += static_cast<double>(4.6f);
+	qsSum1 += static_cast<double>(3.32f);
+	qsSum1 += static_cast<double>(10.2f);
+	qsSum1 += static_cast<double>(1.1f);
+	qsSum1 += static_cast<double>(-5.9f);
+	qsSum1 += static_cast<double>(1.1f);
+	qsSum1 += static_cast<double>(-12.4f);
+	qsSum1 += static_cast<double>(9.2f);
+
+	float qsSum2 = 3.4f;
+	qsSum2 += 1.2f;
+	qsSum2 += 4.6f;
+	qsSum2 += 3.32f;
+	qsSum2 += 10.2f;
+	qsSum2 += 1.1f;
+	qsSum2 += -5.9f;
+	qsSum2 += 1.1f;
+	qsSum2 += -12.4f;
+	qsSum2 += 9.2f;
+
 	assert(qs.GetStackCount() == 4U);
 	assert(qs.Peek() == 4.6f);
 	assert(qs.GetCount() == 10U);
 	assert(qs.GetMax() == 10.2f);
 	assert(qs.GetMin() == -12.4f);
-	//assert(qs.GetSum() == 15.8200026f);
+	assert(qs.GetSum() == 15.8200026f);
 	assert(qs.GetAverage() == 1.582);
 	assert(qs.GetStackCount() == 4U);
 	assert(qs.Peek() == 4.6f);
