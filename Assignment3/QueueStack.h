@@ -32,7 +32,7 @@ namespace assignment3
 		unsigned int mCount;
 		unsigned int mMaxStackSize;
 		double mSum;
-		queue<stack<T>*> mQueueStack;
+		queue<stack<T>> mQueueStack;
 	};
 
 	template<typename T>
@@ -46,14 +46,9 @@ namespace assignment3
 	template<typename T>
 	QueueStack<T>::~QueueStack()
 	{
-		stack<T>* tempStackP;
 		while (!mQueueStack.empty())
 		{
-			tempStackP = mQueueStack.front();
 			mQueueStack.pop();
-
-			delete tempStackP;
-			tempStackP = nullptr;
 		}
 	}
 
@@ -63,15 +58,16 @@ namespace assignment3
 		, mMaxStackSize(other.mMaxStackSize)
 		, mSum(other.mSum)
 	{
-		queue<stack<T>*> tempQueueStack;
+		queue<stack<T>> tempQueueStack;
 
 		while (!other.mQueueStack.empty())
 		{
-			stack<T>* tempStackP = other.mQueueStack.front();
-			other.mQueueStack.pop();
+			stack<T>& tempStack = other.mQueueStack.front();
 
-			tempQueueStack.push(tempStackP);
-			mQueueStack.push(new stack<T>(*tempStackP));
+			tempQueueStack.push(tempStack);
+			mQueueStack.push(tempStack);
+
+			other.mQueueStack.pop();
 		}
 
 		while (!tempQueueStack.empty())
@@ -89,28 +85,24 @@ namespace assignment3
 			return *this;
 		}
 
-		stack<T>* tempStackP;
 		while (!mQueueStack.empty())
 		{
-			tempStackP = mQueueStack.front();
 			mQueueStack.pop();
-
-			delete tempStackP;
-			tempStackP = nullptr;
 		}
 
 		mCount = other.mCount;
 		mMaxStackSize = other.mMaxStackSize;
 		mSum = other.mSum;
 
-		queue<stack<T>*> tempQueueStack;
+		queue<stack<T>> tempQueueStack;
 		while (!other.mQueueStack.empty())
 		{
-			stack<T>* tempStackP = other.mQueueStack.front();
-			other.mQueueStack.pop();
+			stack<T>& tempStack = other.mQueueStack.front();
 
-			tempQueueStack.push(tempStackP);
-			mQueueStack.push(new stack<T>(*tempStackP));
+			tempQueueStack.push(tempStack);
+			mQueueStack.push(tempStack);
+
+			other.mQueueStack.pop();
 		}
 
 		while (!tempQueueStack.empty())
@@ -125,23 +117,22 @@ namespace assignment3
 	template<typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		queue<stack<T>*> tempQueueStack;
-		stack<T>* tempStackP = nullptr;
+		queue<stack<T>> tempQueueStack;
 
 		bool bPushed = false;
 		while (!mQueueStack.empty())
 		{
-			tempStackP = mQueueStack.front();
-			mQueueStack.pop();
-			if (tempStackP->size() < mMaxStackSize)
+			stack<T>& tempStack = mQueueStack.front();
+			if (tempStack.size() < mMaxStackSize)
 			{
-				tempStackP->push(number);
+				tempStack.push(number);
 				++mCount;
 
 				bPushed = true;
 			}
 
-			tempQueueStack.push(tempStackP);
+			tempQueueStack.push(tempStack);
+			mQueueStack.pop();
 		}
 
 		while (!tempQueueStack.empty())
@@ -152,9 +143,9 @@ namespace assignment3
 
 		if (!bPushed)
 		{
-			tempStackP = new stack<T>;
-			tempStackP->push(number);
-			mQueueStack.push(tempStackP);
+			stack<T> tempStack;
+			tempStack.push(number);
+			mQueueStack.push(tempStack);
 
 			++mCount;
 		}
@@ -167,9 +158,9 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		stack<T>* frontStack = mQueueStack.front();
+		stack<T> frontStack = mQueueStack.front();
 
-		return frontStack->top();
+		return frontStack.top();
 	}
 
 	template<typename T>
@@ -177,16 +168,14 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		stack<T>* frontStack = mQueueStack.front();
-		T value = frontStack->top();
-		frontStack->pop();
+		stack<T>& frontStack = mQueueStack.front();
+		T value = frontStack.top();
+		frontStack.pop();
 		--mCount;
 		
-		if (frontStack->empty())
+		if (frontStack.empty())
 		{
 			mQueueStack.pop();
-			delete frontStack;
-			frontStack = nullptr;
 		}
 
 		if (mQueueStack.empty())
@@ -206,19 +195,17 @@ namespace assignment3
 	T QueueStack<T>::GetMax()
 	{
 		T maxValue = numeric_limits<T>::lowest();
-		queue<stack<T>*> tempQueueStack;
-		stack<T> tempStack;
+		queue<stack<T>> tempQueueStack;
 
 		while (!mQueueStack.empty())
 		{
-			stack<T>* tempStackP = mQueueStack.front();
-			mQueueStack.pop();
-			tempQueueStack.push(tempStackP);
+			stack<T> tempStack;
+			stack<T>& tempFrontStack = mQueueStack.front();
 
-			while (!tempStackP->empty())
+			while (!tempFrontStack.empty())
 			{
-				T tempValue = tempStackP->top();
-				tempStackP->pop();
+				T tempValue = tempFrontStack.top();
+				tempFrontStack.pop();
 				tempStack.push(tempValue);
 				if (tempValue > maxValue)
 				{
@@ -228,9 +215,12 @@ namespace assignment3
 
 			while (!tempStack.empty())
 			{
-				tempStackP->push(tempStack.top());
+				tempFrontStack.push(tempStack.top());
 				tempStack.pop();
 			}
+
+			tempQueueStack.push(tempFrontStack);
+			mQueueStack.pop();
 		}
 
 		while (!tempQueueStack.empty())
@@ -246,19 +236,17 @@ namespace assignment3
 	T QueueStack<T>::GetMin()
 	{
 		T minValue = numeric_limits<T>::max();
-		queue<stack<T>*> tempQueueStack;
-		stack<T> tempStack;
+		queue<stack<T>> tempQueueStack;
 
 		while (!mQueueStack.empty())
 		{
-			stack<T>* tempStackP = mQueueStack.front();
-			mQueueStack.pop();
-			tempQueueStack.push(tempStackP);
+			stack<T> tempStack;
+			stack<T>& tempFrontStack = mQueueStack.front();
 
-			while (!tempStackP->empty())
+			while (!tempFrontStack.empty())
 			{
-				T tempValue = tempStackP->top();
-				tempStackP->pop();
+				T tempValue = tempFrontStack.top();
+				tempFrontStack.pop();
 				tempStack.push(tempValue);
 				if (tempValue < minValue)
 				{
@@ -268,9 +256,12 @@ namespace assignment3
 
 			while (!tempStack.empty())
 			{
-				tempStackP->push(tempStack.top());
+				tempFrontStack.push(tempStack.top());
 				tempStack.pop();
 			}
+
+			tempQueueStack.push(tempFrontStack);
+			mQueueStack.pop();
 		}
 
 		while (!tempQueueStack.empty())
