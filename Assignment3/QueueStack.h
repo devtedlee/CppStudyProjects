@@ -128,10 +128,19 @@ namespace assignment3
 		queue<stack<T>*> tempQueueStack;
 		stack<T>* tempStackP = nullptr;
 
+		bool bPushed = false;
 		while (!mQueueStack.empty())
 		{
 			tempStackP = mQueueStack.front();
 			mQueueStack.pop();
+			if (tempStackP->size() < mMaxStackSize)
+			{
+				tempStackP->push(number);
+				++mCount;
+
+				bPushed = true;
+			}
+
 			tempQueueStack.push(tempStackP);
 		}
 
@@ -141,24 +150,15 @@ namespace assignment3
 			tempQueueStack.pop();
 		}
 
-		if (tempStackP == nullptr)
-		{
-			tempStackP = new stack<T>;
-			mQueueStack.push(tempStackP);
-		}
-
-		if (tempStackP->size() < mMaxStackSize)
-		{
-			tempStackP->push(number);
-		}
-		else
+		if (!bPushed)
 		{
 			tempStackP = new stack<T>;
 			tempStackP->push(number);
 			mQueueStack.push(tempStackP);
+
+			++mCount;
 		}
 
-		++mCount;
 		mSum += static_cast<double>(number);
 	}
 
