@@ -255,7 +255,6 @@ namespace assignment3
 		double sum = 0;
 		queue<stack<T>> tempQueueStack;
 		
-		bool bUseDoubleSum = false;
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
@@ -285,12 +284,7 @@ namespace assignment3
 			tempQueueStack.pop();
 		}
 
-		if (bUseDoubleSum)
-		{
-			return GetRoundOffTo3DecimalPlaces(doubleSum / mCount);
-		}
-
-		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / mCount);
+		return GetRoundOffTo3DecimalPlaces(sum / mCount);
 	}
 
 	template<typename T>
