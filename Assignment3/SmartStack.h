@@ -34,6 +34,8 @@ namespace assignment3
 		double mAverage;
 		double mDistanceSum;
 		stack<T> mStack;
+		stack<T> mMaxStack;
+		stack<T> mMinStack;
 	};
 
 	template<typename T>
@@ -43,6 +45,8 @@ namespace assignment3
 		, mAverage(0.0)
 		, mDistanceSum(0.0)
 	{
+		mMaxStack.push(numeric_limits<T>::lowest());
+		mMinStack.push(numeric_limits<T>::max());
 	}
 
 	template<typename T>
@@ -57,6 +61,8 @@ namespace assignment3
 		, mAverage(other.mAverage)
 		, mDistanceSum(other.mDistanceSum)
 		, mStack(other.mStack)
+		, mMaxStack(other.mMaxStack)
+		, mMinStack(other.mMinStack)
 	{
 	}
 
@@ -73,6 +79,8 @@ namespace assignment3
 		mAverage = other.mAverage;
 		mDistanceSum = other.mDistanceSum;
 		mStack = other.mStack;
+		mMaxStack = other.mMaxStack;
+		mMinStack = other.mMinStack;
 
 		return *this;
 	}
@@ -90,6 +98,16 @@ namespace assignment3
 		mAverage = mSum / mCount;
 		double remainderSum = pow(mAverage - postAverage, 2.0) * postCount;
 		mDistanceSum += pow(abs(static_cast<double>(number) - mAverage), 2.0) + remainderSum;
+
+		if (mMaxStack.top() <= number)
+		{
+			mMaxStack.push(number);
+		}
+
+		if (mMinStack.top() >= number)
+		{
+			mMinStack.push(number);
+		}
 	}
 
 	template<typename T>
@@ -119,6 +137,16 @@ namespace assignment3
 		double remainderSum = pow((mAverage - postAverage), 2.0) * postCount;
 		mDistanceSum -= pow(abs(static_cast<double>(value) - mAverage), 2.0) - remainderSum;
 
+		if (mMaxStack.top() == value)
+		{
+			mMaxStack.pop();
+		}
+
+		if (mMinStack.top() == value)
+		{
+			mMinStack.pop();
+		}
+
 		return value;
 	}
 
@@ -135,25 +163,7 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetMax()
 	{
-		T maxValue = numeric_limits<T>::lowest();
-		stack<T> tempStack;
-
-		while (!mStack.empty())
-		{
-			T tempValue = mStack.top();
-			mStack.pop();
-			tempStack.push(tempValue);
-			if (tempValue > maxValue)
-			{
-				maxValue = tempValue;
-			}
-		}
-
-		while (!tempStack.empty())
-		{
-			mStack.push(tempStack.top());
-			tempStack.pop();
-		}
+		T maxValue = mMaxStack.top();
 
 		return maxValue;
 	}
@@ -161,26 +171,7 @@ namespace assignment3
 	template<typename T>
 	T SmartStack<T>::GetMin()
 	{
-		T minValue = numeric_limits<T>::max();
-		stack<T> tempStack;
-		T tempValue = 0;
-
-		while (!mStack.empty())
-		{
-			tempValue = mStack.top();
-			mStack.pop();
-			tempStack.push(tempValue);
-			if (tempValue < minValue)
-			{
-				minValue = tempValue;
-			}
-		}
-
-		while (!tempStack.empty())
-		{
-			mStack.push(tempStack.top());
-			tempStack.pop();
-		}
+		T minValue = mMinStack.top();
 
 		return minValue;
 	}
