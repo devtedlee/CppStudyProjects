@@ -181,8 +181,13 @@ int main()
 	assert(qs.GetStackCount() == 3U);
 	assert(qs.GetMax() == 10.2f);
 	assert(qs.GetMin() == -12.4f);
-	//assert(qs.GetSum() == 6.62000322f);
+	assert(qs.GetSum() == 6.62000322f);
 	assert(qs.GetAverage() == 0.946);
+
+
+	QueueStack<float> qs1(qs);
+	
+	QueueStack<float> qs2 = qs;
 
 	return 0;
 }

@@ -24,14 +24,13 @@ namespace assignment3
 		T Dequeue();
 		T GetMax();
 		T GetMin();
-		double GetAverage() const;
-		T GetSum() const;
+		double GetAverage();
+		T GetSum();
 		unsigned int GetCount() const;
 		unsigned int GetStackCount() const;
 	private:
 		unsigned int mCount;
 		unsigned int mMaxStackSize;
-		double mSum;
 		queue<stack<T>> mQueueStack;
 	};
 
@@ -39,7 +38,6 @@ namespace assignment3
 	QueueStack<T>::QueueStack(unsigned int maxStackSize)
 		: mCount(0)
 		, mMaxStackSize(maxStackSize)
-		, mSum(0.0)
 	{
 	}
 
@@ -56,25 +54,8 @@ namespace assignment3
 	QueueStack<T>::QueueStack(QueueStack<T>& other)
 		: mCount(other.mCount)
 		, mMaxStackSize(other.mMaxStackSize)
-		, mSum(other.mSum)
+		, mQueueStack(other.mQueueStack)
 	{
-		queue<stack<T>> tempQueueStack;
-
-		while (!other.mQueueStack.empty())
-		{
-			stack<T>& tempStack = other.mQueueStack.front();
-
-			tempQueueStack.push(tempStack);
-			mQueueStack.push(tempStack);
-
-			other.mQueueStack.pop();
-		}
-
-		while (!tempQueueStack.empty())
-		{
-			other.mQueueStack.push(tempQueueStack.front());
-			tempQueueStack.pop();
-		}
 	}
 
 	template<typename T>
@@ -92,24 +73,7 @@ namespace assignment3
 
 		mCount = other.mCount;
 		mMaxStackSize = other.mMaxStackSize;
-		mSum = other.mSum;
-
-		queue<stack<T>> tempQueueStack;
-		while (!other.mQueueStack.empty())
-		{
-			stack<T>& tempStack = other.mQueueStack.front();
-
-			tempQueueStack.push(tempStack);
-			mQueueStack.push(tempStack);
-
-			other.mQueueStack.pop();
-		}
-
-		while (!tempQueueStack.empty())
-		{
-			other.mQueueStack.push(tempQueueStack.front());
-			tempQueueStack.pop();
-		}
+		mQueueStack = other.mQueueStack;
 
 		return *this;
 	}
@@ -158,7 +122,6 @@ namespace assignment3
 		}
 
 		++mCount;
-		mSum += static_cast<double>(number);
 	}
 
 	template<typename T>
@@ -188,13 +151,11 @@ namespace assignment3
 		if (mQueueStack.empty())
 		{
 			mCount = 0;
-			mSum = 0.0;
 
 			return value;
 		}
 
 		--mCount;
-		mSum -= static_cast<double>(value);
 
 		return value;
 	}
@@ -282,26 +243,88 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double QueueStack<T>::GetAverage() const
+	double QueueStack<T>::GetAverage()
 	{
 		// ignore empty queue case
-		if (mQueueStack.empty())
+		
+		double sum = 0.0;
+		queue<stack<T>> tempQueueStack;
+
+		while (!mQueueStack.empty())
 		{
-			return 0.0;
+			stack<T> tempStack;
+			stack<T>& tempFrontStack = mQueueStack.front();
+
+			while (!tempFrontStack.empty())
+			{
+				T tempValue = tempFrontStack.top();
+				tempFrontStack.pop();
+				tempStack.push(tempValue);
+
+				sum += static_cast<double>(tempValue);
+			}
+
+			while (!tempStack.empty())
+			{
+				tempFrontStack.push(tempStack.top());
+				tempStack.pop();
+			}
+
+			tempQueueStack.push(tempFrontStack);
+			mQueueStack.pop();
 		}
 
-		return GetRoundOffTo3DecimalPlaces(mSum / mCount);
+		while (!tempQueueStack.empty())
+		{
+			mQueueStack.push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		return GetRoundOffTo3DecimalPlaces(sum / mCount);
 	}
 
 	template<typename T>
-	T QueueStack<T>::GetSum() const
+	T QueueStack<T>::GetSum()
 	{
-		if (mSum >= static_cast<double>(numeric_limits<T>::max()))
+		double sum = 0.0;
+		queue<stack<T>> tempQueueStack;
+
+		while (!mQueueStack.empty())
+		{
+			stack<T> tempStack;
+			stack<T>& tempFrontStack = mQueueStack.front();
+
+			while (!tempFrontStack.empty())
+			{
+				T tempValue = tempFrontStack.top();
+				tempFrontStack.pop();
+				tempStack.push(tempValue);
+				
+				sum += static_cast<double>(tempValue);
+			}
+
+			while (!tempStack.empty())
+			{
+				tempFrontStack.push(tempStack.top());
+				tempStack.pop();
+			}
+
+			tempQueueStack.push(tempFrontStack);
+			mQueueStack.pop();
+		}
+
+		while (!tempQueueStack.empty())
+		{
+			mQueueStack.push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
+
+		if (sum >= static_cast<double>(numeric_limits<T>::max()))
 		{
 			return numeric_limits<T>::max();
 		}
 
-		return static_cast<T>(mSum);
+		return static_cast<T>(sum);
 	}
 
 	template<typename T>
