@@ -228,7 +228,7 @@ int main()
 	assert(qs.GetMax() == 10.2f);
 	assert(qs.GetMin() == -12.4f);
 	assert(qs.GetAverage() == 0.946);
-	//(qs.GetSum() == 6.62000322f);
+	//assert(qs.GetSum() == 6.62000322f);
 
 	QueueStack<float> qs1(qs);
 	

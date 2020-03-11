@@ -18,7 +18,7 @@ namespace assignment3
 		SmartQueue(const SmartQueue<T>& other);
 		SmartQueue& operator=(const SmartQueue<T>& other);
 
-		void Enqueue(T number);
+		void Enqueue(const T number);
 		T Peek() const;
 		T Dequeue();
 		T GetMax();
@@ -79,7 +79,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	void SmartQueue<T>::Enqueue(T number)
+	void SmartQueue<T>::Enqueue(const T number)
 	{
 		unsigned int postCount = mQueue.size();
 		double postAverage = 0.0;

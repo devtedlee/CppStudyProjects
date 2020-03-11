@@ -17,7 +17,7 @@ namespace assignment3
 		QueueStack(unsigned int maxStackSize);
 		virtual ~QueueStack();
 		QueueStack(const QueueStack<T>& other);
-		QueueStack<T>& operator=(const QueueStack<T>& other);
+		QueueStack<T>& operator=(QueueStack<T>& other);
 
 		void Enqueue(const T number);
 		T Peek() const;
@@ -38,6 +38,7 @@ namespace assignment3
 	QueueStack<T>::QueueStack(unsigned int maxStackSize)
 		: mCount(0)
 		, mMaxStackSize(maxStackSize)
+		, mQueueStack()
 	{
 	}
 
@@ -64,7 +65,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	QueueStack<T>& QueueStack<T>::operator=(const QueueStack<T>& other)
+	QueueStack<T>& QueueStack<T>::operator=(QueueStack<T>& other)
 	{
 		if (this == &other)
 		{
@@ -83,7 +84,34 @@ namespace assignment3
 
 		mCount = other.mCount;
 		mMaxStackSize = other.mMaxStackSize;
-		mQueueStack = other.mQueueStack;
+		
+		queue<stack<T>> tempQueueStack;
+		while (!other.mQueueStack.empty())
+		{
+			stack<T> tempStack;
+
+			while (!other.mQueueStack.front().empty())
+			{
+				tempStack.push(other.mQueueStack.front().top());
+				other.mQueueStack.front().pop();
+			}
+
+			while (!tempStack.empty())
+			{
+				other.mQueueStack.front().push(tempStack.top());
+				tempStack.pop();
+			}
+
+			tempQueueStack.push(other.mQueueStack.front());
+			mQueueStack.push(other.mQueueStack.front());
+			other.mQueueStack.pop();
+		}
+
+		while (!tempQueueStack.empty())
+		{
+			other.mQueueStack.push(tempQueueStack.front());
+			tempQueueStack.pop();
+		}
 
 		return *this;
 	}
@@ -176,7 +204,6 @@ namespace assignment3
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
-			stack<T> tempFrontStack = mQueueStack.front();
 
 			while (!mQueueStack.front().empty())
 			{
