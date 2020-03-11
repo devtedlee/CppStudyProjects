@@ -16,11 +16,11 @@ namespace assignment3
 	public:
 		QueueStack(unsigned int maxStackSize);
 		virtual ~QueueStack();
-		QueueStack(QueueStack<T>& other);
-		QueueStack<T>& operator=(QueueStack<T>& other);
+		QueueStack(const QueueStack<T>& other);
+		QueueStack<T>& operator=(const QueueStack<T>& other);
 
-		void Enqueue(T number);
-		T Peek();
+		void Enqueue(const T number);
+		T Peek() const;
 		T Dequeue();
 		T GetMax();
 		T GetMin();
@@ -56,7 +56,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	QueueStack<T>::QueueStack(QueueStack<T>& other)
+	QueueStack<T>::QueueStack(const QueueStack<T>& other)
 		: mCount(other.mCount)
 		, mMaxStackSize(other.mMaxStackSize)
 		, mQueueStack(other.mQueueStack)
@@ -64,7 +64,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	QueueStack<T>& QueueStack<T>::operator=(QueueStack<T>& other)
+	QueueStack<T>& QueueStack<T>::operator=(const QueueStack<T>& other)
 	{
 		if (this == &other)
 		{
@@ -89,7 +89,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	void QueueStack<T>::Enqueue(T number)
+	void QueueStack<T>::Enqueue(const T number)
 	{
 		queue<stack<T>> tempQueueStack;
 
@@ -114,6 +114,7 @@ namespace assignment3
 					stack<T> newStack;
 					newStack.push(number);
 					tempQueueStack.push(newStack);
+					newStack.pop();
 
 					break;
 				}
@@ -133,7 +134,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T QueueStack<T>::Peek()
+	T QueueStack<T>::Peek() const
 	{
 		// ignore empty queue case
 
@@ -284,7 +285,14 @@ namespace assignment3
 			tempQueueStack.pop();
 		}
 
-		return GetRoundOffTo3DecimalPlaces(sum / mCount);
+		double average = sum / mCount;
+
+		if (average >= static_cast<double>(numeric_limits<T>::max()))
+		{
+			average = static_cast<double>(numeric_limits<T>::max());
+		}
+
+		return GetRoundOffTo3DecimalPlaces(average);
 	}
 
 	template<typename T>

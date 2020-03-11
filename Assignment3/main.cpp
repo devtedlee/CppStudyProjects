@@ -217,6 +217,8 @@ int main()
 	qsSum4 += 10.2f;
 	qsSum4 += 3.32f;
 
+	float qsSum5 = 3.32f + 10.2f + 1.1f - 5.9f + 1.1f - 12.4f + 9.2f;
+
 	assert(dequeued3 == 4.6f);
 	assert(dequeued4 == 1.2f);
 	assert(dequeued5 == 3.4f);
@@ -225,8 +227,8 @@ int main()
 	assert(qs.GetStackCount() == 3U);
 	assert(qs.GetMax() == 10.2f);
 	assert(qs.GetMin() == -12.4f);
-	//assert(qs.GetSum() == 6.62000322f);
 	assert(qs.GetAverage() == 0.946);
+	//(qs.GetSum() == 6.62000322f);
 
 	QueueStack<float> qs1(qs);
 	

@@ -44,6 +44,10 @@ namespace assignment3
 	template<typename T>
 	SmartQueue<T>::~SmartQueue()
 	{
+		while (!mQueue.empty())
+		{
+			mQueue.pop();
+		}
 	}
 
 	template<typename T>
@@ -60,6 +64,11 @@ namespace assignment3
 		if (this == &other)
 		{
 			return *this;
+		}
+
+		while (!mQueue.empty())
+		{
+			mQueue.pop();
 		}
 
 		mSum = other.mSum;

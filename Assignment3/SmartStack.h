@@ -48,6 +48,10 @@ namespace assignment3
 	template<typename T>
 	SmartStack<T>::~SmartStack()
 	{
+		while (!mStack.empty())
+		{
+			mStack.pop();
+		}
 	}
 
 	template<typename T>
@@ -66,6 +70,11 @@ namespace assignment3
 		if (this == &other)
 		{
 			return *this;
+		}
+
+		while (!mStack.empty())
+		{
+			mStack.pop();
 		}
 
 		mSum = other.mSum;
