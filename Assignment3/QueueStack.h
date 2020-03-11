@@ -119,16 +119,32 @@ namespace assignment3
 	{
 		queue<stack<T>> tempQueueStack;
 
-		bool bPushed = false;
+		if (mQueueStack.empty())
+		{
+			mQueueStack.push(stack<T>());
+		}
+
 		while (!mQueueStack.empty())
 		{
 			stack<T>& tempStack = mQueueStack.front();
-			if (tempStack.size() < mMaxStackSize)
-			{
-				tempStack.push(number);
-				++mCount;
 
-				bPushed = true;
+			if (mQueueStack.size() == 1)
+			{
+				if (tempStack.size() < mMaxStackSize)
+				{
+					tempStack.push(number);
+				}
+				else
+				{
+					tempQueueStack.push(tempStack);
+					mQueueStack.pop();
+
+					stack<T> newStack;
+					newStack.push(number);
+					tempQueueStack.push(newStack);
+
+					break;
+				}
 			}
 
 			tempQueueStack.push(tempStack);
@@ -141,15 +157,7 @@ namespace assignment3
 			tempQueueStack.pop();
 		}
 
-		if (!bPushed)
-		{
-			stack<T> tempStack;
-			tempStack.push(number);
-			mQueueStack.push(tempStack);
-
-			++mCount;
-		}
-
+		++mCount;
 		mSum += static_cast<double>(number);
 	}
 
@@ -171,7 +179,6 @@ namespace assignment3
 		stack<T>& frontStack = mQueueStack.front();
 		T value = frontStack.top();
 		frontStack.pop();
-		--mCount;
 		
 		if (frontStack.empty())
 		{
@@ -186,6 +193,7 @@ namespace assignment3
 			return value;
 		}
 
+		--mCount;
 		mSum -= static_cast<double>(value);
 
 		return value;
@@ -277,6 +285,10 @@ namespace assignment3
 	double QueueStack<T>::GetAverage() const
 	{
 		// ignore empty queue case
+		if (mQueueStack.empty())
+		{
+			return 0.0;
+		}
 
 		return GetRoundOffTo3DecimalPlaces(mSum / mCount);
 	}
