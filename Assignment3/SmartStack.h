@@ -21,17 +21,15 @@ namespace assignment3
 		void Push(const T number);
 		T Pop();
 		T Peek() const;
-		T GetMax();
-		T GetMin();
-		double GetAverage();
-		T GetSum();
-		double GetVariance();
-		double GetStandardDeviation();
+		T GetMax() const;
+		T GetMin() const;
+		double GetAverage() const;
+		T GetSum() const;
+		double GetVariance() const;
+		double GetStandardDeviation() const;
 		unsigned int GetCount() const;
 	private:
-		unsigned int mCount;
 		double mSum;
-		double mAverage;
 		double mDistanceSum;
 		stack<T> mStack;
 		stack<T> mMaxStack;
@@ -40,9 +38,7 @@ namespace assignment3
 
 	template<typename T>
 	SmartStack<T>::SmartStack()
-		: mCount(0)
-		, mSum(0.0)
-		, mAverage(0.0)
+		: mSum(0.0)
 		, mDistanceSum(0.0)
 	{
 		mMaxStack.push(numeric_limits<T>::lowest());
@@ -56,9 +52,7 @@ namespace assignment3
 
 	template<typename T>
 	SmartStack<T>::SmartStack(const SmartStack<T>& other)
-		: mCount(other.mCount)
-		, mSum(other.mSum)
-		, mAverage(other.mAverage)
+		: mSum(other.mSum)
 		, mDistanceSum(other.mDistanceSum)
 		, mStack(other.mStack)
 		, mMaxStack(other.mMaxStack)
@@ -74,9 +68,7 @@ namespace assignment3
 			return *this;
 		}
 
-		mCount = other.mCount;
 		mSum = other.mSum;
-		mAverage = other.mAverage;
 		mDistanceSum = other.mDistanceSum;
 		mStack = other.mStack;
 		mMaxStack = other.mMaxStack;
@@ -88,16 +80,19 @@ namespace assignment3
 	template<typename T>
 	void SmartStack<T>::Push(const T number)
 	{
-		double postAverage = mAverage;
-		unsigned int postCount = mCount;
+		unsigned int postCount = mStack.size();
+		double postAverage = 0.0;
+		if (!mStack.empty())
+		{
+			postAverage = mSum / postCount;
+		}
 
 		mStack.push(number);
 
-		++mCount;
 		mSum += static_cast<double>(number);
-		mAverage = mSum / mCount;
-		double remainderSum = pow(mAverage - postAverage, 2.0) * postCount;
-		mDistanceSum += pow(abs(static_cast<double>(number) - mAverage), 2.0) + remainderSum;
+		double recentAverage = mSum / mStack.size();
+		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
+		mDistanceSum += pow(abs(static_cast<double>(number) - recentAverage), 2.0) + remainderSum;
 
 		if (mMaxStack.top() <= number)
 		{
@@ -115,27 +110,26 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		double postAverage = mAverage;
-		unsigned int postCount = mCount;
+		unsigned int postCount = mStack.size();
+		double postAverage = mSum / postCount;
 
 		T value = mStack.top();
 		mStack.pop();
-		--mCount;
-
+		
 		if (mStack.empty())
 		{
-			mCount = 0U;
 			mSum = 0.0;
-			mAverage = 0.0;
 			mDistanceSum = 0.0;
+			mMaxStack.pop();
+			mMinStack.pop();
 
 			return value;
 		}
 
 		mSum -= static_cast<double>(value);
-		mAverage = mSum / mCount;
-		double remainderSum = pow((mAverage - postAverage), 2.0) * postCount;
-		mDistanceSum -= pow(abs(static_cast<double>(value) - mAverage), 2.0) - remainderSum;
+		double recentAverage = mSum / mStack.size();
+		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
+		mDistanceSum -= pow(abs(static_cast<double>(value) - recentAverage), 2.0) - remainderSum;
 
 		if (mMaxStack.top() == value)
 		{
@@ -161,7 +155,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetMax()
+	T SmartStack<T>::GetMax() const
 	{
 		T maxValue = mMaxStack.top();
 
@@ -169,7 +163,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetMin()
+	T SmartStack<T>::GetMin() const
 	{
 		T minValue = mMinStack.top();
 
@@ -177,15 +171,15 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetAverage()
+	double SmartStack<T>::GetAverage() const
 	{
 		// ignore empty queue case
 
-		return GetRoundOffTo3DecimalPlaces(mAverage);
+		return GetRoundOffTo3DecimalPlaces(mSum / mStack.size());
 	}
 
 	template<typename T>
-	T SmartStack<T>::GetSum()
+	T SmartStack<T>::GetSum() const
 	{
 		if (mSum >= static_cast<double>(numeric_limits<T>::max()))
 		{
@@ -196,18 +190,18 @@ namespace assignment3
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetVariance()
+	double SmartStack<T>::GetVariance() const
 	{
 		if (mStack.empty())
 		{
 			return 0.0;
 		}
 
-		return GetRoundOffTo3DecimalPlaces(mDistanceSum / mCount);
+		return GetRoundOffTo3DecimalPlaces(mDistanceSum / mStack.size());
 	}
 
 	template<typename T>
-	double SmartStack<T>::GetStandardDeviation()
+	double SmartStack<T>::GetStandardDeviation() const
 	{
 		if (mStack.empty())
 		{
@@ -222,6 +216,6 @@ namespace assignment3
 	template<typename T>
 	unsigned int SmartStack<T>::GetCount() const
 	{
-		return mCount;
+		return mStack.size();
 	}
 }
