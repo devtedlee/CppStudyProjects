@@ -178,24 +178,24 @@ namespace assignment3
 			stack<T> tempStack;
 			stack<T> tempFrontStack = mQueueStack.front();
 
-			while (!tempFrontStack.empty())
+			while (!mQueueStack.front().empty())
 			{
-				T tempValue = tempFrontStack.top();
-				tempFrontStack.pop();
+				T tempValue = mQueueStack.front().top();
 				tempStack.push(tempValue);
 				if (tempValue > maxValue)
 				{
 					maxValue = tempValue;
 				}
+				mQueueStack.front().pop();
 			}
 
 			while (!tempStack.empty())
 			{
-				tempFrontStack.push(tempStack.top());
+				mQueueStack.front().push(tempStack.top());
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(tempFrontStack);
+			tempQueueStack.push(mQueueStack.front());
 			mQueueStack.pop();
 		}
 
