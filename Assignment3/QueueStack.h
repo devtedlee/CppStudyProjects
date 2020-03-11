@@ -16,7 +16,7 @@ namespace assignment3
 	public:
 		QueueStack(unsigned int maxStackSize);
 		virtual ~QueueStack();
-		QueueStack(const QueueStack<T>& other);
+		QueueStack(QueueStack<T>& other);
 		QueueStack<T>& operator=(QueueStack<T>& other);
 
 		void Enqueue(T number);
@@ -26,15 +26,12 @@ namespace assignment3
 		T GetMin();
 		double GetAverage() const;
 		T GetSum() const;
-		double GetVariance() const;
-		double GetStandardDeviation() const;
 		unsigned int GetCount() const;
 		unsigned int GetStackCount() const;
 	private:
 		unsigned int mCount;
 		unsigned int mMaxStackSize;
 		double mSum;
-		double mDistanceSum;
 		queue<stack<T>*> mQueueStack;
 	};
 
@@ -43,7 +40,6 @@ namespace assignment3
 		: mCount(0)
 		, mMaxStackSize(maxStackSize)
 		, mSum(0.0)
-		, mDistanceSum(0.0)
 	{
 	}
 
@@ -61,11 +57,10 @@ namespace assignment3
 	}
 
 	template<typename T>
-	QueueStack<T>::QueueStack(const QueueStack<T>& other)
+	QueueStack<T>::QueueStack(QueueStack<T>& other)
 		: mCount(other.mCount)
 		, mMaxStackSize(other.mMaxStackSize)
 		, mSum(other.mSum)
-		, mDistanceSum(other.mDistanceSum)
 	{
 		queue<stack<T>*> tempQueueStack;
 
@@ -104,6 +99,7 @@ namespace assignment3
 
 		mCount = other.mCount;
 		mMaxStackSize = other.mMaxStackSize;
+		mSum = other.mSum;
 
 		queue<stack<T>*> tempQueueStack;
 		while (!other.mQueueStack.empty())
@@ -127,13 +123,6 @@ namespace assignment3
 	template<typename T>
 	void QueueStack<T>::Enqueue(T number)
 	{
-		unsigned int postCount = mCount;
-		double postAverage = 0.0;
-		if (!mQueueStack.empty())
-		{
-			postAverage = mSum / postCount;
-		}
-
 		queue<stack<T>*> tempQueueStack;
 		stack<T>* tempStackP = nullptr;
 
@@ -168,14 +157,13 @@ namespace assignment3
 		}
 
 		mSum += static_cast<double>(number);
-		double recentAverage = mSum / mCount;
-		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
-		mDistanceSum += pow(abs(static_cast<double>(number) - recentAverage), 2.0) + remainderSum;
 	}
 
 	template<typename T>
 	T QueueStack<T>::Peek() const
 	{
+		// ignore empty queue case
+
 		stack<T>* frontStack = mQueueStack.front();
 
 		return frontStack->top();
@@ -184,8 +172,7 @@ namespace assignment3
 	template<typename T>
 	T QueueStack<T>::Dequeue()
 	{
-		unsigned int postCount = mCount;
-		double postAverage = mSum / postCount;
+		// ignore empty queue case
 
 		stack<T>* frontStack = mQueueStack.front();
 		T value = frontStack->top();
@@ -202,15 +189,11 @@ namespace assignment3
 		{
 			mCount = 0;
 			mSum = 0.0;
-			mDistanceSum = 0.0;
 
 			return value;
 		}
 
 		mSum -= static_cast<double>(value);
-		double recentAverage = mSum / mCount;
-		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
-		mDistanceSum -= pow(abs(static_cast<double>(value) - recentAverage), 2.0) - remainderSum;
 
 		return value;
 	}
@@ -298,10 +281,7 @@ namespace assignment3
 	template<typename T>
 	double QueueStack<T>::GetAverage() const
 	{
-		if (mQueueStack.empty())
-		{
-			return 0.0;
-		}
+		// ignore empty queue case
 
 		return GetRoundOffTo3DecimalPlaces(mSum / mCount);
 	}
@@ -315,30 +295,6 @@ namespace assignment3
 		}
 
 		return static_cast<T>(mSum);
-	}
-
-	template<typename T>
-	double QueueStack<T>::GetVariance() const
-	{
-		if (mQueueStack.empty())
-		{
-			return 0.0;
-		}
-
-		return GetRoundOffTo3DecimalPlaces(mDistanceSum / mCount);
-	}
-
-	template<typename T>
-	double QueueStack<T>::GetStandardDeviation() const
-	{
-		if (mQueueStack.empty())
-		{
-			return 0.0;
-		}
-
-		double variance = GetVariance();
-
-		return GetRoundOffTo3DecimalPlaces(sqrt(variance));
 	}
 
 	template<typename T>
