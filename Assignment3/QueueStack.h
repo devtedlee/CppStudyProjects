@@ -247,9 +247,11 @@ namespace assignment3
 	{
 		// ignore empty queue case
 		
-		double sum = 0.0;
+		double doubleSum = 0.0;
+		T sum = 0.0;
 		queue<stack<T>> tempQueueStack;
-
+		
+		bool bUseDoubleSum = false;
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
@@ -264,7 +266,18 @@ namespace assignment3
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
-				sum += static_cast<double>(tempValue);
+
+				if (doubleSum + static_cast<double>(tempValue) > static_cast<double>(numeric_limits<T>::max()))
+				{
+					bUseDoubleSum = true;
+					sum = numeric_limits<T>::max();
+				}
+				else
+				{
+					sum += tempValue;
+				}
+
+				doubleSum += static_cast<double>(tempValue);
 
 				tempFrontStack.push(tempValue);
 				tempStack.pop();
@@ -280,7 +293,12 @@ namespace assignment3
 			tempQueueStack.pop();
 		}
 
-		return GetRoundOffTo3DecimalPlaces(sum / mCount);
+		if (bUseDoubleSum)
+		{
+			return GetRoundOffTo3DecimalPlaces(doubleSum / mCount);
+		}
+
+		return GetRoundOffTo3DecimalPlaces(static_cast<double>(sum) / mCount);
 	}
 
 	template<typename T>
@@ -304,16 +322,16 @@ namespace assignment3
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
+
 				if (doubleSum + static_cast<double>(tempValue) > static_cast<double>(numeric_limits<T>::max()))
 				{
-					doubleSum = static_cast<double>(numeric_limits<T>::max());
 					sum = numeric_limits<T>::max();
 				}
 				else
 				{
-					doubleSum += static_cast<double>(tempValue);
 					sum += tempValue;
 				}
+				doubleSum += static_cast<double>(tempValue);
 
 				tempFrontStack.push(tempValue);
 				tempStack.pop();
@@ -327,11 +345,6 @@ namespace assignment3
 		{
 			mQueueStack.push(tempQueueStack.front());
 			tempQueueStack.pop();
-		}
-
-		if (sum >= static_cast<double>(numeric_limits<T>::max()))
-		{
-			return numeric_limits<T>::max();
 		}
 
 		return static_cast<T>(sum);
