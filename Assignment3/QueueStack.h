@@ -20,7 +20,7 @@ namespace assignment3
 		QueueStack<T>& operator=(QueueStack<T>& other);
 
 		void Enqueue(T number);
-		T Peek() const;
+		T Peek();
 		T Dequeue();
 		T GetMax();
 		T GetMin();
@@ -90,17 +90,15 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
-			stack<T>& tempStack = mQueueStack.front();
-
 			if (mQueueStack.size() == 1)
 			{
-				if (tempStack.size() < mMaxStackSize)
+				if (mQueueStack.front().size() < mMaxStackSize)
 				{
-					tempStack.push(number);
+					mQueueStack.front().push(number);
 				}
 				else
 				{
-					tempQueueStack.push(tempStack);
+					tempQueueStack.push(mQueueStack.front());
 					mQueueStack.pop();
 
 					stack<T> newStack;
@@ -111,7 +109,7 @@ namespace assignment3
 				}
 			}
 
-			tempQueueStack.push(tempStack);
+			tempQueueStack.push(mQueueStack.front());
 			mQueueStack.pop();
 		}
 
@@ -125,13 +123,12 @@ namespace assignment3
 	}
 
 	template<typename T>
-	T QueueStack<T>::Peek() const
+	T QueueStack<T>::Peek()
 	{
 		// ignore empty queue case
 
-		stack<T> frontStack = mQueueStack.front();
-
-		return frontStack.top();
+		T value = mQueueStack.front().top();
+		return value;
 	}
 
 	template<typename T>
@@ -139,11 +136,10 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		stack<T>& frontStack = mQueueStack.front();
-		T value = frontStack.top();
-		frontStack.pop();
+		T value = mQueueStack.front().top();
+		mQueueStack.front().pop();
 		
-		if (frontStack.empty())
+		if (mQueueStack.front().empty())
 		{
 			mQueueStack.pop();
 		}
@@ -169,7 +165,7 @@ namespace assignment3
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
-			stack<T>& tempFrontStack = mQueueStack.front();
+			stack<T> tempFrontStack = mQueueStack.front();
 
 			while (!tempFrontStack.empty())
 			{
@@ -210,12 +206,11 @@ namespace assignment3
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
-			stack<T>& tempFrontStack = mQueueStack.front();
 
-			while (!tempFrontStack.empty())
+			while (!mQueueStack.front().empty())
 			{
-				T tempValue = tempFrontStack.top();
-				tempFrontStack.pop();
+				T tempValue = mQueueStack.front().top();
+				mQueueStack.front().pop();
 				tempStack.push(tempValue);
 				if (tempValue < minValue)
 				{
@@ -225,11 +220,11 @@ namespace assignment3
 
 			while (!tempStack.empty())
 			{
-				tempFrontStack.push(tempStack.top());
+				mQueueStack.front().push(tempStack.top());
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(tempFrontStack);
+			tempQueueStack.push(mQueueStack.front());
 			mQueueStack.pop();
 		}
 
@@ -255,12 +250,11 @@ namespace assignment3
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
-			stack<T>& tempFrontStack = mQueueStack.front();
 
-			while (!tempFrontStack.empty())
+			while (!mQueueStack.front().empty())
 			{
-				tempStack.push(tempFrontStack.top());
-				tempFrontStack.pop();
+				tempStack.push(mQueueStack.front().top());
+				mQueueStack.front().pop();
 			}
 
 			while (!tempStack.empty())
@@ -279,11 +273,11 @@ namespace assignment3
 
 				doubleSum += static_cast<double>(tempValue);
 
-				tempFrontStack.push(tempValue);
+				mQueueStack.front().push(tempValue);
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(tempFrontStack);
+			tempQueueStack.push(mQueueStack.front());
 			mQueueStack.pop();
 		}
 
@@ -311,12 +305,11 @@ namespace assignment3
 		while (!mQueueStack.empty())
 		{
 			stack<T> tempStack;
-			stack<T>& tempFrontStack = mQueueStack.front();
 
-			while (!tempFrontStack.empty())
+			while (!mQueueStack.front().empty())
 			{
-				tempStack.push(tempFrontStack.top());
-				tempFrontStack.pop();
+				tempStack.push(mQueueStack.front().top());
+				mQueueStack.front().pop();
 			}
 
 			while (!tempStack.empty())
@@ -333,11 +326,11 @@ namespace assignment3
 				}
 				doubleSum += static_cast<double>(tempValue);
 
-				tempFrontStack.push(tempValue);
+				mQueueStack.front().push(tempValue);
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(tempFrontStack);
+			tempQueueStack.push(mQueueStack.front());
 			mQueueStack.pop();
 		}
 
