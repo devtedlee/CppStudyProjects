@@ -53,6 +53,7 @@ namespace assignment3
 			mQueueStack.pop();
 
 			delete tempStackP;
+			tempStackP = nullptr;
 		}
 	}
 
@@ -95,6 +96,7 @@ namespace assignment3
 			mQueueStack.pop();
 
 			delete tempStackP;
+			tempStackP = nullptr;
 		}
 
 		mCount = other.mCount;
@@ -142,18 +144,19 @@ namespace assignment3
 			tempQueueStack.push(tempStackP);
 		}
 
-		if (!bPushed)
-		{
-			tempStackP = new stack<T>;
-			tempStackP->push(number);
-			tempQueueStack.push(tempStackP);
-			++mCount;
-		}
-
 		while (!tempQueueStack.empty())
 		{
 			mQueueStack.push(tempQueueStack.front());
 			tempQueueStack.pop();
+		}
+
+		if (!bPushed)
+		{
+			tempStackP = new stack<T>;
+			tempStackP->push(number);
+			mQueueStack.push(tempStackP);
+
+			++mCount;
 		}
 
 		mSum += static_cast<double>(number);
@@ -183,6 +186,7 @@ namespace assignment3
 		{
 			mQueueStack.pop();
 			delete frontStack;
+			frontStack = nullptr;
 		}
 
 		if (mQueueStack.empty())

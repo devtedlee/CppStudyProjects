@@ -176,6 +176,7 @@ int main()
 	assert(dequeued3 == 4.6f);
 	assert(dequeued4 == 1.2f);
 	assert(dequeued5 == 3.4f);
+	assert(qs.Peek() == 1.1f);
 	assert(qs.GetCount() == 7U);
 	assert(qs.GetStackCount() == 3U);
 	assert(qs.GetMax() == 10.2f);
