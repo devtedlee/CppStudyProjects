@@ -17,7 +17,7 @@ namespace assignment3
 		QueueStack(unsigned int maxStackSize);
 		virtual ~QueueStack();
 		QueueStack(const QueueStack<T>& other);
-		QueueStack<T>& operator=(const QueueStack<T>& other);
+		QueueStack<T>& operator=(QueueStack<T>& other);
 
 		void Enqueue(T number);
 		T Peek() const;
@@ -86,7 +86,7 @@ namespace assignment3
 	}
 
 	template<typename T>
-	QueueStack<T>& QueueStack<T>::operator=(const QueueStack<T>& other)
+	QueueStack<T>& QueueStack<T>::operator=(QueueStack<T>& other)
 	{
 		if (this == &other)
 		{
