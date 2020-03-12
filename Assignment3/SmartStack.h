@@ -29,7 +29,7 @@ namespace assignment3
 		double GetStandardDeviation() const;
 		unsigned int GetCount() const;
 	private:
-		double mSum;
+		T mSum;
 		double mDistanceSum;
 		stack<T> mStack;
 		stack<T> mMaxStack;
@@ -38,7 +38,7 @@ namespace assignment3
 
 	template<typename T>
 	SmartStack<T>::SmartStack()
-		: mSum(0.0)
+		: mSum(0)
 		, mDistanceSum(0.0)
 	{
 		mMaxStack.push(numeric_limits<T>::lowest());
@@ -48,10 +48,6 @@ namespace assignment3
 	template<typename T>
 	SmartStack<T>::~SmartStack()
 	{
-		while (!mStack.empty())
-		{
-			mStack.pop();
-		}
 	}
 
 	template<typename T>
@@ -72,11 +68,6 @@ namespace assignment3
 			return *this;
 		}
 
-		while (!mStack.empty())
-		{
-			mStack.pop();
-		}
-
 		mSum = other.mSum;
 		mDistanceSum = other.mDistanceSum;
 		mStack = other.mStack;
@@ -93,13 +84,13 @@ namespace assignment3
 		double postAverage = 0.0;
 		if (!mStack.empty())
 		{
-			postAverage = mSum / postCount;
+			postAverage = static_cast<double>(mSum) / postCount;
 		}
 
 		mStack.push(number);
 
-		mSum += static_cast<double>(number);
-		double recentAverage = mSum / mStack.size();
+		mSum += number;
+		double recentAverage = static_cast<double>(mSum) / mStack.size();
 		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
 		mDistanceSum += pow(abs(static_cast<double>(number) - recentAverage), 2.0) + remainderSum;
 
@@ -120,14 +111,14 @@ namespace assignment3
 		// ignore empty queue case
 
 		unsigned int postCount = mStack.size();
-		double postAverage = mSum / postCount;
+		double postAverage = static_cast<double>(mSum) / postCount;
 
 		T value = mStack.top();
 		mStack.pop();
 		
 		if (mStack.empty())
 		{
-			mSum = 0.0;
+			mSum = 0;
 			mDistanceSum = 0.0;
 			mMaxStack.pop();
 			mMinStack.pop();
@@ -135,8 +126,8 @@ namespace assignment3
 			return value;
 		}
 
-		mSum -= static_cast<double>(value);
-		double recentAverage = mSum / mStack.size();
+		mSum -= value;
+		double recentAverage = static_cast<double>(mSum) / mStack.size();
 		double remainderSum = pow(recentAverage - postAverage, 2.0) * postCount;
 		mDistanceSum -= pow(abs(static_cast<double>(value) - recentAverage), 2.0) - remainderSum;
 
@@ -184,18 +175,13 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		return GetRoundOffTo3DecimalPlaces(mSum / mStack.size());
+		return GetRoundOffTo3DecimalPlaces(static_cast<double>(mSum) / mStack.size());
 	}
 
 	template<typename T>
 	T SmartStack<T>::GetSum() const
 	{
-		if (mSum >= static_cast<double>(numeric_limits<T>::max()))
-		{
-			return numeric_limits<T>::max();
-		}
-
-		return static_cast<T>(mSum);
+		return mSum;
 	}
 
 	template<typename T>

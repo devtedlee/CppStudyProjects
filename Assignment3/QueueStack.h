@@ -129,10 +129,11 @@ namespace assignment3
 	{
 		// ignore empty queue case
 
-		T value = mQueueStack.front().top();
-		mQueueStack.front().pop();
+		stack<T>& frontStack = mQueueStack.front();
+		T value = frontStack.top();
+		frontStack.pop();
 		
-		if (mQueueStack.front().empty())
+		if (frontStack.empty())
 		{
 			mQueueStack.pop();
 		}
@@ -158,25 +159,27 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
-			while (!mQueueStack.front().empty())
+			stack<T>& frontStack = mQueueStack.front();
+
+			while (!frontStack.empty())
 			{
-				T tempValue = mQueueStack.front().top();
+				T tempValue = frontStack.top();
 				if (tempValue > maxValue)
 				{
 					maxValue = tempValue;
 				}
 
 				tempStack.push(tempValue);
-				mQueueStack.front().pop();
+				frontStack.pop();
 			}
 
 			while (!tempStack.empty())
 			{
-				mQueueStack.front().push(tempStack.top());
+				frontStack.push(tempStack.top());
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(mQueueStack.front());
+			tempQueueStack.push(frontStack);
 			mQueueStack.pop();
 		}
 
@@ -198,26 +201,27 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
+			stack<T>& frontStack = mQueueStack.front();
 
-			while (!mQueueStack.front().empty())
+			while (!frontStack.empty())
 			{
-				T tempValue = mQueueStack.front().top();
+				T tempValue = frontStack.top();
 				if (tempValue < minValue)
 				{
 					minValue = tempValue;
 				}
 
 				tempStack.push(tempValue);
-				mQueueStack.front().pop();
+				frontStack.pop();
 			}
 
 			while (!tempStack.empty())
 			{
-				mQueueStack.front().push(tempStack.top());
+				frontStack.push(tempStack.top());
 				tempStack.pop();
 			}
 
-			tempQueueStack.push(mQueueStack.front());
+			tempQueueStack.push(frontStack);
 			mQueueStack.pop();
 		}
 
@@ -251,22 +255,24 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
-			while (!mQueueStack.front().empty())
+			stack<T>& frontStack = mQueueStack.front();
+
+			while (!frontStack.empty())
 			{
-				tempStack.push(mQueueStack.front().top());
-				mQueueStack.front().pop();
+				tempStack.push(frontStack.top());
+				frontStack.pop();
 			}
 
 			while (!tempStack.empty())
 			{
 				T tempValue = tempStack.top();
-				mQueueStack.front().push(tempValue);
+				frontStack.push(tempValue);
 				tempStack.pop();
 
 				sum += tempValue;
 			}
 
-			tempQueueStack.push(mQueueStack.front());
+			tempQueueStack.push(frontStack);
 			mQueueStack.pop();
 		}
 
