@@ -45,15 +45,6 @@ namespace assignment3
 	template<typename T>
 	QueueStack<T>::~QueueStack()
 	{
-		while (!mQueueStack.empty())
-		{
-			while (!mQueueStack.front().empty())
-			{
-				mQueueStack.front().pop();
-			}
-
-			mQueueStack.pop();
-		}
 	}
 
 	template<typename T>
@@ -70,16 +61,6 @@ namespace assignment3
 		if (this == &other)
 		{
 			return *this;
-		}
-
-		while (!mQueueStack.empty())
-		{
-			while (!mQueueStack.front().empty())
-			{
-				mQueueStack.front().pop();
-			}
-
-			mQueueStack.pop();
 		}
 
 		mCount = other.mCount;
@@ -101,15 +82,16 @@ namespace assignment3
 
 		while (!mQueueStack.empty())
 		{
+			stack<T>& frontStack = mQueueStack.front();
 			if (mQueueStack.size() == 1)
 			{
-				if (mQueueStack.front().size() < mMaxStackSize)
+				if (frontStack.size() < mMaxStackSize)
 				{
-					mQueueStack.front().push(number);
+					frontStack.push(number);
 				}
 				else
 				{
-					tempQueueStack.push(mQueueStack.front());
+					tempQueueStack.push(frontStack);
 					mQueueStack.pop();
 
 					stack<T> newStack;
@@ -120,7 +102,7 @@ namespace assignment3
 				}
 			}
 
-			tempQueueStack.push(mQueueStack.front());
+			tempQueueStack.push(frontStack);
 			mQueueStack.pop();
 		}
 
