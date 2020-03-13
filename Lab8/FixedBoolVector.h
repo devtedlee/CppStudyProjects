@@ -9,14 +9,16 @@ namespace lab8
 	{
 		FixedVector();
 		virtual ~FixedVector();
+		FixedVector(const FixedVector<bool, N>& other);
+		FixedVector<bool, N>& operator=(const FixedVector<bool, N>& other);
 
 		bool Add(const bool t);
 		bool Remove(const bool t);
-		const T& Get(unsigned int index) const;
+		const bool& Get(unsigned int index) const;
 		bool& operator[](unsigned int index) const;
 		int GetIndex(const bool& t) const;
 		size_t GetSize() const;
-		size_t GetCapacity();
+		size_t GetCapacity() const;
 	private:
 		size_t mCount;
 		bool mArray[N];
