@@ -14,11 +14,11 @@ namespace lab8
 		FixedVector(const FixedVector<bool, N>& bOther);
 		FixedVector<bool, N>& operator=(const FixedVector<bool, N>& bOther);
 
-		bool Add(const bool& t);
-		bool Remove(const bool& t);
+		bool Add(const bool& bValue);
+		bool Remove(const bool& bValue);
 		const bool Get(unsigned int index) const;
 		const bool operator[](unsigned int index) const;
-		int GetIndex(const bool& t) const;
+		int GetIndex(const bool& bValue) const;
 		size_t GetSize() const;
 		size_t GetCapacity() const;
 	private:
@@ -105,7 +105,7 @@ namespace lab8
 	}
 
 	template<size_t N>
-	bool FixedVector<bool, N>::Add(const bool& t)
+	bool FixedVector<bool, N>::Add(const bool& bValue)
 	{
 		if (mSize == N)
 		{
@@ -122,7 +122,7 @@ namespace lab8
 		size_t bitPoint = mSize++ % BOOL_BYTE_SIZE;
 		
 		unsigned int flagTrigger = true << bitPoint;
-		if (t)
+		if (bValue)
 		{
 			currentFlags.Val ^= flagTrigger;
 		}
@@ -136,7 +136,7 @@ namespace lab8
 	}
 
 	template<size_t N>
-	bool FixedVector<bool, N>::Remove(const bool& t)
+	bool FixedVector<bool, N>::Remove(const bool& bValue)
 	{
 		if (mSize == 0)
 		{
@@ -154,7 +154,7 @@ namespace lab8
 			size_t bitPoint = i % BOOL_BYTE_SIZE;
 			unsigned int flagTrigger = true << bitPoint;
 
-			if (static_cast<bool>(mArray[arrayIndex].Val & flagTrigger) == t)
+			if (static_cast<bool>(mArray[arrayIndex].Val & flagTrigger) == bValue)
 			{
 				for (; i < mSize - 1; ++i)
 				{
@@ -257,7 +257,7 @@ namespace lab8
 	}
 
 	template<size_t N>
-	int FixedVector<bool, N>::GetIndex(const bool& t) const
+	int FixedVector<bool, N>::GetIndex(const bool& bValue) const
 	{
 		const int FAILED_INDEX = -1;
 		if (mSize == 0)
@@ -277,7 +277,7 @@ namespace lab8
 			size_t bitPoint = static_cast<size_t>(i) % BOOL_BYTE_SIZE;
 			unsigned int flagTrigger = true << bitPoint;
 			
-			if (t)
+			if (bValue)
 			{
 				if (currentFlags.Val & flagTrigger)
 				{
