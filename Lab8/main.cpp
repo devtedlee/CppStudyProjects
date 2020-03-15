@@ -95,5 +95,26 @@ int main()
 	assert(v1.GetSize() == 65);
 	assert(v1.GetIndex(true) == -1);
 
+	FixedVector<bool, 65> v2;
+
+	bool bIn = false;
+	for (int i = 0; i < 65; i++)
+	{
+		if (bIn)
+		{
+			v2.Add(false);
+			bIn = false;
+		}
+		else
+		{
+			v2.Add(true);
+			bIn = true;
+		}
+	}
+
+	v2.Remove(true);
+	v2.Remove(true);
+
+
 	return 0;
 }

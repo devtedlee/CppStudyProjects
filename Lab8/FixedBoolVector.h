@@ -11,8 +11,8 @@ namespace lab8
 	public:
 		FixedVector();
 		virtual ~FixedVector();
-		FixedVector(const FixedVector<bool, N>& other);
-		FixedVector<bool, N>& operator=(const FixedVector<bool, N>& other);
+		FixedVector(const FixedVector<bool, N>& bOther);
+		FixedVector<bool, N>& operator=(const FixedVector<bool, N>& bOther);
 
 		bool Add(const bool& t);
 		bool Remove(const bool& t);
@@ -22,12 +22,15 @@ namespace lab8
 		size_t GetSize() const;
 		size_t GetCapacity() const;
 	private:
-		enum {
+		enum 
+		{
 			BOOL_BYTE_SIZE = 32
 		};
-		typedef union {
+		typedef union 
+		{
 			unsigned int val;
-			struct {
+			struct 
+			{
 				bool b0 : 1;
 				bool b1 : 1;
 				bool b2 : 1;
@@ -79,24 +82,24 @@ namespace lab8
 	}
 
 	template<size_t N>
-	FixedVector<bool, N>::FixedVector(const FixedVector<bool, N>& other)
-		: mSize(other.mSize)
+	FixedVector<bool, N>::FixedVector(const FixedVector<bool, N>& bOther)
+		: mSize(bOther.mSize)
 		, mArray()
 	{
-		memcpy(mArray, other.mArray, static_cast<int>(N / BOOL_BYTE_SIZE + 1));
+		memcpy(mArray, bOther.mArray, static_cast<int>(N / BOOL_BYTE_SIZE + 1));
 	}
 
 	template<size_t N>
-	FixedVector<bool, N>& FixedVector<bool, N>::operator=(const FixedVector<bool, N>& other)
+	FixedVector<bool, N>& FixedVector<bool, N>::operator=(const FixedVector<bool, N>& bOther)
 	{
-		if (this == &other)
+		if (this == &bOther)
 		{
 			return *this;
 		}
 
-		memcpy(mArray, other.mArray, static_cast<int>(N / BOOL_BYTE_SIZE + 1));
+		memcpy(mArray, bOther.mArray, static_cast<int>(N / BOOL_BYTE_SIZE + 1));
 
-		mSize = other.mSize;
+		mSize = bOther.mSize;
 
 		return *this;
 	}
@@ -148,16 +151,14 @@ namespace lab8
 				arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
 			}
 
-			bitflags_t& currentFlags = mArray[arrayIndex];
 			size_t bitPoint = i % BOOL_BYTE_SIZE;
 			unsigned int flagTrigger = true << bitPoint;
 
-			if (static_cast<bool>(currentFlags.val & flagTrigger) == t)
+			if (static_cast<bool>(mArray[arrayIndex].val & flagTrigger) == t)
 			{
 				for (; i < mSize - 1; ++i)
 				{
 					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					currentFlags = mArray[arrayIndex];
 					bitPoint = i % BOOL_BYTE_SIZE;
 					size_t nextBitPoint = (i + 1) % BOOL_BYTE_SIZE;
 					flagTrigger = true << bitPoint;
@@ -166,40 +167,39 @@ namespace lab8
 					bool bNextValue = false;
 					if (bitPoint < nextBitPoint)
 					{
-						bNextValue = currentFlags.val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
 					}
 					else
 					{
-						arrayIndex = static_cast<size_t>(i + 1 / BOOL_BYTE_SIZE);
-						bitflags_t& nextFlags = mArray[arrayIndex];
+						arrayIndex = static_cast<size_t>((i + 1) / BOOL_BYTE_SIZE);
 
-						bNextValue = nextFlags.val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
+
+						arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
 					}
 
 					if (bNextValue)
 					{
-						currentFlags.val ^= flagTrigger;
+						mArray[arrayIndex].val ^= flagTrigger;
 					}
 					else
 					{
 						flagTrigger = ~flagTrigger;
-						currentFlags.val &= flagTrigger;
+						mArray[arrayIndex].val &= flagTrigger;
 					}
 				}
 
 				if (mSize == N)
 				{
 					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					currentFlags = mArray[arrayIndex];
 					bitPoint = i % BOOL_BYTE_SIZE;
 					flagTrigger = true << bitPoint;
 					flagTrigger = ~flagTrigger;
-					currentFlags.val &= flagTrigger;
+					mArray[arrayIndex].val &= flagTrigger;
 				}
 				else
 				{
 					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					currentFlags = mArray[arrayIndex];
 					bitPoint = i % BOOL_BYTE_SIZE;
 					size_t nextBitPoint = (i + 1) % BOOL_BYTE_SIZE;
 					flagTrigger = true << bitPoint;
@@ -208,11 +208,11 @@ namespace lab8
 					bool bNextValue = false;
 					if (bitPoint < nextBitPoint)
 					{
-						bNextValue = currentFlags.val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
 					}
 					else
 					{
-						arrayIndex = static_cast<size_t>(i + 1 / BOOL_BYTE_SIZE);
+						arrayIndex = static_cast<size_t>((i + 1) / BOOL_BYTE_SIZE);
 						bitflags_t& nextFlags = mArray[arrayIndex];
 
 						bNextValue = nextFlags.val & nextFlagTrigger;
@@ -220,12 +220,12 @@ namespace lab8
 
 					if (bNextValue)
 					{
-						currentFlags.val ^= flagTrigger;
+						mArray[arrayIndex].val ^= flagTrigger;
 					}
 					else
 					{
 						flagTrigger = ~flagTrigger;
-						currentFlags.val &= flagTrigger;
+						mArray[arrayIndex].val &= flagTrigger;
 					}
 				}
 
