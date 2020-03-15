@@ -152,7 +152,7 @@ namespace lab8
 			size_t bitPoint = i % BOOL_BYTE_SIZE;
 			unsigned int flagTrigger = true << bitPoint;
 
-			if ((currentFlags.val & flagTrigger) == t)
+			if (static_cast<bool>(currentFlags.val & flagTrigger) == t)
 			{
 				for (; i < mSize - 1; ++i)
 				{

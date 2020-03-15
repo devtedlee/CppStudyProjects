@@ -45,10 +45,12 @@ namespace lab8
 		{
 			for (size_t i = 0; i < mSize; ++i)
 			{
-				delete reinterpret_cast<void*>(mArray[i]);
+				delete mArray[i];
 				mArray[i] = NULL;
 			}
 		}
+
+		delete[] mArray;
 	}
 
 	template<typename T, size_t N>
@@ -84,22 +86,17 @@ namespace lab8
 		}
 		else
 		{
-			for (size_t i = 0; i < N; ++i)
+			size_t i;
+			for (i = 0; i < mSize; ++i)
 			{
-				if (i < mSize)
-				{
-					delete reinterpret_cast<void*>(mArray[i]);
-				}
+				delete mArray[i];
+			}
 
-				if (i < other.mSize)
-				{
-					mArray[i] = new T();
-					*mArray[i] = *other.mArray[i];
-				}
-				else
-				{
-					mArray[i] = 0;
-				}
+
+			for (i = 0; i < other.mSize; ++i)
+			{
+				mArray[i] = new T();
+				*mArray[i] = *other.mArray[i];
 			}
 		}
 
@@ -140,7 +137,7 @@ namespace lab8
 
 				if (mbPointer)
 				{
-					delete reinterpret_cast<void*>(mArray[i]);
+					delete mArray[i];
 				}
 				
 				break;
