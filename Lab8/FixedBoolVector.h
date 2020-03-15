@@ -28,42 +28,42 @@ namespace lab8
 		};
 		typedef union 
 		{
-			unsigned int val;
+			unsigned int Val;
 			struct 
 			{
-				bool b0 : 1;
-				bool b1 : 1;
-				bool b2 : 1;
-				bool b3 : 1;
-				bool b4 : 1;
-				bool b5 : 1;
-				bool b6 : 1;
-				bool b7 : 1;
-				bool b8 : 1;
-				bool b9 : 1;
-				bool b10 : 1;
-				bool b11 : 1;
-				bool b12 : 1;
-				bool b13 : 1;
-				bool b14 : 1;
-				bool b15 : 1;
-				bool b16 : 1;
-				bool b17 : 1;
-				bool b18 : 1;
-				bool b19 : 1;
-				bool b20 : 1;
-				bool b21 : 1;
-				bool b22 : 1;
-				bool b23 : 1;
-				bool b24 : 1;
-				bool b25 : 1;
-				bool b26 : 1;
-				bool b27 : 1;
-				bool b28 : 1;
-				bool b29 : 1;
-				bool b30 : 1;
+				bool B0 : 1;
+				bool B1 : 1;
+				bool B2 : 1;
+				bool B3 : 1;
+				bool B4 : 1;
+				bool B5 : 1;
+				bool B6 : 1;
+				bool B7 : 1;
+				bool B8 : 1;
+				bool B9 : 1;
+				bool B10 : 1;
+				bool B11 : 1;
+				bool B12 : 1;
+				bool B13 : 1;
+				bool B14 : 1;
+				bool B15 : 1;
+				bool B16 : 1;
+				bool B17 : 1;
+				bool B18 : 1;
+				bool B19 : 1;
+				bool B20 : 1;
+				bool B21 : 1;
+				bool B22 : 1;
+				bool B23 : 1;
+				bool B24 : 1;
+				bool B25 : 1;
+				bool B26 : 1;
+				bool B27 : 1;
+				bool B28 : 1;
+				bool B29 : 1;
+				bool B30 : 1;
 				bool b31 : 1;
-			} bits;
+			} Bits;
 		} bitflags_t;
 		size_t mSize;
 		bitflags_t mArray[static_cast<int>(N / BOOL_BYTE_SIZE + 1)];
@@ -124,12 +124,12 @@ namespace lab8
 		unsigned int flagTrigger = true << bitPoint;
 		if (t)
 		{
-			currentFlags.val ^= flagTrigger;
+			currentFlags.Val ^= flagTrigger;
 		}
 		else
 		{
 			flagTrigger = ~flagTrigger;
-			currentFlags.val &= flagTrigger;
+			currentFlags.Val &= flagTrigger;
 		}
 
 		return true;
@@ -154,7 +154,7 @@ namespace lab8
 			size_t bitPoint = i % BOOL_BYTE_SIZE;
 			unsigned int flagTrigger = true << bitPoint;
 
-			if (static_cast<bool>(mArray[arrayIndex].val & flagTrigger) == t)
+			if (static_cast<bool>(mArray[arrayIndex].Val & flagTrigger) == t)
 			{
 				for (; i < mSize - 1; ++i)
 				{
@@ -167,25 +167,25 @@ namespace lab8
 					bool bNextValue = false;
 					if (bitPoint < nextBitPoint)
 					{
-						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].Val & nextFlagTrigger;
 					}
 					else
 					{
 						arrayIndex = static_cast<size_t>((i + 1) / BOOL_BYTE_SIZE);
 
-						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].Val & nextFlagTrigger;
 
 						arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
 					}
 
 					if (bNextValue)
 					{
-						mArray[arrayIndex].val ^= flagTrigger;
+						mArray[arrayIndex].Val ^= flagTrigger;
 					}
 					else
 					{
 						flagTrigger = ~flagTrigger;
-						mArray[arrayIndex].val &= flagTrigger;
+						mArray[arrayIndex].Val &= flagTrigger;
 					}
 				}
 
@@ -195,7 +195,7 @@ namespace lab8
 					bitPoint = i % BOOL_BYTE_SIZE;
 					flagTrigger = true << bitPoint;
 					flagTrigger = ~flagTrigger;
-					mArray[arrayIndex].val &= flagTrigger;
+					mArray[arrayIndex].Val &= flagTrigger;
 				}
 				else
 				{
@@ -208,24 +208,24 @@ namespace lab8
 					bool bNextValue = false;
 					if (bitPoint < nextBitPoint)
 					{
-						bNextValue = mArray[arrayIndex].val & nextFlagTrigger;
+						bNextValue = mArray[arrayIndex].Val & nextFlagTrigger;
 					}
 					else
 					{
 						arrayIndex = static_cast<size_t>((i + 1) / BOOL_BYTE_SIZE);
 						bitflags_t& nextFlags = mArray[arrayIndex];
 
-						bNextValue = nextFlags.val & nextFlagTrigger;
+						bNextValue = nextFlags.Val & nextFlagTrigger;
 					}
 
 					if (bNextValue)
 					{
-						mArray[arrayIndex].val ^= flagTrigger;
+						mArray[arrayIndex].Val ^= flagTrigger;
 					}
 					else
 					{
 						flagTrigger = ~flagTrigger;
-						mArray[arrayIndex].val &= flagTrigger;
+						mArray[arrayIndex].Val &= flagTrigger;
 					}
 				}
 
@@ -246,7 +246,7 @@ namespace lab8
 		bitflags_t currentFlags = mArray[arrayIndex];
 		size_t bitPoint = index % BOOL_BYTE_SIZE;
 		unsigned int flagTrigger = true << bitPoint;
-		const bool bValue = currentFlags.val & flagTrigger;
+		const bool bValue = currentFlags.Val & flagTrigger;
 		return bValue;
 	}
 
@@ -279,14 +279,14 @@ namespace lab8
 			
 			if (t)
 			{
-				if (currentFlags.val & flagTrigger)
+				if (currentFlags.Val & flagTrigger)
 				{
 					return i;
 				}
 			}
 			else
 			{
-				if ((currentFlags.val & flagTrigger) == false)
+				if ((currentFlags.Val & flagTrigger) == false)
 				{
 					return i;
 				}
