@@ -19,38 +19,25 @@ namespace lab8
 		bool Add(const T& t);
 		bool Remove(const T& t);
 		const T& Get(unsigned int index) const;
-		T& operator[](unsigned int index) const;
+		T& operator[](unsigned int index);
 		int GetIndex(const T& t) const;
 		size_t GetSize() const;
 		size_t GetCapacity() const;
 	private:
 		size_t mSize;
-		bool mbPointer;
-		T* mArray;
+		T mArray[N];
 	};
 
 	template<typename T, size_t N>
 	FixedVector<T, N>::FixedVector()
 		: mSize(0)
-		, mbPointer(is_pointer<T>::value)
-		, mArray(new T[N])
+		, mArray()
 	{
-		memset(mArray, 0, sizeof(T) * N);
 	}
 
 	template<typename T, size_t N>
 	FixedVector<T, N>::~FixedVector()
 	{
-		if (mbPointer)
-		{
-			for (size_t i = 0; i < mSize; ++i)
-			{
-				delete mArray[i];
-				mArray[i] = NULL;
-			}
-		}
-
-		delete[] mArray;
 	}
 
 	template<typename T, size_t N>
@@ -58,18 +45,7 @@ namespace lab8
 		: mSize(other.mSize)
 		, mArray()
 	{
-		if (!mbPointer)
-		{
-			memcpy(mArray, other.mArray, sizeof(T) * N);
-		}
-		else
-		{
-			for (size_t i = 0; i < mSize; ++i)
-			{
-				mArray[i] = new T();
-				*mArray[i] = *other.mArray[i];
-			}
-		}
+		memcpy(mArray, other.mArray, sizeof(T) * N);
 	}
 
 	template<typename T, size_t N>
@@ -80,26 +56,7 @@ namespace lab8
 			return *this;
 		}
 
-		if (!mbPointer)
-		{
-			memcpy(mArray, other.mArray, sizeof(T) * N);
-		}
-		else
-		{
-			size_t i;
-			for (i = 0; i < mSize; ++i)
-			{
-				delete mArray[i];
-			}
-
-
-			for (i = 0; i < other.mSize; ++i)
-			{
-				mArray[i] = new T();
-				*mArray[i] = *other.mArray[i];
-			}
-		}
-
+		memcpy(mArray, other.mArray, sizeof(T) * N);
 		mSize = other.mSize;
 
 		return *this;
@@ -134,11 +91,6 @@ namespace lab8
 			if (mArray[i] == t)
 			{
 				removeIndex = i;
-
-				if (mbPointer)
-				{
-					delete mArray[i];
-				}
 				
 				break;
 			}
@@ -176,7 +128,7 @@ namespace lab8
 	}
 
 	template<typename T, size_t N>
-	T& FixedVector<T, N>::operator[](unsigned int index) const
+	T& FixedVector<T, N>::operator[](unsigned int index)
 	{
 		T& value = mArray[index];
 		return value;
