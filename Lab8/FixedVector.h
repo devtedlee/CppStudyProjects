@@ -24,17 +24,18 @@ namespace lab8
 		size_t GetSize() const;
 		size_t GetCapacity() const;
 	private:
-		size_t mCount;
+		size_t mSize;
 		bool mbPointer;
-		T mArray[N];
+		T* mArray;
 	};
 
 	template<typename T, size_t N>
 	FixedVector<T, N>::FixedVector()
-		: mCount(0)
+		: mSize(0)
 		, mbPointer(is_pointer<T>::value)
-		, mArray()
+		, mArray(new T[N])
 	{
+		memset(mArray, 0, sizeof(T) * N);
 	}
 
 	template<typename T, size_t N>
@@ -42,7 +43,7 @@ namespace lab8
 	{
 		if (mbPointer)
 		{
-			for (size_t i = 0; i < mCount; ++i)
+			for (size_t i = 0; i < mSize; ++i)
 			{
 				delete reinterpret_cast<void*>(mArray[i]);
 				mArray[i] = NULL;
@@ -52,7 +53,7 @@ namespace lab8
 
 	template<typename T, size_t N>
 	FixedVector<T, N>::FixedVector(const FixedVector<T, N>& other)
-		: mCount(other.mCount)
+		: mSize(other.mSize)
 		, mArray()
 	{
 		if (!mbPointer)
@@ -61,7 +62,7 @@ namespace lab8
 		}
 		else
 		{
-			for (size_t i = 0; i < mCount; ++i)
+			for (size_t i = 0; i < mSize; ++i)
 			{
 				mArray[i] = new T();
 				*mArray[i] = *other.mArray[i];
@@ -85,12 +86,12 @@ namespace lab8
 		{
 			for (size_t i = 0; i < N; ++i)
 			{
-				if (i < mCount)
+				if (i < mSize)
 				{
 					delete reinterpret_cast<void*>(mArray[i]);
 				}
 
-				if (i < other.mCount)
+				if (i < other.mSize)
 				{
 					mArray[i] = new T();
 					*mArray[i] = *other.mArray[i];
@@ -102,7 +103,7 @@ namespace lab8
 			}
 		}
 
-		mCount = other.mCount;
+		mSize = other.mSize;
 
 		return *this;
 	}
@@ -110,13 +111,12 @@ namespace lab8
 	template<typename T, size_t N>
 	bool FixedVector<T, N>::Add(const T& t)
 	{
-		if (mCount == N)
+		if (mSize == N)
 		{
 			return false;
 		}
 
-		mArray[mCount] = t;
-		++mCount;
+		mArray[mSize++] = t;
 
 		return true;
 	}
@@ -124,7 +124,7 @@ namespace lab8
 	template<typename T, size_t N>
 	bool FixedVector<T, N>::Remove(const T& t)
 	{
-		if (mCount == 0)
+		if (mSize == 0)
 		{
 			return false;
 		}
@@ -132,7 +132,7 @@ namespace lab8
 		size_t removeIndex = SIZE_MAX;
 		size_t i;
 
-		for (i = 0; i < mCount; ++i)
+		for (i = 0; i < mSize; ++i)
 		{
 			if (mArray[i] == t)
 			{
@@ -142,6 +142,8 @@ namespace lab8
 				{
 					delete reinterpret_cast<void*>(mArray[i]);
 				}
+				
+				break;
 			}
 		}
 
@@ -150,12 +152,12 @@ namespace lab8
 			return false;
 		}
 
-		for (i = removeIndex; i < mCount - 1; ++i)
+		for (i = removeIndex; i < mSize - 1; ++i)
 		{
 			mArray[i] = mArray[i + 1];
 		}
 
-		if (mCount == N)
+		if (mSize == N)
 		{
 			mArray[i] = 0;
 		}
@@ -164,7 +166,7 @@ namespace lab8
 			mArray[i] = mArray[i + 1];
 		}
 
-		--mCount;
+		--mSize;
 
 		return true;
 	}
@@ -172,30 +174,46 @@ namespace lab8
 	template<typename T, size_t N>
 	const T& FixedVector<T, N>::Get(unsigned int index) const
 	{
-		return T();
+		const T& value = mArray[index];
+		return value;
 	}
 
 	template<typename T, size_t N>
 	T& FixedVector<T, N>::operator[](unsigned int index) const
 	{
-		return T();
+		T& value = mArray[index];
+		return value;
 	}
 	
 	template<typename T, size_t N>
 	int FixedVector<T, N>::GetIndex(const T& t) const
 	{
-		return 0;
+		const int FAILED_INDEX = -1;
+		if (mSize == 0)
+		{
+			return FAILED_INDEX;
+		}
+
+		for (int i = 0; i < static_cast<int>(mSize); ++i)
+		{
+			if (mArray[i] == t)
+			{
+				return i;
+			}
+		}
+
+		return FAILED_INDEX;
 	}
 	
 	template<typename T, size_t N>
 	size_t FixedVector<T, N>::GetSize() const
 	{
-		return 0U;
+		return mSize;
 	}
 
 	template<typename T, size_t N>
 	size_t FixedVector<T, N>::GetCapacity() const
 	{
-		return 0U;
+		return N;
 	}
 }

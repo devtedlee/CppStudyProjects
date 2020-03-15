@@ -36,7 +36,6 @@ int main()
 	assert(iv.GetSize() == 3);
 	assert(iv.GetIndex(i2) == -1);
 
-	/*
 	FixedVector<bool, 10> v;
 
 	assert(v.GetCapacity() == 10);
@@ -49,6 +48,7 @@ int main()
 	v.Add(false);
 	v.Add(true);
 
+
 	assert(v.GetSize() == 7);
 	assert(v.Get(0));
 	assert(v.Get(1));
@@ -57,6 +57,8 @@ int main()
 	assert(!v.Get(4));
 	assert(!v.Get(5));
 	assert(v.Get(6));
+	assert(v.GetIndex(false) == 4);
+	assert(v.GetIndex(true) == 0);
 
 	v.Remove(false);
 
@@ -79,7 +81,7 @@ int main()
 
 	for (size_t i = 0; i < v.GetSize(); i++)
 	{
-		assert(v[i]);
+		assert(v[i] == false);
 	}
 
 	FixedVector<bool, 65> v1;
@@ -92,7 +94,6 @@ int main()
 	assert(v1.Add(true) == false);
 	assert(v1.GetSize() == 65);
 	assert(v1.GetIndex(true) == -1);
-	*/
 
 	return 0;
 }
