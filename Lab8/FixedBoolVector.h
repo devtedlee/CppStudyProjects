@@ -156,8 +156,21 @@ namespace lab8
 
 			if (static_cast<bool>(mArray[arrayIndex].Val & flagTrigger) == bValue)
 			{
-				for (; i < mSize - 1; ++i)
+				for (; i < mSize; ++i)
 				{
+					if (mSize == N)
+					{
+						arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
+						bitPoint = i % BOOL_BYTE_SIZE;
+						flagTrigger = true << bitPoint;
+						flagTrigger = ~flagTrigger;
+						mArray[arrayIndex].Val &= flagTrigger;
+
+						--mSize;
+
+						return true;
+					}
+
 					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
 					bitPoint = i % BOOL_BYTE_SIZE;
 					size_t nextBitPoint = (i + 1) % BOOL_BYTE_SIZE;
@@ -176,46 +189,6 @@ namespace lab8
 						bNextValue = mArray[arrayIndex].Val & nextFlagTrigger;
 
 						arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					}
-
-					if (bNextValue)
-					{
-						mArray[arrayIndex].Val ^= flagTrigger;
-					}
-					else
-					{
-						flagTrigger = ~flagTrigger;
-						mArray[arrayIndex].Val &= flagTrigger;
-					}
-				}
-
-				if (mSize == N)
-				{
-					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					bitPoint = i % BOOL_BYTE_SIZE;
-					flagTrigger = true << bitPoint;
-					flagTrigger = ~flagTrigger;
-					mArray[arrayIndex].Val &= flagTrigger;
-				}
-				else
-				{
-					arrayIndex = static_cast<size_t>(i / BOOL_BYTE_SIZE);
-					bitPoint = i % BOOL_BYTE_SIZE;
-					size_t nextBitPoint = (i + 1) % BOOL_BYTE_SIZE;
-					flagTrigger = true << bitPoint;
-					unsigned int nextFlagTrigger = true << nextBitPoint;
-
-					bool bNextValue = false;
-					if (bitPoint < nextBitPoint)
-					{
-						bNextValue = mArray[arrayIndex].Val & nextFlagTrigger;
-					}
-					else
-					{
-						arrayIndex = static_cast<size_t>((i + 1) / BOOL_BYTE_SIZE);
-						bitflags_t& nextFlags = mArray[arrayIndex];
-
-						bNextValue = nextFlags.Val & nextFlagTrigger;
 					}
 
 					if (bNextValue)
