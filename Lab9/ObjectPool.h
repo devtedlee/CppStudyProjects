@@ -38,6 +38,7 @@ namespace lab9
 			T* frontObj = mObjects.front();
 			mObjects.pop();
 			delete frontObj;
+			frontObj = NULL;
 		}
 	}
 
@@ -61,6 +62,7 @@ namespace lab9
 		if (mObjects.size() >= mMaxPoolSize)
 		{
 			delete tP;
+			tP = NULL;
 			return;
 		}
 

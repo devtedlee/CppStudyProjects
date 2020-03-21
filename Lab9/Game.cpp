@@ -13,8 +13,11 @@ namespace lab9
 		for (auto it = mActiveGameObjects.begin(); it != mActiveGameObjects.end(); ++it)
 		{
 			delete (*it);
+			(*it) = NULL;
 		}
 
+		delete mIceCubePool;
+		mIceCubePool = NULL;
 		mActiveGameObjects.clear();
 	}
 
