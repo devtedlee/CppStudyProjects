@@ -2,7 +2,8 @@
 
 namespace lab9
 {
-	Game::Game(unsigned int seed)
+	Game::Game(unsigned int seed, unsigned int poolSize)
+		: mIceCubePool(new ObjectPool<IceCube>(poolSize))
 	{
 		srand(seed);
 	}
@@ -19,7 +20,7 @@ namespace lab9
 
 	void Game::Spawn()
 	{
-		IceCube* iceCube = new IceCube();
+		IceCube* iceCube = mIceCubePool->Get();
 		iceCube->Initialize(rand() % MAX_FRAME_COUNT_TO_LIVE + 1);
 		mActiveGameObjects.push_back(iceCube);
 	}
@@ -34,7 +35,8 @@ namespace lab9
 			if (!iceCube->IsActive())
 			{
 				it = mActiveGameObjects.erase(it);
-				delete iceCube;
+				iceCube->Reset();
+				mIceCubePool->Return(iceCube);
 				continue;
 			}
 
@@ -45,5 +47,11 @@ namespace lab9
 	const std::vector<IceCube*>& Game::GetActiveGameObjects() const
 	{
 		return mActiveGameObjects;
+	}
+	
+	ObjectPool<IceCube>& Game::GetObjectPool() const
+	{
+		ObjectPool<IceCube>& objPoolRef = *mIceCubePool;
+		return objPoolRef;
 	}
 }
