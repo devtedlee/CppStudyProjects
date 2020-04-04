@@ -91,7 +91,8 @@ namespace lab11
 		}
 
 		mLength = other.mLength;
-		mArray.reset(std::move(other.mArray));
+		mArray.reset(nullptr);
+		mArray = std::move(other.mArray);
 
 		other.mLength = 0;
 		other.mArray.reset(nullptr);
