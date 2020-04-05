@@ -115,6 +115,11 @@ namespace assignment4
 	template<typename T>
 	bool BinarySearchTree<T>::Search(const T& data)
 	{
+		if (mRootNode == nullptr)
+		{
+			return false;
+		}
+
 		std::shared_ptr<TreeNode<T>> node = searchTreeRecursive(mRootNode, data);
 		if (*node->Data != data)
 		{
@@ -127,6 +132,11 @@ namespace assignment4
 	template<typename T>
 	bool BinarySearchTree<T>::Delete(const T& data)
 	{
+		if (mRootNode == nullptr)
+		{
+			return false;
+		}
+
 		std::shared_ptr<TreeNode<T>> node = searchTreeRecursive(mRootNode, data);
 		if (*node->Data != data)
 		{
@@ -145,7 +155,7 @@ namespace assignment4
 
 			if (parentNode != nullptr)
 			{
-				if (*parentNode->Data > *rightNode->Data)
+				if (*parentNode->Data > *node->Data)
 				{
 					parentNode->Left.reset();
 					parentNode->Left = rightNode;
@@ -155,6 +165,8 @@ namespace assignment4
 					parentNode->Right.reset();
 					parentNode->Right = rightNode;
 				}
+
+				rightNode->Parent = parentNode;
 			}
 			else
 			{
@@ -167,17 +179,18 @@ namespace assignment4
 				if (rightNode->Left == nullptr)
 				{
 					rightNode->Left = node->Left;
+					rightNode->Left->Parent = rightNode;
 				}
 				else
 				{
 					std::shared_ptr<TreeNode<T>> rightNodeLeft = rightNode->Left;
 					while (rightNodeLeft->Left != nullptr)
 					{
-						rightNodeLeft.reset();
 						rightNodeLeft = rightNodeLeft->Left;
 					}
 
 					rightNodeLeft->Left = node->Left;
+					rightNodeLeft->Left->Parent = rightNodeLeft;
 				}
 			}
 		}
@@ -187,7 +200,7 @@ namespace assignment4
 
 			if (parentNode != nullptr)
 			{
-				if (*parentNode->Data > *leftNode->Data)
+				if (*parentNode->Data > *node->Data)
 				{
 					parentNode->Left.reset();
 					parentNode->Left = leftNode;
@@ -197,11 +210,31 @@ namespace assignment4
 					parentNode->Right.reset();
 					parentNode->Right = leftNode;
 				}
+
+				leftNode->Parent = parentNode;
 			}
 			else
 			{
 				mRootNode.reset();
 				mRootNode = leftNode;
+			}
+		}
+		else
+		{
+			if (parentNode != nullptr)
+			{
+				if (*parentNode->Data > *node->Data)
+				{
+					parentNode->Left.reset();
+				}
+				else
+				{
+					parentNode->Right.reset();
+				}
+			}
+			else
+			{
+				mRootNode.reset();
 			}
 		}
 
