@@ -31,13 +31,8 @@ namespace assignment4
 	{
 		T nodeData = *node->Data;
 
-		if (nodeData == data)
-		{
-			return node;
-		}
-
 		std::shared_ptr<TreeNode<T>> returnNode;
-		if (nodeData > data)
+		if (nodeData >= data)
 		{
 			if (node->Left != nullptr)
 			{
@@ -83,9 +78,7 @@ namespace assignment4
 			else
 			{
 				std::shared_ptr<TreeNode<T>> tempNode = node->Left;
-				node->Left.reset();
 				node->Left = std::make_shared<TreeNode<T>>(node, std::move(data));
-
 				tempNode->Parent = node->Left;
 				if (tempNode->Data >= data)
 				{
@@ -106,9 +99,7 @@ namespace assignment4
 			else
 			{
 				std::shared_ptr<TreeNode<T>> tempNode = node->Right;
-				node->Right.reset();
 				node->Right = std::make_shared<TreeNode<T>>(node, std::move(data));
-
 				tempNode->Parent = node->Right;
 				if (tempNode->Data >= data)
 				{
