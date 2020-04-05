@@ -23,6 +23,7 @@ namespace assignment4
 	private:
 		std::shared_ptr<TreeNode<T>> mRootNode;
 		std::shared_ptr<TreeNode<T>> searchTreeRecursive(std::shared_ptr<TreeNode<T>> node, const T& data);
+		std::shared_ptr<TreeNode<T>> searchTreeDeleteRecursive(std::shared_ptr<TreeNode<T>> node, const T& data);
 		static void traverseRecursive(const std::shared_ptr<TreeNode<T>> node, std::vector<T>& outVector);
 	};
 
@@ -59,6 +60,43 @@ namespace assignment4
 	}
 
 	template<typename T>
+	std::shared_ptr<TreeNode<T>> BinarySearchTree<T>::searchTreeDeleteRecursive(std::shared_ptr<TreeNode<T>> node, const T& data)
+	{
+		T nodeData = *node->Data;
+
+		if (nodeData == data)
+		{
+			return node;
+		}
+
+		std::shared_ptr<TreeNode<T>> returnNode;
+		if (nodeData > data)
+		{
+			if (node->Left != nullptr)
+			{
+				returnNode = searchTreeDeleteRecursive(node->Left, data);
+			}
+			else
+			{
+				return node;
+			}
+		}
+		else
+		{
+			if (node->Right != nullptr)
+			{
+				returnNode = searchTreeDeleteRecursive(node->Right, data);
+			}
+			else
+			{
+				return node;
+			}
+		}
+
+		return returnNode;
+	}
+
+	template<typename T>
 	void BinarySearchTree<T>::Insert(std::unique_ptr<T> data)
 	{
 		if (mRootNode == nullptr)
@@ -80,7 +118,7 @@ namespace assignment4
 				std::shared_ptr<TreeNode<T>> tempNode = node->Left;
 				node->Left = std::make_shared<TreeNode<T>>(node, std::move(data));
 				tempNode->Parent = node->Left;
-				if (tempNode->Data >= data)
+				if (*data >= *tempNode->Data)
 				{
 					node->Left->Left = tempNode;
 				}
@@ -101,13 +139,13 @@ namespace assignment4
 				std::shared_ptr<TreeNode<T>> tempNode = node->Right;
 				node->Right = std::make_shared<TreeNode<T>>(node, std::move(data));
 				tempNode->Parent = node->Right;
-				if (tempNode->Data >= data)
+				if (*data >= *tempNode->Data)
 				{
-					node->Left->Left = tempNode;
+					node->Right->Left = tempNode;
 				}
 				else
 				{
-					node->Left->Right = tempNode;
+					node->Right->Right = tempNode;
 				}
 			}
 		}
@@ -127,7 +165,7 @@ namespace assignment4
 			return false;
 		}
 
-		std::shared_ptr<TreeNode<T>> node = searchTreeRecursive(mRootNode, data);
+		std::shared_ptr<TreeNode<T>> node = searchTreeDeleteRecursive(mRootNode, data);
 		if (*node->Data != data)
 		{
 			return false;
@@ -144,7 +182,7 @@ namespace assignment4
 			return false;
 		}
 
-		std::shared_ptr<TreeNode<T>> node = searchTreeRecursive(mRootNode, data);
+		std::shared_ptr<TreeNode<T>> node = searchTreeDeleteRecursive(mRootNode, data);
 		if (*node->Data != data)
 		{
 			return false;
