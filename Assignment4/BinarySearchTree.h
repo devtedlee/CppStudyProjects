@@ -85,8 +85,16 @@ namespace assignment4
 				std::shared_ptr<TreeNode<T>> tempNode = node->Left;
 				node->Left.reset();
 				node->Left = std::make_shared<TreeNode<T>>(node, std::move(data));
-				node->Left->Left = tempNode;
+
 				tempNode->Parent = node->Left;
+				if (tempNode->Data >= data)
+				{
+					node->Left->Left = tempNode;
+				}
+				else
+				{
+					node->Left->Right = tempNode;
+				}
 			}
 		}
 		else
@@ -100,8 +108,16 @@ namespace assignment4
 				std::shared_ptr<TreeNode<T>> tempNode = node->Right;
 				node->Right.reset();
 				node->Right = std::make_shared<TreeNode<T>>(node, std::move(data));
-				node->Right->Right = tempNode;
+
 				tempNode->Parent = node->Right;
+				if (tempNode->Data >= data)
+				{
+					node->Left->Left = tempNode;
+				}
+				else
+				{
+					node->Left->Right = tempNode;
+				}
 			}
 		}
 	}
